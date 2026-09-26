@@ -6,14 +6,22 @@
   <title>BYE QUIZ LIVE - مركز تحكم الإدارة الشامل</title>
   <link rel="stylesheet" href="/css/style.css" />
   <style>
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: hidden;
+    }
     body {
       background: #090d16;
       color: #f8fafc;
       font-family: 'Tajawal', system-ui, sans-serif;
       margin: 0;
-      padding: 16px;
+      padding: 10px;
+      box-sizing: border-box;
     }
     .admin-wrapper {
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
@@ -230,7 +238,7 @@
       margin-left: 8px;
     }
   
-    .tiktok-topbar{background:linear-gradient(135deg,rgba(5,18,32,.98),rgba(10,31,48,.92));border:2px solid rgba(0,242,254,.42);border-radius:18px;padding:14px 16px;box-shadow:0 0 24px rgba(0,242,254,.10)}
+    .tiktok-topbar{width:100%;box-sizing:border-box;background:linear-gradient(135deg,rgba(5,18,32,.98),rgba(10,31,48,.92));border:2px solid rgba(0,242,254,.42);border-radius:18px;padding:14px 16px;box-shadow:0 0 24px rgba(0,242,254,.10)}
     .tiktok-topbar-main{display:grid;grid-template-columns:minmax(180px,1fr) minmax(220px,1.2fr) minmax(300px,1.4fr);align-items:end;gap:14px}
     .tiktok-topbar-label{display:flex;align-items:center;gap:10px}
     .tiktok-topbar-label strong{display:block;font-size:17px;color:#fff}
@@ -242,7 +250,31 @@
     .tiktok-topbar-actions{display:flex;gap:8px;flex-wrap:wrap}
     .tiktok-topbar-actions .admin-btn{flex:1;justify-content:center}
     .tiktok-topbar-status{margin-top:10px;padding:8px 10px;border-radius:9px;background:rgba(0,0,0,.22);color:#94a3b8;font-size:11px}
-    @media(max-width:700px){.tiktok-topbar-main{grid-template-columns:1fr}.tiktok-topbar-actions .admin-btn{min-width:0}.tiktok-topbar-field .form-input{font-size:18px}}
+    @media(max-width:700px){
+      body{padding:6px}
+      .admin-wrapper{width:100%;max-width:none;gap:8px}
+      .admin-header{width:100%;box-sizing:border-box;padding:10px;border-radius:12px}
+      .admin-title{font-size:16px}
+      .conn-status-pill{width:100%;box-sizing:border-box;justify-content:center;font-size:11px}
+      .admin-nav-tabs{width:100%;box-sizing:border-box;overflow-x:auto;flex-wrap:nowrap;padding:4px}
+      .nav-tab-btn{flex:0 0 auto;padding:9px 11px;font-size:11px}
+      .admin-panel{width:100%;box-sizing:border-box;padding:8px;border-radius:12px}
+      .control-card{width:100%;box-sizing:border-box;padding:10px;border-radius:10px}
+      .admin-grid-2{grid-template-columns:1fr;gap:8px}
+      .metrics-bar-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+      .metric-box{padding:8px 5px}
+      .metric-val{font-size:16px}
+      .metric-lbl{font-size:10px}
+      .btn-group,.admin-actions{width:100%;box-sizing:border-box}
+      .btn-group .admin-btn,.admin-actions .admin-btn{flex:1 1 100%;width:100%;box-sizing:border-box;justify-content:center}
+      .form-input{box-sizing:border-box;width:100%;max-width:100%}
+      .tiktok-topbar{padding:10px;border-radius:12px}
+      .tiktok-topbar-main{grid-template-columns:1fr;gap:9px}
+      .tiktok-topbar-actions{display:grid;grid-template-columns:1fr;gap:6px}
+      .tiktok-topbar-actions .admin-btn{width:100%;min-width:0}
+      .tiktok-topbar-field .form-input{font-size:18px}
+      .players-table,.questions-table{min-width:560px}
+    }
     /* Responsive admin UI */
     html, body { min-width: 0; }
     body { min-height: 100dvh; overflow-x: hidden; }
