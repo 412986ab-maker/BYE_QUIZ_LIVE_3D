@@ -350,7 +350,8 @@ class SceneManager {
       this.dom.headerCategory.innerHTML = `${IconSystem.get('participants', { size: 16 })} <span>مرحلة حجز المقاعد والتسجيل</span>`;
     }
 
-    const target = this.state.get('settings').targetParticipants || 36;
+    const targetValue = Number(this.state.get('settings').targetParticipants);
+    const target = Number.isFinite(targetValue) ? Math.max(0, targetValue) : 36;
     const pool = this.participants.getDrawPoolUsers();
 
     this.dom.stage.innerHTML = `
@@ -375,7 +376,8 @@ class SceneManager {
     const gridEl = document.getElementById('reg-grid');
     if (!gridEl) return;
 
-    const target = this.state.get('settings').targetParticipants || 36;
+    const targetValue = Number(this.state.get('settings').targetParticipants);
+    const target = Number.isFinite(targetValue) ? Math.max(0, targetValue) : 36;
     const pool = this.participants.getDrawPoolUsers();
 
     if (pool.length === 0) {
@@ -709,8 +711,11 @@ class SceneManager {
 
   updateTimerDisplay(timer) {
     if (!this.dom.timerText || !this.dom.timerBar) return;
-    const remaining = timer.remaining !== undefined ? timer.remaining : 15;
-    const duration = timer.duration || 15;
+    const settings = this.state.get('settings') || {};
+    const configuredDuration = Number(settings.questionDuration);
+    const fallbackDuration = Number.isFinite(configuredDuration) && configuredDuration > 0 ? configuredDuration : 15;
+    const remaining = timer.remaining !== undefined ? timer.remaining : fallbackDuration;
+    const duration = Number(timer.duration) > 0 ? Number(timer.duration) : fallbackDuration;
 
     this.dom.timerText.textContent = remaining;
 
