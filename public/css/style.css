@@ -1334,3 +1334,220 @@ body.webgl-active .studio-volumetric-lights {
 @keyframes commentSlideUp { from { opacity: 0; transform: translateY(18px) scale(0.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes giftBurstScale { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 @keyframes shareBurstPulse { 0% { transform: scale(0.6); opacity: 0; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+
+
+/* ==========================================================
+   RESPONSIVE DEVICE ADAPTATION — 2026
+   Fluid sizing for phones, tablets, desktops and 9:16 LIVE
+   ========================================================== */
+html {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: var(--bg-dark);
+}
+
+body {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 100svh;
+  height: 100dvh;
+  overflow: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.stream-container {
+  width: min(100%, 100vw);
+  height: min(100%, 100dvh);
+  max-width: none;
+  max-height: none;
+  aspect-ratio: auto;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 0;
+}
+
+.global-top-hud {
+  padding: clamp(6px, 1.4dvh, 14px) clamp(8px, 2.8vw, 18px) 4px;
+  gap: clamp(5px, 1dvh, 9px);
+}
+
+.brand-name {
+  font-size: clamp(10px, 2.8vw, 15px);
+}
+
+.live-pill-tag {
+  font-size: clamp(7px, 1.9vw, 10px);
+}
+
+.top-engagement-bar {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(3px, 1vw, 7px);
+}
+
+.engagement-pill {
+  min-width: 0;
+  min-height: clamp(30px, 5.2dvh, 42px);
+  padding: clamp(3px, 0.8dvh, 6px) clamp(2px, 1vw, 8px);
+  gap: clamp(2px, .8vw, 5px);
+  font-size: clamp(8px, 2.6vw, 12px);
+  overflow: hidden;
+}
+
+.engagement-pill .icon-svg {
+  width: clamp(11px, 3.2vw, 16px);
+  height: clamp(11px, 3.2vw, 16px);
+  flex: 0 0 auto;
+}
+
+.header-bar {
+  gap: clamp(4px, 1.5vw, 10px);
+  min-width: 0;
+}
+
+.category-badge {
+  min-width: 0;
+  max-width: 45%;
+  font-size: clamp(8px, 2.5vw, 12px);
+}
+
+.category-badge span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-stats {
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+
+.stat-pill {
+  min-width: 0;
+  padding: clamp(2px, .6dvh, 5px) clamp(4px, 1.5vw, 9px);
+}
+
+.stat-pill .num {
+  font-size: clamp(8px, 2.5vw, 12px);
+  white-space: nowrap;
+}
+
+.stat-pill .label {
+  font-size: clamp(7px, 2.1vw, 10px);
+}
+
+.timer-container {
+  width: clamp(38px, 11vw, 52px);
+  height: clamp(38px, 11vw, 52px);
+  flex: 0 0 auto;
+}
+
+.stage-area {
+  min-height: 0;
+  padding: clamp(6px, 1.5dvh, 14px) clamp(8px, 3vw, 18px);
+}
+
+.scene-frame {
+  max-width: 100%;
+  gap: clamp(7px, 1.5dvh, 14px);
+}
+
+.footer-leaderboard {
+  padding: clamp(5px, 1dvh, 9px) clamp(8px, 3vw, 18px);
+}
+
+.leaderboard-items {
+  min-width: 0;
+  max-width: 100%;
+  scrollbar-width: none;
+}
+
+.leaderboard-items::-webkit-scrollbar {
+  display: none;
+}
+
+.hud-btn {
+  width: clamp(36px, 10vw, 44px);
+  height: clamp(36px, 10vw, 44px);
+  padding: 0;
+}
+
+.pwa-install-prompt {
+  max-width: calc(100vw - 24px);
+  min-height: 44px;
+  padding: 9px 14px;
+  font-size: clamp(10px, 2.8vw, 13px);
+}
+
+.streamer-notice {
+  font-size: clamp(7px, 2.1vw, 10px);
+  line-height: 1.35;
+  text-align: center;
+}
+
+/* Very narrow phones */
+@media (max-width: 340px) {
+  .global-top-hud {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  .top-engagement-bar {
+    gap: 2px;
+  }
+  .engagement-pill {
+    min-height: 28px;
+    font-size: 7px;
+  }
+  .engagement-pill .icon-svg {
+    width: 10px;
+    height: 10px;
+  }
+  .category-badge {
+    max-width: 38%;
+  }
+}
+
+/* Short landscape / desktop windows */
+@media (orientation: landscape) and (max-height: 600px) {
+  .global-top-hud {
+    padding-top: 4px;
+    gap: 3px;
+  }
+  .top-engagement-bar {
+    display: flex;
+  }
+  .engagement-pill {
+    flex: 1 1 0;
+    min-height: 26px;
+  }
+  .stage-area {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  .footer-leaderboard {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+}
+
+/* Tablet / desktop presentation: preserve the TikTok 9:16 stage without clipping */
+@media (min-width: 768px) {
+  body {
+    padding: 0;
+  }
+  .stream-container {
+    width: min(100vw, calc(100dvh * 9 / 16));
+    height: min(100dvh, calc(100vw * 16 / 9));
+    border-radius: clamp(12px, 2vw, 28px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Large desktop: never allow the game to become oversized */
+@media (min-width: 1400px) {
+  .stream-container {
+    width: min(540px, calc(100dvh * 9 / 16));
+  }
+}
