@@ -705,7 +705,14 @@ const server = http.createServer(async (req, res) => {
     const ext = path.extname(filePath);
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-    res.writeHead(200, { 'Content-Type': contentType });
+    // Admin UI must never be served from a stale browser/proxy cache.
+    // The dashboard is frequently updated during live operation.
+    const isAdminPage = reqPath === '/admin.html' || pathname === '/admin';
+    const cacheHeaders = isAdminPage
+      ? { 'Content-Type': contentType, 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate', 'Pragma': 'no-cache', 'Expires': '0' }
+      : { 'Content-Type': contentType };
+
+    res.writeHead(200, cacheHeaders);
     fs.createReadStream(filePath).pipe(res);
   });
 });
