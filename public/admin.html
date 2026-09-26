@@ -321,6 +321,22 @@
         </div>
       </div>
 
+      <div class="control-card" id="tiktok-connection-card">
+        <div class="card-title">اتصال TikTok LIVE</div>
+        <div class="admin-grid-2" style="align-items:end;">
+          <div class="form-group">
+            <label class="form-label" for="tiktok-username">اسم مستخدم TikTok LIVE</label>
+            <input id="tiktok-username" class="form-input" type="text" value=".capuscom" placeholder=".capuscom" autocomplete="off" spellcheck="false" />
+            <small style="color:var(--text-dim);font-size:11px;">اكتب اسم الحساب كما يظهر في TikTok، بما في ذلك النقطة إذا كانت موجودة.</small>
+          </div>
+          <div class="admin-actions">
+            <button class="admin-btn btn-primary" id="btn-connect-tiktok" type="button" onclick="connectTikTok()">اتصال بالبث</button>
+            <button class="admin-btn" id="btn-reconnect-tiktok" type="button" onclick="reconnectTikTok()">إعادة الاتصال</button>
+            <button class="admin-btn btn-danger" id="btn-disconnect-tiktok" type="button" onclick="disconnectTikTok()">فصل الاتصال</button>
+          </div>
+        </div>
+      </div>
+
       <div class="admin-grid-2">
         <!-- Event & Round Controls -->
         <div class="control-card">
@@ -739,6 +755,85 @@
           diamonds
         }
       });
+    }
+
+    // TikTok LIVE connection controls
+    const TIKTOK_USERNAME_STORAGE_KEY = 'bye_quiz_tiktok_username';
+
+    function getTikTokUsername() {
+      const input = document.getElementById('tiktok-username');
+      const saved = localStorage.getItem(TIKTOK_USERNAME_STORAGE_KEY);
+      const value = (input?.value || saved || '.capuscom').trim();
+      return value || '.capuscom';
+    }
+
+    function rememberTikTokUsername(username) {
+      const clean = String(username || '').trim();
+      if (!clean) return;
+      localStorage.setItem(TIKTOK_USERNAME_STORAGE_KEY, clean);
+      const input = document.getElementById('tiktok-username');
+      if (input) input.value = clean;
+    }
+
+    async function connectTikTok() {
+      const username = getTikTokUsername();
+      if (!username) return;
+      rememberTikTokUsername(username);
+
+      const btn = document.getElementById('btn-connect-tiktok');
+      if (btn) { btn.disabled = true; btn.textContent = 'جارٍ الاتصال...'; }
+
+      try {
+        const res = await fetch('/api/connect-tiktok', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username })
+        });
+        const data = await res.json();
+        if (data.username) rememberTikTokUsername(data.username);
+        if (!res.ok || !data.success) {
+          appendActivityItem('error', 'TikTok LIVE', data.error || 'فشل الاتصال بالبث');
+        } else {
+          updateAdminTikTokStatus(data);
+          appendActivityItem('join', 'TikTok LIVE', 'تم طلب الاتصال بالحساب @' + (data.username || username));
+        }
+      } catch (err) {
+        appendActivityItem('error', 'TikTok LIVE', 'تعذر الاتصال بالخادم');
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'اتصال بالبث'; }
+      }
+    }
+
+    async function reconnectTikTok() {
+      const username = getTikTokUsername();
+      rememberTikTokUsername(username);
+      try {
+        const res = await fetch('/api/reconnect-tiktok', { method: 'POST' });
+        const data = await res.json();
+        if (data.username) rememberTikTokUsername(data.username);
+        if (!res.ok || !data.success) {
+          appendActivityItem('error', 'TikTok LIVE', data.error || 'فشل إعادة الاتصال');
+        } else {
+          updateAdminTikTokStatus(data);
+        }
+      } catch (err) {
+        appendActivityItem('error', 'TikTok LIVE', 'تعذر إعادة الاتصال بالخادم');
+      }
+    }
+
+    async function disconnectTikTok() {
+      try {
+        const res = await fetch('/api/disconnect-tiktok', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          updateAdminTikTokStatus(data);
+          appendActivityItem('system', 'TikTok LIVE', 'تم فصل الاتصال');
+        } else {
+          appendActivityItem('error', 'TikTok LIVE', data.error || 'فشل فصل الاتصال');
+        }
+      } catch (err) {
+        appendActivityItem('error', 'TikTok LIVE', 'تعذر الاتصال بالخادم');
+      }
     }
 
     // SSE Realtime Listener for Admin Dashboard
