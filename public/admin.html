@@ -229,6 +229,37 @@
       vertical-align: middle;
       margin-left: 8px;
     }
+  
+    /* Responsive admin UI */
+    html, body { min-width: 0; }
+    body { min-height: 100dvh; overflow-x: hidden; }
+    .admin-wrapper { width: min(100%, 1200px); }
+    .admin-panel, .control-card { min-width: 0; }
+    .admin-btn { min-height: 42px; touch-action: manipulation; }
+    .form-input { min-height: 42px; width: 100%; }
+    .players-table-wrap, .questions-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .players-table, .questions-table { min-width: 620px; }
+    .admin-nav-tabs { scrollbar-width: none; }
+    .admin-nav-tabs::-webkit-scrollbar { display: none; }
+    .admin-actions { display:flex; flex-wrap:wrap; gap:8px; }
+    .settings-status-badge { min-height: 30px; display:inline-flex; align-items:center; }
+    @media (max-width: 600px) {
+      body { padding: 8px; }
+      .admin-wrapper { gap: 10px; }
+      .admin-header { padding: 12px; }
+      .admin-title { font-size: clamp(16px, 5vw, 20px); }
+      .admin-grid-2 { grid-template-columns: 1fr; }
+      .admin-panel { padding: 12px; }
+      .control-card { padding: 12px; }
+      .btn-group .admin-btn { flex: 1 1 calc(50% - 8px); justify-content:center; }
+      .nav-tab-btn { padding: 9px 12px; }
+    }
+    @media (max-width: 360px) {
+      body { padding: 5px; }
+      .btn-group .admin-btn { flex-basis: 100%; }
+      .metrics-bar-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
   </style>
 </head>
 <body>
@@ -487,9 +518,16 @@
           body: JSON.stringify({ type, payload })
         });
         const data = await res.json();
+        if (!res.ok || !data.success) {
+          appendActivityItem('error', 'النظام', data.error || 'فشل تنفيذ الأمر');
+        } else {
+          appendActivityItem('system', 'التحكم', 'تم تنفيذ: ' + type);
+        }
         return data;
       } catch (err) {
         console.error('Command failed:', err);
+        appendActivityItem('error', 'النظام', 'تعذر الاتصال بالخادم');
+        return { success: false, error: err.message };
       }
     }
 
@@ -606,7 +644,8 @@
     async function loadQuestionsTable() {
       try {
         const res = await fetch('/api/questions');
-        const list = await res.json();
+        const response = await res.json();
+        const list = Array.isArray(response) ? response : (response.questions || []);
         const tbody = document.getElementById('questions-table-body');
         if (!tbody || !Array.isArray(list)) return;
 
