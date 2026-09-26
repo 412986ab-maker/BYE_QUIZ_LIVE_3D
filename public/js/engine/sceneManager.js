@@ -181,6 +181,9 @@ class SceneManager {
       case 'SEATS':
         this.renderRegistrationScene();
         break;
+      case 'PREPARING':
+        this.renderPreparationScene();
+        break;
       case 'COUNTDOWN':
       case 'PARTICIPANTS':
         this.renderParticipantsScene();
