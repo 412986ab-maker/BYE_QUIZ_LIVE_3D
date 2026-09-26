@@ -230,6 +230,19 @@
       margin-left: 8px;
     }
   
+    .tiktok-topbar{background:linear-gradient(135deg,rgba(5,18,32,.98),rgba(10,31,48,.92));border:2px solid rgba(0,242,254,.42);border-radius:18px;padding:14px 16px;box-shadow:0 0 24px rgba(0,242,254,.10)}
+    .tiktok-topbar-main{display:grid;grid-template-columns:minmax(180px,1fr) minmax(220px,1.2fr) minmax(300px,1.4fr);align-items:end;gap:14px}
+    .tiktok-topbar-label{display:flex;align-items:center;gap:10px}
+    .tiktok-topbar-label strong{display:block;font-size:17px;color:#fff}
+    .tiktok-topbar-label small{display:block;color:#94a3b8;font-size:11px;margin-top:3px}
+    .tiktok-live-dot{width:11px;height:11px;border-radius:50%;background:#ef4444;box-shadow:0 0 12px rgba(239,68,68,.65);flex:none}
+    .tiktok-topbar-field{display:flex;flex-direction:column;gap:5px}
+    .tiktok-topbar-field label{font-size:11px;font-weight:800;color:#67e8f9}
+    .tiktok-topbar-field .form-input{font-size:16px;font-weight:900;letter-spacing:.3px;text-align:left;direction:ltr;border-color:rgba(0,242,254,.45);box-shadow:inset 0 0 14px rgba(0,242,254,.05)}
+    .tiktok-topbar-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .tiktok-topbar-actions .admin-btn{flex:1;justify-content:center}
+    .tiktok-topbar-status{margin-top:10px;padding:8px 10px;border-radius:9px;background:rgba(0,0,0,.22);color:#94a3b8;font-size:11px}
+    @media(max-width:700px){.tiktok-topbar-main{grid-template-columns:1fr}.tiktok-topbar-actions .admin-btn{min-width:0}.tiktok-topbar-field .form-input{font-size:18px}}
     /* Responsive admin UI */
     html, body { min-width: 0; }
     body { min-height: 100dvh; overflow-x: hidden; }
@@ -281,6 +294,29 @@
         <span id="conn-msg">جارٍ التحقق من البث المباشر...</span>
       </div>
     </header>
+
+    <!-- TikTok LIVE — always visible at the top of the admin dashboard -->
+    <section class="tiktok-topbar" aria-label="TikTok LIVE connection">
+      <div class="tiktok-topbar-main">
+        <div class="tiktok-topbar-label">
+          <span class="tiktok-live-dot"></span>
+          <div>
+            <strong>TikTok LIVE</strong>
+            <small>اسم حساب البث الذي تريد الاتصال به</small>
+          </div>
+        </div>
+        <div class="tiktok-topbar-field">
+          <label for="tiktok-username-top">اسم المستخدم</label>
+          <input id="tiktok-username-top" class="form-input" type="text" value=".capuscom" placeholder=".capuscom" autocomplete="off" spellcheck="false" />
+        </div>
+        <div class="tiktok-topbar-actions">
+          <button class="admin-btn btn-primary" type="button" onclick="connectTikTokFromTop()">اتصال بالبث</button>
+          <button class="admin-btn" type="button" onclick="reconnectTikTok()">إعادة الاتصال</button>
+          <button class="admin-btn btn-danger" type="button" onclick="disconnectTikTok()">فصل الاتصال</button>
+        </div>
+      </div>
+      <div class="tiktok-topbar-status" id="tiktok-top-status">الحساب: <b>.capuscom</b> — غير متصل</div>
+    </section>
 
     <!-- Navigation Tabs -->
     <nav class="admin-nav-tabs">
@@ -761,9 +797,10 @@
     const TIKTOK_USERNAME_STORAGE_KEY = 'bye_quiz_tiktok_username';
 
     function getTikTokUsername() {
-      const input = document.getElementById('tiktok-username');
+      const top = document.getElementById('tiktok-username-top');
+      const legacy = document.getElementById('tiktok-username');
       const saved = localStorage.getItem(TIKTOK_USERNAME_STORAGE_KEY);
-      const value = (input?.value || saved || '.capuscom').trim();
+      const value = (top?.value || legacy?.value || saved || '.capuscom').trim();
       return value || '.capuscom';
     }
 
@@ -772,7 +809,18 @@
       if (!clean) return;
       localStorage.setItem(TIKTOK_USERNAME_STORAGE_KEY, clean);
       const input = document.getElementById('tiktok-username');
+      const top = document.getElementById('tiktok-username-top');
       if (input) input.value = clean;
+      if (top) top.value = clean;
+      const status = document.getElementById('tiktok-top-status');
+      if (status) status.innerHTML = 'الحساب: <b>' + clean + '</b> — ' + (status.textContent.includes('متصل') ? 'متصل' : 'غير متصل');
+    }
+
+    async function connectTikTokFromTop() {
+      const top = document.getElementById('tiktok-username-top');
+      const username = (top?.value || '.capuscom').trim();
+      rememberTikTokUsername(username);
+      await connectTikTok();
     }
 
     async function connectTikTok() {
@@ -904,15 +952,20 @@
       const msg = document.getElementById('conn-msg');
       if (!ind) return;
 
+      const topStatus = document.getElementById('tiktok-top-status');
+      const shownUser = data.username || getTikTokUsername();
       if (data.status === 'CONNECTED') {
         ind.classList.add('active');
-        if (msg) msg.textContent = 'متصل بالبث المباشر: @' + (data.username || '');
+        if (msg) msg.textContent = 'متصل بالبث المباشر: @' + shownUser;
+        if (topStatus) topStatus.innerHTML = 'الحساب: <b>' + shownUser + '</b> — <strong style="color:#10b981">متصل بالبث</strong>';
       } else if (data.status === 'CONNECTING' || data.status === 'RECONNECTING') {
         ind.classList.remove('active');
         if (msg) msg.textContent = 'جارٍ الاتصال بالبث المباشر...';
+        if (topStatus) topStatus.innerHTML = 'الحساب: <b>' + shownUser + '</b> — <strong style="color:#f59e0b">جارٍ الاتصال...</strong>';
       } else {
         ind.classList.remove('active');
         if (msg) msg.textContent = 'غير متصل ' + (data.lastError ? `(${data.lastError})` : '');
+        if (topStatus) topStatus.innerHTML = 'الحساب: <b>' + shownUser + '</b> — <span>غير متصل</span>';
       }
     }
 
