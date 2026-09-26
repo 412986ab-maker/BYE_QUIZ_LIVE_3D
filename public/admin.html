@@ -6,13 +6,28 @@
   <title>BYE QUIZ LIVE - مركز تحكم الإدارة الشامل</title>
   <link rel="stylesheet" href="/css/style.css" />
   <style>
-    html, body {
+    /* ADMIN PAGE OVERRIDE: style.css is optimized for the game viewport and
+       otherwise applies overflow:hidden + 100dvh + centered flex to body.
+       The admin dashboard must be a normal vertically scrollable document. */
+    html {
+      width: 100%;
+      min-width: 0;
+      min-height: 100%;
+      height: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    body {
       width: 100%;
       max-width: 100%;
       min-width: 0;
+      min-height: 100dvh;
+      height: auto;
       overflow-x: hidden;
-    }
-    body {
+      overflow-y: auto;
+      display: block;
+      justify-content: initial;
+      align-items: initial;
       background: #090d16;
       color: #f8fafc;
       font-family: 'Tajawal', system-ui, sans-serif;
@@ -275,9 +290,9 @@
       .tiktok-topbar-field .form-input{font-size:18px}
       .players-table,.questions-table{min-width:560px}
     }
-    /* Responsive admin UI */
-    html, body { min-width: 0; }
-    body { min-height: 100dvh; overflow-x: hidden; }
+    /* Final admin viewport rules: always allow vertical scrolling on phones. */
+    html { min-width:0; min-height:100%; height:auto; overflow-x:hidden; overflow-y:auto; }
+    body { min-width:0; min-height:100dvh; height:auto; overflow-x:hidden; overflow-y:auto; display:block; }
     .admin-wrapper { width: min(100%, 1200px); }
     .admin-panel, .control-card { min-width: 0; }
     .admin-btn { min-height: 42px; touch-action: manipulation; }
