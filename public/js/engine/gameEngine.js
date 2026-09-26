@@ -51,6 +51,21 @@ class GameEngine {
     this.scenes.render("WAITING");
   }
 
+  applyAuthoritativeSettings(settings = {}) {
+    const target = Number(settings.targetParticipants);
+    const duration = Number(settings.questionDuration);
+    const participantEl = document.getElementById("stat-participants");
+    const timerEl = document.getElementById("timer-text");
+    if (participantEl) {
+      const count = this.participants?.drawPool?.length ?? this.participants?.participants?.length ?? 0;
+      participantEl.textContent = String(count);
+    }
+    if (timerEl && Number.isFinite(duration) && duration > 0) {
+      timerEl.textContent = String(duration);
+    }
+    document.documentElement.style.setProperty("--bye-target-participants", Number.isFinite(target) ? String(target) : "36");
+  }
+
   updateLiveIndicator(status) {
     const liveTag = document.getElementById("live-status-pill");
     if (!liveTag) return;
@@ -94,7 +109,12 @@ class GameEngine {
     // LIVE status indicator and initial snapshot state
     if (type === "INIT_SNAPSHOT" && payload) {
       if (payload.tiktok) this.updateLiveIndicator(payload.tiktok.status);
-      if (payload.settings) this.state.set("settings", { ...this.state.get("settings"), ...payload.settings });
+      if (payload.settings) {
+        const mergedSettings = { ...this.state.get("settings"), ...payload.settings };
+        this.state.set("settings", mergedSettings);
+        window.dispatchEvent(new CustomEvent("byequiz:settings", { detail: mergedSettings }));
+        this.applyAuthoritativeSettings(mergedSettings);
+      }
       if (payload.engagement) {
         const eng = { ...this.state.get("engagement"), ...payload.engagement };
         this.state.set("engagement", eng);
