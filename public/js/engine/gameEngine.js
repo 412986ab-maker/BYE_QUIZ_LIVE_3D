@@ -268,7 +268,10 @@ class GameEngine {
 
       case "SETTINGS_UPDATED": {
         if (payload) {
-          this.state.set("settings", { ...this.state.get("settings"), ...payload });
+          const mergedSettings = { ...this.state.get("settings"), ...payload };
+          this.state.set("settings", mergedSettings);
+          window.dispatchEvent(new CustomEvent("byequiz:settings", { detail: mergedSettings }));
+          this.applyAuthoritativeSettings(mergedSettings);
         }
         break;
       }
