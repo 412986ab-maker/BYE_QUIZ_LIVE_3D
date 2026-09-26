@@ -443,8 +443,18 @@
 
         <form id="form-game-settings" onsubmit="handleSaveSettings(event)" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
           <div class="form-group">
-            <label class="form-label">الحد الأقصى للمقاعد في الجولة (Target Participants)</label>
-            <input type="number" id="setting-target-participants" class="form-input" min="1" max="100" value="36" required />
+            <label class="form-label">عدد المشاركين في الجولة (من 18 إلى 100 أو مفتوح)</label>
+            <select id="setting-target-participants" class="form-input" required aria-label="عدد المشاركين المستهدف">
+              <option value="18">18 مشارك</option>
+              <option value="24">24 مشارك</option>
+              <option value="36">36 مشارك</option>
+              <option value="48">48 مشارك</option>
+              <option value="60">60 مشارك</option>
+              <option value="72">72 مشارك</option>
+              <option value="84">84 مشارك</option>
+              <option value="100">100 مشارك</option>
+              <option value="0">مفتوح — بدون حد</option>
+            </select>
           </div>
 
           <div class="form-group">
