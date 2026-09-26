@@ -108,13 +108,13 @@
             <circle class="timer-circle-bg" cx="35" cy="35" r="30" />
             <circle class="timer-circle-bar" id="timer-bar" cx="35" cy="35" r="30" />
           </svg>
-          <span class="timer-text" id="timer-text">15</span>
+          <span class="timer-text" id="timer-text">0</span>
         </div>
 
         <!-- Stats Pill -->
         <div class="top-stats">
           <div class="stat-pill">
-            <div class="num" id="val-round">ROUND 01</div>
+            <div class="num" id="val-round">ROUND 00</div>
           </div>
           <div class="stat-pill">
             <div class="num" id="stat-participants">0</div>
@@ -252,7 +252,16 @@
       }
     });
 
-    window.addEventListener('appinstalled', () => {
+    // Keep the HUD authoritative: values come from the server snapshot/events, never hard-coded defaults.
+  window.addEventListener('byequiz:settings', (event) => {
+    const settings = event.detail || {};
+    const timer = document.getElementById('timer-text');
+    if (timer && Number.isFinite(Number(settings.questionDuration))) {
+      timer.textContent = String(Number(settings.questionDuration));
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
       const installBtn = document.getElementById('pwa-install-btn');
       if (installBtn) installBtn.style.display = 'none';
     });
