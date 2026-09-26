@@ -290,6 +290,44 @@
       .tiktok-topbar-field .form-input{font-size:18px}
       .players-table,.questions-table{min-width:560px}
     }
+    /* MOBILE-FIRST ADMIN LAYOUT
+       The browser may report a wider CSS viewport (for example Android Desktop Site).
+       Use a generous breakpoint so the dashboard never becomes a clipped desktop canvas. */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { max-width: 100%; overflow-x: hidden !important; }
+    .admin-wrapper { width: 100%; max-width: 1200px; min-width: 0; }
+    .admin-header, .tiktok-topbar, .admin-nav-tabs, .admin-panel { max-width: 100%; min-width: 0; }
+    .admin-grid-2 { min-width: 0; }
+    .control-card { min-width: 0; overflow: hidden; }
+    .btn-group, .admin-actions { min-width: 0; }
+    .btn-group .admin-btn, .admin-actions .admin-btn { min-width: 0; max-width: 100%; }
+    .card-title, .form-label, .tiktok-topbar-label, .tiktok-topbar-status { min-width: 0; overflow-wrap: anywhere; }
+
+    @media (max-width: 1100px) {
+      body { padding: 6px; }
+      .admin-wrapper { width: 100%; max-width: none; gap: 8px; }
+      .admin-header { padding: 10px; gap: 8px; }
+      .admin-title { font-size: 16px; }
+      .conn-status-pill { width: 100%; justify-content: center; }
+      .tiktok-topbar { padding: 10px; }
+      .tiktok-topbar-main { grid-template-columns: 1fr; gap: 9px; }
+      .tiktok-topbar-actions { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
+      .tiktok-topbar-actions .admin-btn { width: 100%; min-width: 0; }
+      .admin-nav-tabs { width: 100%; overflow-x: auto; flex-wrap: nowrap; }
+      .admin-grid-2 { grid-template-columns: 1fr !important; gap: 8px; }
+      .metrics-bar-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 6px; }
+      .admin-panel { padding: 10px; }
+      .control-card { padding: 10px; }
+      .btn-group .admin-btn { flex: 1 1 calc(50% - 4px); }
+      .form-input { width: 100%; max-width: 100%; }
+    }
+
+    @media (max-width: 600px) {
+      .tiktok-topbar-actions { grid-template-columns: 1fr; }
+      .btn-group .admin-btn, .admin-actions .admin-btn { flex: 1 1 100%; width: 100%; }
+      .metrics-bar-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+
     /* Final admin viewport rules: always allow vertical scrolling on phones. */
     html { min-width:0; min-height:100%; height:auto; overflow-x:hidden; overflow-y:auto; }
     body { min-width:0; min-height:100dvh; height:auto; overflow-x:hidden; overflow-y:auto; display:block; }
