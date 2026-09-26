@@ -137,6 +137,33 @@ class GameEngine {
     }
 
     switch (type) {
+      // Automatic participant collection / preparation lifecycle
+      case "COLLECTION_STARTED":
+      case "COLLECTION_TICK": {
+        if (type === "COLLECTION_STARTED" || type === "COLLECTION_TICK") {
+          const p = payload || {};
+          this.state.set("collection", p);
+          this.events.emit("collection:update", p);
+          if (this.scenes.currentScene !== "REGISTRATION") this.scenes.transitionTo("REGISTRATION", p);
+        }
+        break;
+      }
+
+      case "COLLECTION_CLOSED": {
+        this.state.set("collection", payload || {});
+        this.events.emit("collection:closed", payload || {});
+        break;
+      }
+
+      case "QUESTION_PREPARING":
+      case "PREPARATION_TICK": {
+        const p = payload || {};
+        this.state.set("preparation", p);
+        this.events.emit("preparation:update", p);
+        if (this.scenes.currentScene !== "PREPARING") this.scenes.transitionTo("PREPARING", p);
+        break;
+      }
+
       // 1. Live Chat / Answers
       case "CHAT": {
         const sender = user || payload;
