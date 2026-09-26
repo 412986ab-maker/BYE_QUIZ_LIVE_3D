@@ -1,0 +1,15 @@
+{
+  "targetParticipants": 24,
+  "questionDuration": 18,
+  "questionSelectionMode": "RANDOM",
+  "autoMode": false,
+  "autoTransition": true,
+  "autoNextRound": false,
+  "excludePreviousWinner": true,
+  "engagementEnabled": true,
+  "engagementSound": true,
+  "engagementIntensity": "HIGH",
+  "giftPointsRate": 5,
+  "aggregationEnabled": false,
+  "aggregationWindow": 600
+}

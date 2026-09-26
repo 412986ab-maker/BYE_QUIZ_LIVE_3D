@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BYE QUIZ LIVE - مركز تحكم الإدارة الشامل</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      background: #090d16;
+      color: #f8fafc;
+      font-family: 'Tajawal', system-ui, sans-serif;
+      margin: 0;
+      padding: 16px;
+    }
+    .admin-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .admin-header {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .admin-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--cyber-cyan);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .conn-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .conn-indicator-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+    .conn-indicator-dot.active {
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+    }
+    .admin-nav-tabs {
+      display: flex;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 6px;
+      border-radius: 12px;
+      border: 1px solid var(--border-glass);
+      overflow-x: auto;
+    }
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 8px 18px;
+      font-weight: 800;
+      font-size: 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nav-tab-btn.active {
+      background: var(--cyber-cyan);
+      color: #030712;
+      box-shadow: 0 2px 10px rgba(0, 242, 254, 0.3);
+    }
+    .admin-panel {
+      display: none;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 20px;
+      gap: 16px;
+    }
+    .admin-panel.active {
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .control-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--luxury-gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 8px;
+    }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .admin-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f8fafc;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .admin-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--cyber-cyan);
+    }
+    .admin-btn.btn-primary {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: none;
+      color: white;
+    }
+    .admin-btn.btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      border: none;
+      color: white;
+    }
+    .admin-btn.btn-warning {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border: none;
+      color: #030712;
+    }
+    .metrics-bar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .metric-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+    .metric-val {
+      font-family: 'Orbitron', monospace;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--cyber-cyan);
+    }
+    .metric-lbl {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+    .form-input {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 13px;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--cyber-cyan);
+    }
+    .players-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .players-table th, .players-table td {
+      padding: 8px 12px;
+      text-align: right;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .players-table th {
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text-dim);
+      font-weight: 800;
+    }
+    .player-avatar-mini {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-wrapper">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="admin-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        مركز تحكم BYE QUIZ LIVE
+      </div>
+      
+      <div class="conn-status-pill">
+        <div class="conn-indicator-dot" id="tiktok-indicator"></div>
+        <span id="conn-msg">جارٍ التحقق من البث المباشر...</span>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="admin-nav-tabs">
+      <button class="nav-tab-btn active" onclick="showTab('tab-control')">التحكم المباشر</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-players')">المتسابقون والمقاعد</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-questions')">بنك الأسئلة</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-settings')">إعدادات اللعبة</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-simulator')">محاكي التطوير (Dev/Test)</button>
+    </nav>
+
+    <!-- TAB 1: Real-Time Live Control -->
+    <main class="admin-panel active" id="tab-control">
+      <!-- 5 Real-Time Metrics -->
+      <div class="metrics-bar-grid">
+        <div class="metric-box">
+          <div class="metric-val" id="m-viewers">0</div>
+          <div class="metric-lbl">المشاهدون</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-likes">0</div>
+          <div class="metric-lbl">الإعجابات</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-shares">0</div>
+          <div class="metric-lbl">المشاركات</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-diamonds">0</div>
+          <div class="metric-lbl">الماس</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-comments">0</div>
+          <div class="metric-lbl">التعليقات</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val" id="m-followers">0</div>
+          <div class="metric-lbl">المتابعون</div>
+        </div>
+      </div>
+
+      <div class="admin-grid-2">
+        <!-- Event & Round Controls -->
+        <div class="control-card">
+          <div class="card-title">التحكم في الفعالية والجولة</div>
+          <div class="btn-group">
+            <button class="admin-btn btn-primary" onclick="sendCmd('START_GAME')">بدء الفعالية</button>
+            <button class="admin-btn btn-warning" onclick="sendCmd('PAUSE_GAME')">إيقاف مؤقت</button>
+            <button class="admin-btn" onclick="sendCmd('RESUME_GAME')">استئناف اللعب</button>
+            <button class="admin-btn" onclick="sendCmd('NEXT_ROUND')">جولة جديدة</button>
+            <button class="admin-btn btn-danger" onclick="if(confirm('إعادة ضبط كافة البيانات؟')) sendCmd('RESET_ALL')">إعادة ضبط شاملة</button>
+          </div>
+        </div>
+
+        <!-- Stage & Screen Transitions (Instant Realtime Broadcast) -->
+        <div class="control-card">
+          <div class="card-title">الانتقال بين الشاشات والمراحل (Realtime)</div>
+          <div class="btn-group">
+            <button class="admin-btn" onclick="sendCmd('SET_SCENE', { scene: 'WAITING' })">واجهة الترحيب</button>
+            <button class="admin-btn" onclick="sendCmd('SET_SCENE', { scene: 'REGISTRATION' })">شاشة المقاعد والتسجيل</button>
+            <button class="admin-btn" onclick="sendCmd('SET_SCENE', { scene: 'PARTICIPANTS' })">العد التنازلي للسؤال</button>
+            <button class="admin-btn" onclick="sendCmd('SET_SCENE', { scene: 'QUESTION' })">شاشة السؤال</button>
+            <button class="admin-btn" onclick="sendCmd('SET_SCENE', { scene: 'ANSWERS' })">كشف الإجابة الصحيحة</button>
+            <button class="admin-btn" onclick="sendCmd('SET_SCENE', { scene: 'DRAW' })">سحب الحظ (Roulette)</button>
+            <button class="admin-btn" onclick="sendCmd('SET_SCENE', { scene: 'WINNER' })">تتويج البطل</button>
+            <button class="admin-btn" onclick="sendCmd('SET_SCENE', { scene: 'PODIUM' })">منصة الصدارة الكبرى</button>
+          </div>
+        </div>
+
+        <!-- Question & Answer Controls -->
+        <div class="control-card">
+          <div class="card-title">التحكم في الأسئلة والمؤقت</div>
+          <div class="btn-group">
+            <button class="admin-btn btn-primary" onclick="sendCmd('START_QUESTION')">طرح السؤال التالي</button>
+            <button class="admin-btn btn-warning" onclick="sendCmd('END_QUESTION')">إنهاء وقت السؤال</button>
+            <button class="admin-btn" onclick="sendCmd('START_DRAW')">بدء سحب الحظ</button>
+          </div>
+        </div>
+
+        <!-- Live Activity Stream Feed -->
+        <div class="control-card">
+          <div class="card-title">تيار الأنشطة المباشرة (Live Stream Feed)</div>
+          <div class="activity-feed-container" id="admin-activity-feed">
+            <div class="activity-item type-join">
+              <span><b>النظام:</b> بدأ مركز التحكم بالاستماع لأحداث البث المباشر</span>
+              <span style="color:var(--text-dim); font-size:10px;">الآن</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- TAB 2: Players & Seats Management -->
+    <section class="admin-panel" id="tab-players">
+      <div class="control-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="card-title">قائمة المتسابقين المسجلين في الجولة</div>
+          <button class="admin-btn" onclick="loadParticipantsTable()">تحديث القائمة</button>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="players-table">
+            <thead>
+              <tr>
+                <th>المقعد</th>
+                <th>المتسابق</th>
+                <th>النقاط</th>
+                <th>المحاولات</th>
+                <th>الحالة</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="players-table-body">
+              <tr>
+                <td colspan="6" style="text-align:center; color:var(--text-dim);">لا يوجد متسابقون مسجلون حالياً</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Questions Management -->
+    <section class="admin-panel" id="tab-questions">
+      <div class="control-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="card-title">بنك الأسئلة المعتمد</div>
+          <div class="btn-group">
+            <a href="/api/questions/export?format=json" download class="admin-btn">تصدير JSON</a>
+            <a href="/api/questions/export?format=csv" download class="admin-btn">تصدير CSV</a>
+          </div>
+        </div>
+        <div style="overflow-x: auto; max-height: 400px;">
+          <table class="players-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>السؤال</th>
+                <th>التصنيف</th>
+                <th>الإجابة الصحيحة</th>
+                <th>النقاط</th>
+              </tr>
+            </thead>
+            <tbody id="questions-table-body">
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Game Settings (Full Persistence Pipeline) -->
+    <section class="admin-panel" id="tab-settings">
+      <div class="control-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="card-title">إعدادات اللعبة وقواعد المسابقة الدائمة</div>
+          <span class="settings-status-badge saved" id="settings-status-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            محفوظ في السحابة
+          </span>
+        </div>
+
+        <form id="form-game-settings" onsubmit="handleSaveSettings(event)" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+          <div class="form-group">
+            <label class="form-label">الحد الأقصى للمقاعد في الجولة (Target Participants)</label>
+            <input type="number" id="setting-target-participants" class="form-input" min="1" max="100" value="36" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">مدة الإجابة على السؤال بالثواني (Question Duration)</label>
+            <input type="number" id="setting-question-duration" class="form-input" min="5" max="60" value="15" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">الانتقال الآلي بين المراحل (Auto Transition)</label>
+            <select id="setting-auto-mode" class="form-input">
+              <option value="true">مفعل (تلقائي)</option>
+              <option value="false">يدوي (تحكم الإدارة)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">استبعاد الفائز السابق من سحب الجولة التالية</label>
+            <select id="setting-exclude-prev" class="form-input">
+              <option value="true">نعم (لإتاحة الفرصة للجميع)</option>
+              <option value="false">لا</option>
+            </select>
+          </div>
+
+          <div style="grid-column: 1 / -1; margin-top: 8px;">
+            <button type="submit" class="admin-btn btn-primary" id="btn-save-settings" style="padding: 10px 24px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+              <span>حفظ الإعدادات في قاعدة البيانات</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 5: Developer / Test Simulator Mode -->
+    <section class="admin-panel" id="tab-simulator">
+      <div class="control-card">
+        <div class="card-title">محاكي اختبار الأحداث (للمطورين فقط - Developer Mode)</div>
+        <p style="font-size:12px; color:var(--text-dim);">هذه الأدوات مخصصة لاختبار السيناريوهات محلياً دون التأثير على البث الحقيقي:</p>
+        
+        <div class="btn-group">
+          <button class="admin-btn" onclick="simulateUserJoin()">محاكاة انضمام متسابق تجريبي</button>
+          <button class="admin-btn" onclick="simulateLikeEvent()">محاكاة +50 لايك</button>
+          <button class="admin-btn" onclick="simulateShareEvent()">محاكاة مشاركة بث</button>
+          <button class="admin-btn" onclick="simulateGiftEvent('وردة', 5)">محاكاة هدية عادية</button>
+          <button class="admin-btn btn-warning" onclick="simulateGiftEvent('تاج ذهبي أسطوري', 2500)">محاكاة هدية أسطورية</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Tab Switching
+    function showTab(tabId) {
+      document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+      const targetPanel = document.getElementById(tabId);
+      if (targetPanel) targetPanel.classList.add('active');
+      const clickedBtn = Array.from(document.querySelectorAll('.nav-tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (clickedBtn) clickedBtn.classList.add('active');
+
+      if (tabId === 'tab-players') loadParticipantsTable();
+      if (tabId === 'tab-questions') loadQuestionsTable();
+    }
+
+    // Send Admin Command to Server Authoritative Engine
+    async function sendCmd(type, payload = {}) {
+      try {
+        const res = await fetch('/api/command', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type, payload })
+        });
+        const data = await res.json();
+        return data;
+      } catch (err) {
+        console.error('Command failed:', err);
+      }
+    }
+
+    // Activity Feed Helper
+    function appendActivityItem(type, author, text) {
+      const feed = document.getElementById('admin-activity-feed');
+      if (!feed) return;
+      const item = document.createElement('div');
+      item.className = 'activity-item type-' + type;
+      item.innerHTML = `<span><b>${author}:</b> ${text}</span><span style="color:var(--text-dim); font-size:10px;">${new Date().toLocaleTimeString('ar-SA')}</span>`;
+      feed.insertBefore(item, feed.firstChild);
+      while (feed.children.length > 25) {
+        feed.removeChild(feed.lastChild);
+      }
+    }
+
+    // Load & Save Settings
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        if (data.success && data.settings) {
+          const s = data.settings;
+          if (s.targetParticipants !== undefined) document.getElementById('setting-target-participants').value = s.targetParticipants;
+          if (s.questionDuration !== undefined) document.getElementById('setting-question-duration').value = s.questionDuration;
+          if (s.autoMode !== undefined) document.getElementById('setting-auto-mode').value = String(s.autoMode);
+          if (s.excludePreviousWinner !== undefined) document.getElementById('setting-exclude-prev').value = String(s.excludePreviousWinner);
+        }
+      } catch (e) {
+        console.error('Failed to load settings:', e);
+      }
+    }
+
+    async function handleSaveSettings(e) {
+      e.preventDefault();
+      const badge = document.getElementById('settings-status-badge');
+      const btn = document.getElementById('btn-save-settings');
+
+      const payload = {
+        targetParticipants: parseInt(document.getElementById('setting-target-participants').value, 10),
+        questionDuration: parseInt(document.getElementById('setting-question-duration').value, 10),
+        autoMode: document.getElementById('setting-auto-mode').value === 'true',
+        excludePreviousWinner: document.getElementById('setting-exclude-prev').value === 'true'
+      };
+
+      try {
+        btn.disabled = true;
+        const res = await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          badge.className = 'settings-status-badge saved';
+          badge.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> تم الحفظ والتطبيق فوراً`;
+        }
+      } catch (err) {
+        badge.className = 'settings-status-badge';
+        badge.textContent = 'خطأ أثناء الحفظ';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // Load Participants Table
+    async function loadParticipantsTable() {
+      try {
+        const res = await fetch('/api/participants');
+        const data = await res.json();
+        const tbody = document.getElementById('players-table-body');
+        if (!tbody) return;
+
+        if (!data.participants || data.participants.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-dim);">لا يوجد متسابقون مسجلون حالياً</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = data.participants.map((p, idx) => {
+          const name = p.displayName || p.nickname || 'لاعب';
+          const avatar = p.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`;
+          return `
+            <tr>
+              <td><b>#${idx + 1}</b></td>
+              <td>
+                <img src="${avatar}" class="player-avatar-mini" alt="" />
+                <span>${name}</span>
+              </td>
+              <td><span style="font-family:'Orbitron'; font-weight:800; color:var(--cyber-cyan);">${p.score || p.points || 0}</span></td>
+              <td>${p.attemptsLeft !== undefined ? p.attemptsLeft : 3}</td>
+              <td><span style="color:#10b981;">مشارك نشط</span></td>
+              <td>
+                <button class="admin-btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="banUser('${p.id}')">حظر</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (e) {
+        console.error('Failed to load participants:', e);
+      }
+    }
+
+    async function banUser(userId) {
+      if (!confirm('هل أنت متأكد من حظر هذا المتسابق؟')) return;
+      await fetch('/api/participants/ban', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, reason: 'مخالفة قواعد البث' })
+      });
+      loadParticipantsTable();
+    }
+
+    // Load Questions Table
+    async function loadQuestionsTable() {
+      try {
+        const res = await fetch('/api/questions');
+        const list = await res.json();
+        const tbody = document.getElementById('questions-table-body');
+        if (!tbody || !Array.isArray(list)) return;
+
+        tbody.innerHTML = list.slice(0, 50).map((q, idx) => `
+          <tr>
+            <td>${idx + 1}</td>
+            <td>${q.question || q.text}</td>
+            <td><span style="color:var(--cyber-cyan); font-weight:700;">${q.category || 'عام'}</span></td>
+            <td><span style="color:#10b981; font-weight:800;">${q.correctAnswer}</span></td>
+            <td>${q.points || 100}</td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error('Failed to load questions:', e);
+      }
+    }
+
+    // Simulator Helpers
+    function simulateUserJoin() {
+      const names = ['سارة العتيبي', 'محمد القحطاني', 'نورة الشمري', 'أحمد المصري', 'خالد الدوسري'];
+      const name = names[Math.floor(Math.random() * names.length)];
+      const id = 'sim_' + Math.random().toString(36).substring(5);
+      const avatar = 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + encodeURIComponent(name);
+      sendCmd('SIMULATE_EVENT', {
+        type: 'CHAT',
+        data: { id, uniqueId: id, nickname: name, displayName: name, avatar, comment: '!join' }
+      });
+    }
+
+    function simulateLikeEvent() {
+      sendCmd('SIMULATE_EVENT', {
+        type: 'LIKE',
+        data: { likeCount: 50, totalLikeCount: parseInt(document.getElementById('m-likes').textContent || '0', 10) + 50 }
+      });
+    }
+
+    function simulateShareEvent() {
+      sendCmd('SIMULATE_EVENT', {
+        type: 'SHARE',
+        data: { shareCount: 1, totalShareCount: parseInt(document.getElementById('m-shares').textContent || '0', 10) + 1 }
+      });
+    }
+
+    function simulateGiftEvent(giftName, diamonds) {
+      const name = 'داعم تجريبي';
+      const id = 'sim_gift_' + Math.random().toString(36).substring(5);
+      sendCmd('SIMULATE_EVENT', {
+        type: 'GIFT',
+        data: {
+          id,
+          nickname: name,
+          displayName: name,
+          avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + encodeURIComponent(name),
+          giftName,
+          giftCount: 1,
+          diamondCount: diamonds,
+          diamonds
+        }
+      });
+    }
+
+    // SSE Realtime Listener for Admin Dashboard
+    function initAdminSSE() {
+      if (typeof EventSource === 'undefined') return;
+      const sse = new EventSource('/api/events');
+
+      sse.onmessage = (event) => {
+        try {
+          const msg = JSON.parse(event.data);
+          const { type, payload, user } = msg;
+
+          if (type === 'INIT_SNAPSHOT' && payload) {
+            if (payload.tiktok) updateAdminTikTokStatus(payload.tiktok);
+            if (payload.engagement) {
+              const eng = payload.engagement;
+              if (document.getElementById('m-viewers')) document.getElementById('m-viewers').textContent = eng.viewers || eng.viewerCount || 0;
+              if (document.getElementById('m-likes')) document.getElementById('m-likes').textContent = eng.likes || 0;
+              if (document.getElementById('m-shares')) document.getElementById('m-shares').textContent = eng.shares || 0;
+              if (document.getElementById('m-diamonds')) document.getElementById('m-diamonds').textContent = eng.diamonds || 0;
+              if (document.getElementById('m-comments')) document.getElementById('m-comments').textContent = eng.comments || 0;
+              if (document.getElementById('m-followers')) document.getElementById('m-followers').textContent = eng.followers || 0;
+            }
+          } else if (type === 'TIKTOK_STATUS' && payload) {
+            updateAdminTikTokStatus(payload);
+          } else if (type === 'STREAM_START') {
+            updateAdminTikTokStatus({ status: 'CONNECTED', username: payload?.username });
+            appendActivityItem('join', 'بدء البث', 'تم الاتصال بالبث المباشر');
+          } else if (type === 'STREAM_END' || type === 'DISCONNECT') {
+            updateAdminTikTokStatus({ status: 'OFFLINE' });
+            appendActivityItem('join', 'انقطاع البث', 'انتهت جلسة البث');
+          } else if (type === 'CHAT') {
+            const author = user?.displayName || payload?.nickname || 'مشاهد';
+            appendActivityItem('chat', author, payload?.comment || '');
+            const cEl = document.getElementById('m-comments');
+            if (cEl) cEl.textContent = parseInt(cEl.textContent || '0', 10) + 1;
+          } else if (type === 'GIFT') {
+            const author = user?.displayName || payload?.nickname || 'مشاهد';
+            const gName = payload?.giftName || 'هدية';
+            const dCount = payload?.diamonds || ((payload?.diamondCount || 1) * (payload?.giftCount || 1)) || 1;
+            appendActivityItem('gift', author, `أرسل ${gName} (${dCount} ماسة)`);
+            const dEl = document.getElementById('m-diamonds');
+            if (dEl) dEl.textContent = parseInt(dEl.textContent || '0', 10) + dCount;
+          } else if (type === 'LIKE') {
+            const lEl = document.getElementById('m-likes');
+            const newTotal = payload?.totalLikes || payload?.totalLikeCount || (parseInt(lEl ? lEl.textContent : '0', 10) + (payload?.likeCount || 1));
+            if (lEl) lEl.textContent = newTotal;
+          } else if (type === 'SHARE') {
+            const author = user?.displayName || payload?.nickname || 'مشاهد';
+            appendActivityItem('share', author, 'شارك البث المباشر');
+            const sEl = document.getElementById('m-shares');
+            if (sEl) sEl.textContent = parseInt(sEl.textContent || '0', 10) + (payload?.shareCount || 1);
+          } else if (type === 'ROOM_USER' || type === 'VIEWER_UPDATE') {
+            const vCount = payload && (payload.viewerCount !== undefined ? payload.viewerCount : payload.count);
+            if (vCount !== undefined) {
+              const vEl = document.getElementById('m-viewers');
+              if (vEl) vEl.textContent = vCount;
+            }
+          }
+        } catch (e) {
+          console.error('Admin SSE Parse error:', e);
+        }
+      };
+    }
+
+    function updateAdminTikTokStatus(data) {
+      const ind = document.getElementById('tiktok-indicator');
+      const msg = document.getElementById('conn-msg');
+      if (!ind) return;
+
+      if (data.status === 'CONNECTED') {
+        ind.classList.add('active');
+        if (msg) msg.textContent = 'متصل بالبث المباشر: @' + (data.username || '');
+      } else if (data.status === 'CONNECTING' || data.status === 'RECONNECTING') {
+        ind.classList.remove('active');
+        if (msg) msg.textContent = 'جارٍ الاتصال بالبث المباشر...';
+      } else {
+        ind.classList.remove('active');
+        if (msg) msg.textContent = 'غير متصل ' + (data.lastError ? `(${data.lastError})` : '');
+      }
+    }
+
+    // Startup Initialization
+    loadSettings();
+    initAdminSSE();
+  </script>
+</body>
+</html>
