@@ -305,13 +305,37 @@ class GameEngine {
 
       case "GAME_STATE_CHANGED": {
         if (payload && payload.state) {
-          if (payload.state === "PAUSED") {
-            this.round.pauseRound();
-          } else if (payload.state === "QUESTION") {
-            if (payload.currentQuestion) {
-              this.state.set("currentQuestion", payload.currentQuestion);
-              this.scenes.render("QUESTION");
-            }
+          const serverState = payload.state;
+          if (payload.currentQuestion) {
+            this.state.set("currentQuestion", payload.currentQuestion);
+          }
+
+          switch (serverState) {
+            case "LOBBY":
+            case "PLAYER_SELECTION":
+              this.state.set("scene", "REGISTRATION");
+              break;
+            case "PREPARING":
+              this.scenes.transitionTo("PREPARING", payload);
+              break;
+            case "QUESTION":
+            case "ANSWERING":
+              this.scenes.transitionTo("QUESTION", payload);
+              break;
+            case "RESULT":
+              this.scenes.transitionTo("ANSWERS", payload);
+              break;
+            case "WINNER":
+              // The authoritative WINNER event below starts the cinematic draw.
+              break;
+            case "PAUSED":
+              this.round.pauseRound();
+              break;
+            case "ENDED":
+              this.scenes.transitionTo("WAITING", payload);
+              break;
+            default:
+              break;
           }
         }
         break;
@@ -352,15 +376,26 @@ class GameEngine {
         break;
       }
 
+      case "QUESTION_ENDED":
       case "END_QUESTION": {
         this.questions.stopTimer();
-        this.scenes.transitionTo("ANSWERS");
+        this.scenes.transitionTo("ANSWERS", payload || {});
         break;
       }
 
+      case "DRAW_STARTED":
       case "START_DRAW": {
-        this.scenes.transitionTo("DRAW");
-        this.draw.spin(payload ? payload.winnerId : null);
+        this.scenes.transitionTo("DRAW", payload || {});
+        if (type === "START_DRAW") {
+          this.draw.spin(payload ? payload.winnerId : null);
+        }
+        break;
+      }
+
+      case "WINNER": {
+        const winnerId = payload?.winner?.id || payload?.participant?.id || payload?.winnerId || null;
+        this.scenes.transitionTo("DRAW", payload || {});
+        this.draw.spin(winnerId);
         break;
       }
 
@@ -401,6 +436,14 @@ class GameEngine {
         break;
       }
 
+      case "ROUND_STARTED": {
+        this.participants.clearParticipants();
+        this.state.resetRound();
+        this.scenes.transitionTo("REGISTRATION", payload || {});
+        break;
+      }
+
+      case "GAME_RESET":
       case "RESET_ALL": {
         this.participants.clearParticipants();
         this.state.resetAll();
@@ -422,6 +465,7 @@ class GameEngine {
 
 if (typeof window !== "undefined") {
   window.GameEngine = GameEngine;
+  window.gameInstance = window.gameEngine || null;
 }
 if (typeof globalThis !== "undefined") {
   globalThis.GameEngine = GameEngine;
