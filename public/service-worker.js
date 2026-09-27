@@ -7,7 +7,7 @@
  * - Remove all previous BYE QUIZ caches on activation.
  */
 
-const CACHE_NAME = 'byequiz-v3-static';
+const CACHE_NAME = 'byequiz-v4-static';
 
 const STATIC_ASSETS = [
   '/',
