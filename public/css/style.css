@@ -639,25 +639,37 @@ body.webgl-active .studio-volumetric-lights {
 .join-grid-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
-  padding: 8px 4px;
-  max-height: 380px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 5px;
+  padding: 5px 2px;
+  max-height: 330px;
   overflow-y: auto;
+  overflow-x: hidden;
   transform-style: preserve-3d;
+  align-content: start;
+  justify-items: stretch;
+}
+
+.join-grid-container.dense-grid {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+  padding-left: 1px;
+  padding-right: 1px;
 }
 
 .p-slot {
   position: relative;
-  aspect-ratio: 1;
-  background: rgba(15, 23, 42, 0.7);
+  aspect-ratio: 1.28;
+  min-width: 0;
+  min-height: 0;
+  background: rgba(15, 23, 42, 0.62);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border-radius: 9px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 2px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   transform-style: preserve-3d;
@@ -694,7 +706,7 @@ body.webgl-active .studio-volumetric-lights {
 }
 
 .slot-name {
-  font-size: 8.5px;
+  font-size: 7px;
   font-weight: 800;
   white-space: nowrap;
   overflow: hidden;
@@ -1169,48 +1181,165 @@ body.webgl-active .studio-volumetric-lights {
 /* ==========================================================
    CINEMATIC 3D GIFTS & TOASTS
    ========================================================== */
+/* TikTok-style LIVE gift notification: compact, transparent, non-blocking strip. */
 .cinematic-gift-card {
   position: absolute;
-  top: 35%;
+  top: 24%;
   left: 50%;
+  width: min(420px, calc(100% - 28px));
+  min-height: 54px;
   transform: translate(-50%, -50%);
-  z-index: 50;
-  background: rgba(15, 23, 42, 0.92);
-  border: 2px solid var(--luxury-gold);
-  border-radius: 20px;
-  padding: 16px 20px;
+  z-index: 80;
+  background: linear-gradient(90deg, rgba(3, 7, 18, 0.38), rgba(15, 23, 42, 0.62), rgba(3, 7, 18, 0.34));
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-left: 3px solid var(--luxury-gold);
+  border-radius: 14px;
+  padding: 6px 10px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 215, 0, 0.35);
-  backdrop-filter: blur(20px);
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 215, 0, 0.10);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cinematic-gift-card.tier-epic {
+  border-left-color: var(--cyber-cyan);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 22px rgba(0, 242, 254, 0.12);
+}
+
+.cinematic-gift-card.tier-premium {
+  border-left-color: var(--cyber-cyan);
+}
+
+.cinematic-gift-card.tier-common {
+  border-left-color: rgba(255, 255, 255, 0.45);
+}
+
+.gift-card-ambient-aura {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 12% 50%, rgba(255, 215, 0, 0.14), transparent 34%);
+}
+
+.gift-card-body {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gift-visual-core {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gift-visual-core .gift-artifact-wrapper {
+  transform: scale(0.72);
+  transform-origin: center;
+}
+
+.gift-details-core {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gift-sender-row {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .gift-avatar-img {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
   border-radius: 50%;
-  border: 2px solid var(--luxury-gold);
+  border: 1px solid var(--luxury-gold);
+  object-fit: cover;
+}
+
+.gift-user-meta {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .gift-sender-title {
-  font-size: 13px;
+  min-width: 0;
+  max-width: 145px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
   font-weight: 900;
   color: #ffffff;
 }
 
-.gift-item-title {
-  font-size: 14px;
+.gift-rank-pill {
+  font-size: 7px;
   font-weight: 800;
+  color: rgba(255,255,255,0.55);
+  white-space: nowrap;
+}
+
+.gift-name-row {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.gift-action-verb {
+  font-size: 9px;
+  color: rgba(255,255,255,0.68);
+}
+
+.gift-item-title {
+  min-width: 0;
+  max-width: 125px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 900;
   color: var(--luxury-gold);
 }
 
-.gift-diamonds-pill {
+.gift-repeat-pill {
   font-family: var(--font-hud);
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 900;
+  color: #ffffff;
+  padding: 0 4px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.10);
+}
+
+.gift-diamonds-pill {
+  margin-right: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-hud);
+  font-size: 10px;
   font-weight: 900;
   color: var(--cyber-cyan);
-  margin-right: 6px;
 }
 
 /* ==========================================================
