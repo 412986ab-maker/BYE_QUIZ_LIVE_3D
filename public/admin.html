@@ -788,6 +788,85 @@
       </div>
     </section>
 
+
+    <!-- TAB 5: Special Entrances -->
+    <section class="admin-panel" id="tab-special-entrances">
+      <div class="control-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div>
+            <div class="card-title">الدخول المميز — VIP Entrance</div>
+            <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">عند انضمام الحساب المحدد إلى البث يظهر له دخول سينمائي خاص بدون إيقاف السؤال أو تغطية الشاشة.</div>
+          </div>
+          <button class="admin-btn" type="button" onclick="resetSpecialEntranceForm()">حساب جديد</button>
+        </div>
+
+        <form id="special-entrance-form" onsubmit="saveSpecialEntrance(event)" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:16px;">
+          <input type="hidden" id="special-id" />
+          <div class="form-group">
+            <label class="form-label">اسم حساب TikTok</label>
+            <input id="special-unique-id" class="form-input" required maxlength="64" placeholder="username" autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">الاسم الظاهر</label>
+            <input id="special-display-name" class="form-input" maxlength="64" placeholder="اسم اللاعب المميز" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">المستوى</label>
+            <select id="special-tier" class="form-input">
+              <option value="VIP">VIP</option>
+              <option value="LEGEND">LEGEND</option>
+              <option value="DIAMOND">DIAMOND</option>
+              <option value="SPECIAL">SPECIAL</option>
+              <option value="CUSTOM">CUSTOM</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">نوع التأثير</label>
+            <select id="special-effect" class="form-input">
+              <option value="portal">Portal</option>
+              <option value="gold">Gold</option>
+              <option value="neon">Neon</option>
+              <option value="lightning">Lightning</option>
+              <option value="cinematic">Cinematic</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">مدة التأثير (ms)</label>
+            <input id="special-duration" class="form-input" type="number" min="1500" max="8000" step="100" value="3200" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">عنوان الدخول</label>
+            <input id="special-title" class="form-input" maxlength="48" value="SPECIAL ENTRANCE" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">النص الفرعي</label>
+            <input id="special-subtitle" class="form-input" maxlength="80" value="دخول مميز" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">رابط الصورة (اختياري)</label>
+            <input id="special-image" class="form-input" maxlength="500" placeholder="https://..." inputmode="url" />
+          </div>
+          <div class="form-group" style="display:flex;align-items:center;gap:8px;">
+            <input id="special-enabled" type="checkbox" checked style="width:18px;height:18px;" />
+            <label class="form-label" for="special-enabled" style="margin:0;">تفعيل الدخول المميز لهذا الحساب</label>
+          </div>
+          <div style="grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="admin-btn btn-primary" type="submit" id="special-save-btn">حفظ الحساب المميز</button>
+            <button class="admin-btn" type="button" onclick="testSpecialEntrance()">تجربة التأثير الآن</button>
+            <span id="special-form-status" style="align-self:center;color:var(--text-dim);font-size:11px;"></span>
+          </div>
+        </form>
+      </div>
+
+      <div class="control-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div class="card-title">الحسابات المميزة المحفوظة</div>
+          <button class="admin-btn" type="button" onclick="loadSpecialEntrances()">تحديث</button>
+        </div>
+        <div id="special-entrances-list" style="display:grid;gap:8px;margin-top:12px;"></div>
+      </div>
+    </section>
+
     <!-- TAB 5: Developer / Test Simulator Mode -->
     <section class="admin-panel" id="tab-simulator">
       <div class="control-card">
@@ -987,6 +1066,146 @@
       } catch (e) {
         console.error('Failed to load questions:', e);
       }
+    }
+
+    // Special Entrance Management
+    let specialEntranceCache = [];
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    }
+
+    async function loadSpecialEntrances() {
+      const listEl = document.getElementById('special-entrances-list');
+      if (!listEl) return;
+      try {
+        const res = await fetch('/api/special-entrances');
+        const data = await res.json();
+        specialEntranceCache = Array.isArray(data.specialEntrances) ? data.specialEntrances : [];
+        if (!specialEntranceCache.length) {
+          listEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-dim);border:1px dashed rgba(255,255,255,.12);border-radius:12px;">لا توجد حسابات مميزة بعد.</div>';
+          return;
+        }
+        listEl.innerHTML = specialEntranceCache.map(item => {
+          const state = item.enabled ? 'مفعل' : 'متوقف';
+          const color = item.enabled ? '#10b981' : '#f87171';
+          return '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.025);">' +
+            '<div style="min-width:110px;flex:1;"><b style="color:#fff;">@' + escapeHtml(item.uniqueId) + '</b><div style="font-size:10px;color:var(--text-dim);">' + escapeHtml(item.displayName || item.uniqueId) + '</div></div>' +
+            '<span style="font-size:9px;font-weight:900;color:var(--cyber-cyan);">' + escapeHtml(item.tier) + '</span>' +
+            '<span style="font-size:9px;color:' + color + ';">' + state + '</span>' +
+            '<button class="admin-btn" style="padding:5px 9px;font-size:10px;" onclick="editSpecialEntrance(\'' + escapeHtml(item.id) + '\')">تعديل</button>' +
+            '<button class="admin-btn" style="padding:5px 9px;font-size:10px;" onclick="testSpecialEntrance(\'' + escapeHtml(item.id) + '\')">تجربة</button>' +
+            '<button class="admin-btn btn-danger" style="padding:5px 9px;font-size:10px;" onclick="deleteSpecialEntrance(\'' + escapeHtml(item.id) + '\')">حذف</button>' +
+            '</div>';
+        }).join('');
+      } catch (err) {
+        listEl.innerHTML = '<div style="color:#f87171;font-size:11px;">تعذر تحميل الحسابات المميزة.</div>';
+      }
+    }
+
+    function resetSpecialEntranceForm() {
+      const form = document.getElementById('special-entrance-form');
+      if (form) form.reset();
+      document.getElementById('special-id').value = '';
+      document.getElementById('special-duration').value = '3200';
+      document.getElementById('special-title').value = 'SPECIAL ENTRANCE';
+      document.getElementById('special-subtitle').value = 'دخول مميز';
+      document.getElementById('special-enabled').checked = true;
+      document.getElementById('special-form-status').textContent = '';
+      document.getElementById('special-save-btn').textContent = 'حفظ الحساب المميز';
+    }
+
+    function editSpecialEntrance(id) {
+      const item = specialEntranceCache.find(x => String(x.id) === String(id));
+      if (!item) return;
+      document.getElementById('special-id').value = item.id || '';
+      document.getElementById('special-unique-id').value = item.uniqueId || '';
+      document.getElementById('special-display-name').value = item.displayName || '';
+      document.getElementById('special-tier').value = item.tier || 'VIP';
+      document.getElementById('special-effect').value = item.effect || 'portal';
+      document.getElementById('special-duration').value = item.duration || 3200;
+      document.getElementById('special-title').value = item.title || 'SPECIAL ENTRANCE';
+      document.getElementById('special-subtitle').value = item.subtitle || 'دخول مميز';
+      document.getElementById('special-image').value = item.imageUrl || '';
+      document.getElementById('special-enabled').checked = item.enabled !== false;
+      document.getElementById('special-save-btn').textContent = 'تحديث الحساب المميز';
+      document.getElementById('special-form-status').textContent = 'وضع التعديل: @' + item.uniqueId;
+      document.getElementById('special-unique-id').focus();
+    }
+
+    async function saveSpecialEntrance(event) {
+      event.preventDefault();
+      const id = document.getElementById('special-id').value.trim();
+      const payload = {
+        id: id || undefined,
+        uniqueId: document.getElementById('special-unique-id').value.trim(),
+        displayName: document.getElementById('special-display-name').value.trim(),
+        tier: document.getElementById('special-tier').value,
+        effect: document.getElementById('special-effect').value,
+        duration: parseInt(document.getElementById('special-duration').value, 10) || 3200,
+        title: document.getElementById('special-title').value.trim(),
+        subtitle: document.getElementById('special-subtitle').value.trim(),
+        imageUrl: document.getElementById('special-image').value.trim(),
+        enabled: document.getElementById('special-enabled').checked
+      };
+      const status = document.getElementById('special-form-status');
+      const btn = document.getElementById('special-save-btn');
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/special-entrances', {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.error || 'فشل الحفظ');
+        status.textContent = 'تم الحفظ والتطبيق فوراً';
+        await loadSpecialEntrances();
+        resetSpecialEntranceForm();
+        status.textContent = 'تم الحفظ والتطبيق فوراً';
+      } catch (err) {
+        status.textContent = err.message || 'حدث خطأ أثناء الحفظ';
+        status.style.color = '#f87171';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function deleteSpecialEntrance(id) {
+      if (!confirm('حذف هذا الحساب من الدخول المميز؟')) return;
+      try {
+        const res = await fetch('/api/special-entrances?id=' + encodeURIComponent(id), { method: 'DELETE' });
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.error || 'فشل الحذف');
+        if (document.getElementById('special-id').value === String(id)) resetSpecialEntranceForm();
+        await loadSpecialEntrances();
+      } catch (err) {
+        alert(err.message || 'تعذر حذف الحساب');
+      }
+    }
+
+    async function testSpecialEntrance(id = '') {
+      let item = id ? specialEntranceCache.find(x => String(x.id) === String(id)) : null;
+      if (!item) {
+        item = {
+          uniqueId: document.getElementById('special-unique-id').value.trim() || 'vip_test',
+          displayName: document.getElementById('special-display-name').value.trim() || 'VIP TEST',
+          tier: document.getElementById('special-tier').value || 'VIP',
+          effect: document.getElementById('special-effect').value || 'portal',
+          duration: parseInt(document.getElementById('special-duration').value, 10) || 3200,
+          title: document.getElementById('special-title').value.trim() || 'SPECIAL ENTRANCE',
+          subtitle: document.getElementById('special-subtitle').value.trim() || 'دخول مميز',
+          imageUrl: document.getElementById('special-image').value.trim(),
+          enabled: true
+        };
+      }
+      await sendCmd('SIMULATE_EVENT', {
+        type: 'SPECIAL_ENTRANCE',
+        data: {
+          user: { uniqueId: item.uniqueId, displayName: item.displayName, nickname: item.displayName, avatar: item.imageUrl || '' },
+          config: item
+        }
+      });
     }
 
     // Simulator Helpers
@@ -1212,6 +1431,7 @@
 
     // Startup Initialization
     loadSettings();
+    loadSpecialEntrances();
     initAdminSSE();
   </script>
 </body>
