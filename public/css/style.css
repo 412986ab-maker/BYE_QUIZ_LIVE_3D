@@ -1732,3 +1732,226 @@ body {
     width: min(540px, calc(100dvh * 9 / 16));
   }
 }
+
+
+/* ==========================================================
+   SPECIAL ENTRANCE — VIP / LEGEND / DIAMOND
+   Compact cinematic overlay; never blocks the question stage.
+   ========================================================== */
+.special-entrance-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.special-entrance-card {
+  --special-accent: #ffd84a;
+  position: absolute;
+  top: clamp(92px, 18dvh, 170px);
+  left: 50%;
+  width: min(370px, calc(100vw - 28px));
+  min-height: 76px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  direction: rtl;
+  transform: translate3d(-50%, -18px, 0) scale(.94);
+  opacity: 0;
+  border: 1px solid rgba(255,255,255,.16);
+  border-right: 3px solid var(--special-accent);
+  border-radius: 18px;
+  background:
+    linear-gradient(100deg, rgba(4,8,18,.78), rgba(13,19,36,.66) 60%, rgba(20,26,45,.52));
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.42),
+    0 0 35px color-mix(in srgb, var(--special-accent) 22%, transparent);
+  backdrop-filter: blur(16px) saturate(1.25);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  overflow: hidden;
+  transition: opacity .52s ease, transform .52s cubic-bezier(.16,1,.3,1);
+}
+
+.special-entrance-card::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(from 0deg, transparent 0 72%, color-mix(in srgb, var(--special-accent) 24%, transparent), transparent 84%);
+  animation: specialEntranceSweep 2.8s linear infinite;
+  pointer-events: none;
+}
+
+.special-entrance-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent);
+  transform: translateX(120%);
+  animation: specialEntranceGlint 1.7s ease-out .2s 1;
+  pointer-events: none;
+}
+
+.special-entrance-card.is-visible {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0) scale(1);
+}
+
+.special-entrance-card.is-leaving {
+  opacity: 0;
+  transform: translate3d(-50%, -12px, 0) scale(.97);
+}
+
+.special-entrance-avatar {
+  position: relative;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--special-accent);
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--special-accent) 10%, transparent), 0 0 25px color-mix(in srgb, var(--special-accent) 35%, transparent);
+}
+
+.special-entrance-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.special-entrance-initials {
+  font-family: var(--font-hud);
+  font-size: 15px;
+  font-weight: 1000;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.special-entrance-copy {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  flex: 1;
+  display: grid;
+  gap: 1px;
+  text-align: right;
+}
+
+.special-entrance-eyebrow {
+  color: var(--special-accent);
+  font-family: var(--font-hud);
+  font-size: 8px;
+  font-weight: 1000;
+  letter-spacing: 1.5px;
+}
+
+.special-entrance-name {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 1000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.special-entrance-title {
+  color: rgba(255,255,255,.82);
+  font-family: var(--font-hud);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .8px;
+}
+
+.special-entrance-subtitle {
+  color: rgba(255,255,255,.58);
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.special-entrance-sigil {
+  position: relative;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--special-accent) 65%, transparent);
+  display: grid;
+  place-items: center;
+  transform: rotate(45deg);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--special-accent) 25%, transparent);
+}
+
+.special-entrance-sigil span {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--special-accent);
+  border-radius: 2px;
+  animation: specialEntrancePulse 1.2s ease-in-out infinite;
+}
+
+.special-entrance-sigil span:nth-child(2) { transform: rotate(45deg) scale(.65); animation-delay: .12s; }
+.special-entrance-sigil span:nth-child(3) { transform: rotate(90deg) scale(.42); animation-delay: .24s; }
+
+.special-entrance-card.tier-vip { --special-accent: #00f2fe; }
+.special-entrance-card.tier-legend { --special-accent: #ffd84a; }
+.special-entrance-card.tier-diamond { --special-accent: #9fe8ff; }
+.special-entrance-card.tier-special { --special-accent: #c084fc; }
+.special-entrance-card.tier-custom { --special-accent: #ff7ad9; }
+
+.special-entrance-card.effect-gold {
+  background: linear-gradient(100deg, rgba(20,15,4,.82), rgba(30,24,9,.64), rgba(16,19,29,.58));
+}
+.special-entrance-card.effect-neon {
+  box-shadow: 0 18px 45px rgba(0,0,0,.42), 0 0 45px color-mix(in srgb, var(--special-accent) 34%, transparent);
+}
+.special-entrance-card.effect-lightning {
+  animation: specialEntranceLightning .72s steps(2,end) 1;
+}
+.special-entrance-card.effect-cinematic {
+  background: linear-gradient(100deg, rgba(2,7,18,.88), rgba(14,22,42,.72), rgba(3,7,18,.64));
+}
+
+@keyframes specialEntranceSweep {
+  to { transform: rotate(360deg); }
+}
+@keyframes specialEntranceGlint {
+  to { transform: translateX(-120%); }
+}
+@keyframes specialEntrancePulse {
+  0%, 100% { opacity: .45; transform: rotate(0deg) scale(.72); }
+  50% { opacity: 1; transform: rotate(180deg) scale(1); }
+}
+@keyframes specialEntranceLightning {
+  0%, 100% { filter: none; }
+  12%, 18%, 24% { filter: brightness(1.8) saturate(1.35); }
+  42% { filter: brightness(.9); }
+  58% { filter: brightness(1.55); }
+}
+
+@media (max-width: 520px) {
+  .special-entrance-card {
+    top: clamp(82px, 15dvh, 132px);
+    width: calc(100vw - 22px);
+    min-height: 70px;
+    padding: 8px 10px;
+    border-radius: 16px;
+  }
+  .special-entrance-avatar {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+  }
+  .special-entrance-name { font-size: 12px; }
+  .special-entrance-sigil { width: 28px; height: 28px; flex-basis: 28px; }
+}
