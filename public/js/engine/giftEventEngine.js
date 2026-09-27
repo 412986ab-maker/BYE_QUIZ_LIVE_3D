@@ -186,7 +186,7 @@ class GiftEventEngine {
 
     // Gift Card
     const eventCard = document.createElement('div');
-    eventCard.className = `cinematic-gift-card tier-${tier.toLowerCase()} ${isQuestionScene ? 'compact-position' : 'hero-position'} anim-gift-burst`;
+    eventCard.className = `cinematic-gift-card tier-${tier.toLowerCase()} anim-gift-burst`;
 
     const diamondIcon = (typeof IconSystem !== 'undefined') ? IconSystem.get('diamond', { size: 14, color: '#00f2fe' }) : '';
 
@@ -194,7 +194,7 @@ class GiftEventEngine {
       <div class="gift-card-ambient-aura"></div>
       <div class="gift-card-body">
         <div class="gift-visual-core">
-          ${this.getGiftArtifactSVG(tier, isQuestionScene ? 70 : 100)}
+          ${this.getGiftArtifactSVG(tier, 44)}
         </div>
         <div class="gift-details-core">
           <div class="gift-sender-row">
@@ -226,7 +226,7 @@ class GiftEventEngine {
       }
     }
 
-    const displayDuration = (tier === 'LEGENDARY') ? 4000 : (tier === 'EPIC') ? 3000 : 2200;
+    const displayDuration = (tier === 'LEGENDARY') ? 3200 : (tier === 'EPIC') ? 2600 : 2000;
     await new Promise((resolve) => setTimeout(resolve, displayDuration));
 
     eventCard.classList.add('animate-gift-exit');
