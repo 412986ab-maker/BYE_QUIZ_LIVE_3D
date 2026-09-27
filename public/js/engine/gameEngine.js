@@ -132,7 +132,7 @@ class GameEngine {
       this.updateLiveIndicator("CONNECTED");
     } else if (type === "STREAM_END" || type === "DISCONNECT") {
       this.updateLiveIndicator("OFFLINE");
-    } else if (["CHAT", "GIFT", "LIKE", "SHARE", "FOLLOW", "ROOM_USER"].includes(type)) {
+    } else if (["CHAT", "GIFT", "LIKE", "SHARE", "FOLLOW", "MEMBER", "ROOM_USER"].includes(type)) {
       this.updateLiveIndicator("CONNECTED");
     }
 
