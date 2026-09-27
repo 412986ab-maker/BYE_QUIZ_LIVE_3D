@@ -17,6 +17,7 @@ import commandParser from './lib/commandParser.js';
 import tiktokConnector, { CONNECTION_STATES } from './lib/tiktokConnector.js';
 import db from './lib/database.js';
 import giftEngine from './lib/giftEngine.js';
+import { validateSpecialEntrance } from './lib/specialEntranceManager.js';
 import serverGameState, { GAME_STATES } from './lib/serverGameState.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -415,6 +416,88 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { success: true, settings: updated });
     });
     return;
+  }
+
+  // ==========================================
+  // 5.2 SPECIAL ENTRANCE MANAGEMENT APIS
+  // ==========================================
+  if (pathname === '/api/special-entrances' && req.method === 'GET') {
+    const settings = await db.getSettings();
+    return sendJSON(res, 200, {
+      success: true,
+      specialEntrances: Array.isArray(settings.specialEntrances) ? settings.specialEntrances : []
+    });
+  }
+
+  if (pathname === '/api/special-entrances' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      const raw = safeJSONParse(body, {});
+      const checked = validateSpecialEntrance(raw);
+      if (!checked.success) return sendJSON(res, 400, checked);
+
+      const settings = await db.getSettings();
+      const list = Array.isArray(settings.specialEntrances) ? [...settings.specialEntrances] : [];
+      const normalizedId = String(checked.item.uniqueId).toLowerCase();
+      if (list.some(item => String(item.uniqueId || '').replace(/^@/, '').toLowerCase() === normalizedId)) {
+        return sendJSON(res, 409, { success: false, error: 'هذا الحساب موجود بالفعل في قائمة الدخول المميز' });
+      }
+
+      checked.item.id = checked.item.id || ('vip_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8));
+      list.push(checked.item);
+      await db.setSetting('specialEntrances', list);
+      eventBus.dispatch('SPECIAL_ENTRANCES_UPDATED', list, 'ADMIN');
+      return sendJSON(res, 201, { success: true, specialEntrance: checked.item, specialEntrances: list });
+    });
+    return;
+  }
+
+  if (pathname === '/api/special-entrances' && req.method === 'PUT') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      const raw = safeJSONParse(body, {});
+      const id = String(raw.id || '').trim();
+      if (!id) return sendJSON(res, 400, { success: false, error: 'معرف الحساب مطلوب' });
+
+      const checked = validateSpecialEntrance(raw);
+      if (!checked.success) return sendJSON(res, 400, checked);
+
+      const settings = await db.getSettings();
+      const list = Array.isArray(settings.specialEntrances) ? [...settings.specialEntrances] : [];
+      const index = list.findIndex(item => String(item.id) === id);
+      if (index < 0) return sendJSON(res, 404, { success: false, error: 'الحساب المميز غير موجود' });
+
+      checked.item.id = id;
+      const normalizedId = String(checked.item.uniqueId).toLowerCase();
+      const duplicate = list.findIndex((item, i) =>
+        i !== index && String(item.uniqueId || '').replace(/^@/, '').toLowerCase() === normalizedId
+      );
+      if (duplicate >= 0) {
+        return sendJSON(res, 409, { success: false, error: 'اسم المستخدم مرتبط بحساب مميز آخر' });
+      }
+
+      list[index] = checked.item;
+      await db.setSetting('specialEntrances', list);
+      eventBus.dispatch('SPECIAL_ENTRANCES_UPDATED', list, 'ADMIN');
+      return sendJSON(res, 200, { success: true, specialEntrance: checked.item, specialEntrances: list });
+    });
+    return;
+  }
+
+  if (pathname === '/api/special-entrances' && req.method === 'DELETE') {
+    const id = String(parsedUrl.searchParams.get('id') || '').trim();
+    if (!id) return sendJSON(res, 400, { success: false, error: 'معرف الحساب مطلوب' });
+
+    const settings = await db.getSettings();
+    const list = Array.isArray(settings.specialEntrances) ? [...settings.specialEntrances] : [];
+    const next = list.filter(item => String(item.id) !== id);
+    if (next.length === list.length) return sendJSON(res, 404, { success: false, error: 'الحساب المميز غير موجود' });
+
+    await db.setSetting('specialEntrances', next);
+    eventBus.dispatch('SPECIAL_ENTRANCES_UPDATED', next, 'ADMIN');
+    return sendJSON(res, 200, { success: true, specialEntrances: next });
   }
 
   // ==========================================
