@@ -432,6 +432,50 @@ class SceneManager {
     `;
   }
 
+  // Target reached cinematic helpers used by RoundManager.
+  renderParticipantsCompleteCelebration(onDone = null) {
+    const pool = this.participants.getDrawPoolUsers();
+    const count = pool.length;
+    const target = Number(this.state.get('settings').targetParticipants);
+    if (this.dom.headerCategory) {
+      this.dom.headerCategory.innerHTML = `${IconSystem.get('participants', { size: 16 })} <span>اكتمل عدد المشاركين</span>`;
+    }
+    this.dom.stage.innerHTML = `
+      <div class="scene-frame anim-results-enter 3d-seats-stage">
+        <div class="scene-title-badge">
+          ${IconSystem.get('correct', { size: 14 })} <span>اكتملت المقاعد</span>
+        </div>
+        <div class="waiting-hero-box 3d-glass-panel">
+          <div class="radar-spinner-box 3d-floating-element">
+            <div class="radar-ring"></div>
+            <div class="radar-ring-inner"></div>
+            <div class="radar-center-icon">${IconSystem.get('participants', { size: 38, color: 'var(--cyber-cyan)' })}</div>
+          </div>
+          <h2 class="waiting-title 3d-title-glow">${count} / ${target > 0 ? target : '∞'}</h2>
+          <p class="waiting-subtitle">تم إغلاق التسجيل. يبدأ السؤال بعد العد التنازلي.</p>
+        </div>
+      </div>
+    `;
+    if (window.soundFX?.playFanfare) window.soundFX.playFanfare();
+    const delay = 700;
+    if (typeof onDone === 'function') setTimeout(onDone, delay);
+  }
+
+  renderCountdownOverlay(count) {
+    const old = document.getElementById('bye-countdown-overlay');
+    if (old) old.remove();
+    const overlay = document.createElement('div');
+    overlay.id = 'bye-countdown-overlay';
+    overlay.className = 'bye-countdown-overlay';
+    overlay.innerHTML = `
+      <div class="countdown-core 3d-glass-panel">
+        <div class="countdown-label">السؤال يبدأ خلال</div>
+        <div class="countdown-number">${count}</div>
+      </div>
+    `;
+    this.dom.stage.appendChild(overlay);
+  }
+
   // 4. QUESTION & ANSWERING SCENE (3D Holographic Stage)
   renderQuestionScene() {
     const q = this.state.get('currentQuestion') || {
