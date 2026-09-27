@@ -5,6 +5,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize the central Game Engine
   window.gameEngine = new GameEngine();
+  // Legacy inline handlers in SceneManager use this alias.
+  window.gameInstance = window.gameEngine;
 
   // Backward compatibility alias for legacy scripts
   window.gameApp = {
