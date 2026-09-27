@@ -155,12 +155,57 @@ class GameEngine {
         break;
       }
 
+      case "TARGET_REACHED": {
+        const targetPayload = payload || {};
+        this.scenes.transitionTo("PARTICIPANTS", targetPayload);
+        this.scenes.renderParticipantsCompleteCelebration(() => {
+          let count = 3;
+          this.scenes.renderCountdownOverlay(count);
+          const interval = setInterval(() => {
+            count -= 1;
+            if (count > 0) {
+              this.scenes.renderCountdownOverlay(count);
+            } else {
+              clearInterval(interval);
+            }
+          }, 1000);
+          if (interval.unref) interval.unref();
+        });
+        break;
+      }
+
       case "QUESTION_PREPARING":
       case "PREPARATION_TICK": {
         const p = payload || {};
         this.state.set("preparation", p);
         this.events.emit("preparation:update", p);
         if (this.scenes.currentScene !== "PREPARING") this.scenes.transitionTo("PREPARING", p);
+        break;
+      }
+
+      case "QUESTION_STARTED": {
+        if (payload?.question) {
+          this.state.set("currentQuestion", payload.question);
+        }
+        const duration = Number(payload?.duration || payload?.question?.timeLimit || this.state.get("settings").questionDuration || 15);
+        this.state.set("timer", {
+          duration,
+          remaining: duration,
+          active: true,
+          startTime: Date.now()
+        });
+        this.scenes.transitionTo("QUESTION", payload || {});
+        break;
+      }
+
+      case "TIMER_TICK": {
+        const remaining = Math.max(0, Number(payload?.remaining ?? 0));
+        const current = this.state.get("timer") || {};
+        this.state.set("timer", {
+          ...current,
+          remaining,
+          active: remaining > 0
+        });
         break;
       }
 
