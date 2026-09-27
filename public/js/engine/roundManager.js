@@ -18,31 +18,16 @@ class RoundManager {
   }
 
   setupListeners() {
-    // 1. When target participants count is reached during registration
+    // The server is authoritative. Local target/timer events only update
+    // presentation state; they must never start a second round lifecycle.
     this.events.on('participants:target_reached', ({ count, target }) => {
-      const settings = this.state.get('settings');
-      if (settings.autoTransition && !this.isCountdownActive) {
-        this.runParticipantsCompleteSequence();
-      }
+      this.events.emit('round:target_completed_local', { count, target });
     });
 
-    // 2. When question timer ends
     this.events.on('timer:ended', () => {
-      const settings = this.state.get('settings');
-      this.events.emit('QUESTION_ENDED', { question: this.state.get('currentQuestion') });
-
-      if (settings.autoTransition) {
-        this.scenes.transitionTo('ANSWERS');
-
-        const delay = (settings.resultsDuration || 4) * 1000;
-        clearTimeout(this.transitionTimeout);
-        this.transitionTimeout = setTimeout(() => {
-          if (this.state.get('scene') === 'ANSWERS') {
-            this.scenes.transitionTo('DRAW');
-            this.draw.spin();
-          }
-        }, delay);
-      }
+      this.events.emit('QUESTION_TIMER_ENDED_LOCAL', {
+        question: this.state.get('currentQuestion')
+      });
     });
 
     // 3. When a lucky draw winner is chosen
