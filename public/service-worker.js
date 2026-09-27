@@ -1,9 +1,14 @@
 /**
  * BYE QUIZ LIVE - PWA Service Worker
- * Caches essential static assets (HTML, CSS, JS, icons) while strictly
- * bypassing dynamic TikTok streams, SSE (/api/events), and live REST endpoints.
+ * Production cache policy:
+ * - Never cache the admin dashboard.
+ * - Never cache API/SSE/live endpoints.
+ * - Use network-first for HTML/CSS/JS so UI updates reach clients immediately.
+ * - Remove all previous BYE QUIZ caches on activation.
  */
-const CACHE_NAME = 'byequiz-v2-static';
+
+const CACHE_NAME = 'byequiz-v3-static';
+
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -39,52 +44,83 @@ const STATIC_ASSETS = [
   '/icons/icon-512.svg'
 ];
 
+function isLiveOrDynamic(url) {
+  return (
+    url.pathname === '/admin' ||
+    url.pathname === '/admin.html' ||
+    url.pathname === '/service-worker.js' ||
+    url.pathname.startsWith('/api/') ||
+    url.pathname.includes('/events') ||
+    url.pathname.includes('/command')
+  );
+}
+
+function isHtmlCssJs(request) {
+  const destination = request.destination;
+  return destination === 'document' ||
+    destination === 'style' ||
+    destination === 'script' ||
+    request.url.endsWith('.html') ||
+    request.url.endsWith('.css') ||
+    request.url.endsWith('.js');
+}
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS).catch((err) => {
-        console.warn('[SW] Cache add warning:', err);
-      });
-    })
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(STATIC_ASSETS))
+      .catch((err) => console.warn('[SW] Static cache warning:', err))
+      .finally(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    })
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys
+          .filter((key) => key.startsWith('byequiz-') && key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      ))
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
+  const request = event.request;
 
-  // 1. NEVER cache SSE, API endpoints or live commands
-  if (url.pathname.startsWith('/api/') || url.pathname.includes('/events') || url.pathname.includes('/command')) {
-    return; // Pass through directly to network
+  if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
+
+  // Admin, service worker, APIs and live streams must always reach the server.
+  if (isLiveOrDynamic(url)) return;
+
+  // UI source files use network-first so deployments become visible immediately.
+  if (isHtmlCssJs(request)) {
+    event.respondWith(
+      fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.ok) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy)).catch(() => {});
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
   }
 
-  // 2. Cache-First Strategy for static assets with Network Fallback
+  // Other static assets may use cache-first with network fallback.
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
+    caches.match(request).then((cachedResponse) => {
+      if (cachedResponse) return cachedResponse;
+
+      return fetch(request).then((networkResponse) => {
+        if (networkResponse && networkResponse.ok) {
+          const copy = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy)).catch(() => {});
         }
         return networkResponse;
       });
