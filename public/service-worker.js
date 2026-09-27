@@ -7,7 +7,7 @@
  * - Remove all previous BYE QUIZ caches on activation.
  */
 
-const CACHE_NAME = 'byequiz-v4-static';
+const CACHE_NAME = 'byequiz-v5-static';
 
 const STATIC_ASSETS = [
   '/',
@@ -38,6 +38,7 @@ const STATIC_ASSETS = [
   '/js/engine/effectManager.js',
   '/js/engine/sceneManager.js',
   '/js/engine/roundManager.js',
+  '/js/engine/specialEntranceEngine.js',
   '/js/engine/gameEngine.js',
   '/manifest.webmanifest',
   '/icons/icon-192.svg',
