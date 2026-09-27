@@ -50,7 +50,7 @@ class ParticipantCard {
     }
 
     const name = escapeHtml(user.displayName || user.nickname || 'لاعب');
-    const avatar = ParticipantCard.renderAvatar(user, 'slot-img', 38);
+    const avatar = ParticipantCard.renderAvatar(user, 'slot-img', 28);
     const isWinner = user.isWinner || user.wins > 0;
     const isCorrect = user.score > 0;
 
