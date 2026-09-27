@@ -1194,10 +1194,11 @@
 
       const topStatus = document.getElementById('tiktok-top-status');
       const shownUser = data.username || getTikTokUsername();
+      const providerLabel = data.provider ? ' · ' + data.provider : '';
       if (data.status === 'CONNECTED') {
         ind.classList.add('active');
-        if (msg) msg.textContent = 'متصل بالبث المباشر: @' + shownUser;
-        if (topStatus) topStatus.innerHTML = 'الحساب: <b>' + shownUser + '</b> — <strong style="color:#10b981">متصل بالبث</strong>';
+        if (msg) msg.textContent = 'متصل بالبث المباشر: @' + shownUser + providerLabel;
+        if (topStatus) topStatus.innerHTML = 'الحساب: <b>' + shownUser + '</b> — <strong style="color:#10b981">متصل بالبث</strong>' + providerLabel;
       } else if (data.status === 'CONNECTING' || data.status === 'RECONNECTING') {
         ind.classList.remove('active');
         if (msg) msg.textContent = 'جارٍ الاتصال بالبث المباشر...';
@@ -1205,7 +1206,7 @@
       } else {
         ind.classList.remove('active');
         if (msg) msg.textContent = 'غير متصل ' + (data.lastError ? `(${data.lastError})` : '');
-        if (topStatus) topStatus.innerHTML = 'الحساب: <b>' + shownUser + '</b> — <span>غير متصل</span>';
+        if (topStatus) topStatus.innerHTML = 'الحساب: <b>' + shownUser + '</b> — <span>غير متصل</span>' + (data.lastError ? '<br><small style="color:#f87171">' + data.lastError + '</small>' : '');
       }
     }
 
