@@ -137,6 +137,12 @@ class GameEngine {
     }
 
     switch (type) {
+      case "SPECIAL_ENTRANCE": {
+        // Presentation only: never changes the authoritative game scene.
+        this.events.emit("SPECIAL_ENTRANCE", payload || {});
+        break;
+      }
+
       // Automatic participant collection / preparation lifecycle
       case "COLLECTION_STARTED":
       case "COLLECTION_TICK": {
