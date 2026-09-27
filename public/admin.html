@@ -726,8 +726,11 @@
             <select id="setting-target-participants" class="form-input" required aria-label="عدد المشاركين المستهدف">
               <option value="18">18 مشارك</option>
               <option value="24">24 مشارك</option>
+              <option value="30">30 مشارك</option>
               <option value="36">36 مشارك</option>
+              <option value="42">42 مشارك</option>
               <option value="48">48 مشارك</option>
+              <option value="50">50 مشارك</option>
               <option value="60">60 مشارك</option>
               <option value="72">72 مشارك</option>
               <option value="84">84 مشارك</option>
@@ -858,7 +861,17 @@
         const data = await res.json();
         if (data.success && data.settings) {
           const s = data.settings;
-          if (s.targetParticipants !== undefined) document.getElementById('setting-target-participants').value = s.targetParticipants;
+          if (s.targetParticipants !== undefined) {
+            const targetSelect = document.getElementById('setting-target-participants');
+            const targetValue = String(s.targetParticipants);
+            if (![...targetSelect.options].some(o => o.value === targetValue)) {
+              const option = document.createElement('option');
+              option.value = targetValue;
+              option.textContent = targetValue === '0' ? 'مفتوح — بدون حد' : targetValue + ' مشارك';
+              targetSelect.appendChild(option);
+            }
+            targetSelect.value = targetValue;
+          }
           if (s.questionDuration !== undefined) document.getElementById('setting-question-duration').value = s.questionDuration;
           if (s.autoMode !== undefined) document.getElementById('setting-auto-mode').value = String(s.autoMode);
           if (s.autoCollection !== undefined) document.getElementById('setting-auto-collection').value = String(s.autoCollection);
