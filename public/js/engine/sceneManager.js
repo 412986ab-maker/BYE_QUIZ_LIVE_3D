@@ -701,3 +701,100 @@ class SceneManager {
             <span style="font-family:'Orbitron'; font-weight:900; font-size:12px; color:var(--text-dim);">#${i + 1}</span>
             <img src="${avatar}" style="width:28px; height:28px; border-radius:50%; object-fit:cover;" alt="${name}" onerror="this.onerror=null; this.src='${ParticipantCard.getFallbackAvatar(name)}';" />
             <span style="font-size:12px; font-weight:700;">${name}</span>
+          </div>
+          <span style="font-family:'Orbitron'; font-weight:800; font-size:12px; color:var(--cyber-cyan);">${u.score || u.points || 0} pts</span>
+        </div>
+      `;
+    }
+
+    this.dom.stage.innerHTML = `
+      <div class="scene-frame anim-results-enter 3d-podium-stage">
+        <div class="scene-title-badge">
+          ${IconSystem.get('ranking', { size: 14 })} <span>لوحة شرف الأبطال</span>
+        </div>
+        <div class="leaderboard-stage-box 3d-glass-panel">
+          <div class="podium-row 3d-podium-pedestals">
+            <!-- Rank 2 -->
+            <div class="podium-card rank-2 3d-pedestal-silver">
+              <span style="font-size:11px; font-weight:900; color:#94a3b8;">#2</span>
+              ${top2 ? `<img src="${top2.avatar || ParticipantCard.getFallbackAvatar(top2.displayName || top2.nickname)}" style="width:36px; height:36px; border-radius:50%; margin:4px 0; object-fit:cover;" alt="" onerror="this.onerror=null; this.src='${ParticipantCard.getFallbackAvatar(top2.displayName || top2.nickname)}';" /><span style="font-size:10px; font-weight:700;">${top2.displayName || top2.nickname}</span><span style="font-family:'Orbitron'; font-size:10px; color:var(--cyber-teal);">${top2.score} pts</span>` : '<span style="font-size:10px; color:var(--text-dim);">-</span>'}
+            </div>
+            <!-- Rank 1 -->
+            <div class="podium-card rank-1 3d-pedestal-gold">
+              ${IconSystem.get('trophy', { size: 20, color: 'var(--luxury-gold)' })}
+              <span style="font-size:12px; font-weight:900; color:var(--luxury-gold);">#1</span>
+              ${top1 ? `<img src="${top1.avatar || ParticipantCard.getFallbackAvatar(top1.displayName || top1.nickname)}" style="width:48px; height:48px; border-radius:50%; border:2px solid var(--luxury-gold); margin:4px 0; object-fit:cover;" alt="" onerror="this.onerror=null; this.src='${ParticipantCard.getFallbackAvatar(top1.displayName || top1.nickname)}';" /><span style="font-size:11px; font-weight:800;">${top1.displayName || top1.nickname}</span><span style="font-family:'Orbitron'; font-size:11px; color:var(--luxury-gold); font-weight:900;">${top1.score} pts</span>` : '<span style="font-size:10px; color:var(--text-dim);">-</span>'}
+            </div>
+            <!-- Rank 3 -->
+            <div class="podium-card rank-3 3d-pedestal-bronze">
+              <span style="font-size:11px; font-weight:900; color:#d97706;">#3</span>
+              ${top3 ? `<img src="${top3.avatar || ParticipantCard.getFallbackAvatar(top3.displayName || top3.nickname)}" style="width:36px; height:36px; border-radius:50%; margin:4px 0; object-fit:cover;" alt="" onerror="this.onerror=null; this.src='${ParticipantCard.getFallbackAvatar(top3.displayName || top3.nickname)}';" /><span style="font-size:10px; font-weight:700;">${top3.displayName || top3.nickname}</span><span style="font-family:'Orbitron'; font-size:10px; color:var(--cyber-teal);">${top3.score} pts</span>` : '<span style="font-size:10px; color:var(--text-dim);">-</span>'}
+            </div>
+          </div>
+          <div class="leaderboard-scroll-list">
+            ${restHtml || '<div style="color:var(--text-dim); text-align:center; font-size:11px;">في انتظار بقية النتائج...</div>'}
+          </div>
+        </div>
+        <div class="join-callout-box 3d-callout-panel">
+          <span class="join-instruction">تحديثات الصدارة مستمرة طوال البث:</span>
+          <span class="join-keyword-pill">Live Leaderboard</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // Update all 5 Top Realtime Metric Counters
+  updateHeaderStats() {
+    const eng = this.state.get('engagement') || {};
+    const round = this.state.get('round') || { roundNumber: 1 };
+    const pool = this.participants.getDrawPoolUsers();
+
+    if (this.dom.statParticipants) this.dom.statParticipants.textContent = pool.length;
+    if (this.dom.valViewers) this.dom.valViewers.textContent = eng.viewerCount !== undefined ? eng.viewerCount : (eng.viewers || 0);
+    if (this.dom.valLikes) this.dom.valLikes.textContent = eng.likes || 0;
+    if (this.dom.valShares) this.dom.valShares.textContent = eng.shares || 0;
+    if (this.dom.valGifts) this.dom.valGifts.textContent = eng.totalGifts || eng.gifts || 0;
+    if (this.dom.valDiamonds) this.dom.valDiamonds.textContent = eng.diamonds || 0;
+    if (this.dom.valComments) this.dom.valComments.textContent = eng.comments || 0;
+    if (this.dom.valRound) this.dom.valRound.textContent = `ROUND ${String(round.roundNumber || 1).padStart(2, '0')}`;
+  }
+
+  updateTimerDisplay(timer) {
+    if (!this.dom.timerText || !this.dom.timerBar) return;
+    const settings = this.state.get('settings') || {};
+    const configuredDuration = Number(settings.questionDuration);
+    const fallbackDuration = Number.isFinite(configuredDuration) && configuredDuration > 0 ? configuredDuration : 15;
+    const remaining = timer.remaining !== undefined ? timer.remaining : fallbackDuration;
+    const duration = Number(timer.duration) > 0 ? Number(timer.duration) : fallbackDuration;
+
+    this.dom.timerText.textContent = remaining;
+
+    const totalDash = 188.4;
+    const offset = totalDash - (remaining / duration) * totalDash;
+    this.dom.timerBar.style.strokeDashoffset = offset;
+
+    const isUrgent = remaining <= 5;
+    if (isUrgent) {
+      this.dom.timerBar.classList.add('timer-urgent');
+      if (window.soundFX) window.soundFX.playTick(true);
+    } else {
+      this.dom.timerBar.classList.remove('timer-urgent');
+      if (window.soundFX && remaining < duration) window.soundFX.playTick(false);
+    }
+  }
+
+  updateLeaderboard() {
+    if (!this.dom.leaderboardList) return;
+    const leaders = this.participants.getLeaderboard(5);
+    if (!leaders.length) return;
+
+    this.dom.leaderboardList.innerHTML = leaders.map((u, i) => ParticipantCard.renderChip(u, i + 1)).join('');
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.SceneManager = SceneManager;
+}
+if (typeof globalThis !== 'undefined') {
+  globalThis.SceneManager = SceneManager;
+}
