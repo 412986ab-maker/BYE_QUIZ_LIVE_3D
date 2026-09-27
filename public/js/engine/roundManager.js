@@ -47,6 +47,9 @@ class RoundManager {
 
     // 3. When a lucky draw winner is chosen
     this.events.on('WINNER', (winnerData) => {
+      // The draw engine owns the actual winner payload. Always render the
+      // winner scene before scheduling the optional stats/next-round transition.
+      this.scenes.transitionTo('WINNER', winnerData || {});
       const settings = this.state.get('settings');
       if (settings.autoTransition) {
         clearTimeout(this.transitionTimeout);
