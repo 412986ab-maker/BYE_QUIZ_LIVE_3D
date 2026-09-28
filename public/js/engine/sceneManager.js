@@ -94,7 +94,7 @@ class SceneManager {
 
     container.classList.remove(
       'cam-wide', 'cam-seats', 'cam-hero-first', 'cam-question',
-      'cam-lock', 'cam-answers', 'cam-draw', 'cam-winner', 'cam-podium'
+      'cam-lock', 'cam-answers', 'cam-elimination', 'cam-draw', 'cam-final', 'cam-winner', 'cam-podium'
     );
 
     switch (mode) {
@@ -122,8 +122,14 @@ class SceneManager {
       case 'RESULT':
         container.classList.add('cam-answers');
         break;
+      case 'ELIMINATION':
+        container.classList.add('cam-elimination');
+        break;
       case 'DRAW':
         container.classList.add('cam-draw');
+        break;
+      case 'FINAL':
+        container.classList.add('cam-final');
         break;
       case 'WINNER':
         container.classList.add('cam-winner');
