@@ -200,8 +200,14 @@ class SceneManager {
       case 'ANSWERS':
         this.renderAnswersScene();
         break;
+      case 'ELIMINATION':
+        this.renderEliminationScene();
+        break;
       case 'DRAW':
         this.renderDrawScene();
+        break;
+      case 'FINAL':
+        this.renderFinalScene();
         break;
       case 'WINNER':
         this.renderWinnerScene();
@@ -592,7 +598,126 @@ class SceneManager {
     `;
   }
 
-  // 7. LUCKY DRAW & ROULETTE SCENE (3D Spinning Pedestal)
+  // 7. ELIMINATION SCENE — same BYE QUIZ 3D visual language, new phase only.
+  renderEliminationScene(payload = {}) {
+    const eliminated = Array.isArray(payload.eliminated) ? payload.eliminated : [];
+    const survivors = Array.isArray(payload.survivors) ? payload.survivors : [];
+    const finalRound = Boolean(payload.finalRound);
+
+    if (this.dom.headerCategory) {
+      this.dom.headerCategory.innerHTML = `${IconSystem.get('lock', { size: 16 })} <span>${finalRound ? 'تحديد المتأهلين للنهائي' : 'مرحلة الإقصاء والتأهل'}</span>`;
+    }
+
+    const renderMini = (user, index, kind) => {
+      const name = user.displayName || user.nickname || user.username || 'متسابق';
+      const avatar = user.avatar || ParticipantCard.getFallbackAvatar(name);
+      const score = Number(user.score || user.points || 0);
+      return `
+        <div class="elimination-player-card 3d-chip-glass elimination-${kind}">
+          <div class="elimination-player-avatar">
+            <img src="${avatar}" alt="" onerror="this.onerror=null;this.src='${ParticipantCard.getFallbackAvatar(name)}';">
+          </div>
+          <div class="elimination-player-copy">
+            <span class="elimination-player-rank">#${index + 1}</span>
+            <span class="elimination-player-name">${name}</span>
+            <span class="elimination-player-score">${score} pts</span>
+          </div>
+        </div>`;
+    };
+
+    this.dom.stage.innerHTML = `
+      <div class="scene-frame anim-results-enter 3d-results-stage elimination-stage">
+        <div class="scene-title-badge">
+          ${IconSystem.get(finalRound ? 'trophy' : 'lock', { size: 14, color: finalRound ? 'var(--luxury-gold)' : 'var(--neon-magenta)' })}
+          <span>${finalRound ? 'بوابة النهائي' : 'الإقصاء والتأهل'}</span>
+        </div>
+
+        <div class="elimination-hero-box 3d-glass-panel">
+          <div class="elimination-core-ring">
+            <span class="elimination-core-number">${survivors.length}</span>
+            <span class="elimination-core-label">${finalRound ? 'متأهل للنهائي' : 'متأهل'}</span>
+          </div>
+          <div class="elimination-headline">${finalRound ? 'تم تحديد المتأهلين للنهائي' : 'يتم الآن تحديد المتأهلين للجولة التالية'}</div>
+          <div class="elimination-subline">
+            ${eliminated.length} خارج المنافسة • ${survivors.length} مستمرون
+          </div>
+        </div>
+
+        <div class="elimination-columns">
+          <section class="elimination-panel elimination-panel-survivors 3d-glass-panel">
+            <div class="elimination-panel-title">
+              ${IconSystem.get('correct', { size: 14, color: 'var(--cyber-cyan)' })}
+              <span>${finalRound ? 'المتأهلون للنهائي' : 'المؤهلون'}</span>
+              <b>${survivors.length}</b>
+            </div>
+            <div class="elimination-player-grid">
+              ${survivors.slice(0, 12).map((u, i) => renderMini(u, i, 'survivor')).join('')}
+            </div>
+            ${survivors.length > 12 ? `<div class="elimination-more">+${survivors.length - 12} متأهلين</div>` : ''}
+          </section>
+
+          <section class="elimination-panel elimination-panel-out 3d-glass-panel">
+            <div class="elimination-panel-title">
+              ${IconSystem.get('lock', { size: 14, color: 'var(--neon-magenta)' })}
+              <span>خارج المنافسة</span>
+              <b>${eliminated.length}</b>
+            </div>
+            <div class="elimination-player-grid">
+              ${eliminated.slice(0, 8).map((u, i) => renderMini(u, i, 'eliminated')).join('')}
+            </div>
+            ${eliminated.length > 8 ? `<div class="elimination-more">+${eliminated.length - 8} مشاركين</div>` : ''}
+          </section>
+        </div>
+
+        <div class="join-callout-box 3d-callout-panel">
+          <span class="join-instruction">${finalRound ? 'بعد الإقصاء يبدأ النهائي ثم اختيار البطل.' : 'المتأهلون يحتفظون بمقاعدهم ويمكن فتح المقاعد المتبقية لمشاركين جدد.'}</span>
+          <span class="join-keyword-pill">${finalRound ? 'FINAL' : 'NEXT ROUND'}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // 8. FINAL SCENE — existing studio identity, focused on the finalists.
+  renderFinalScene(payload = {}) {
+    const finalists = Array.isArray(payload.finalists) ? payload.finalists : this.participants.getDrawPoolUsers();
+    if (this.dom.headerCategory) {
+      this.dom.headerCategory.innerHTML = `${IconSystem.get('trophy', { size: 16, color: 'var(--luxury-gold)' })} <span>النهائي • اختيار البطل</span>`;
+    }
+
+    const cards = finalists.slice(0, 8).map((user, i) => {
+      const name = user.displayName || user.nickname || user.username || 'متسابق';
+      const avatar = user.avatar || ParticipantCard.getFallbackAvatar(name);
+      return `
+        <div class="finalist-card 3d-glass-panel">
+          <div class="finalist-position">FINALIST ${i + 1}</div>
+          <img src="${avatar}" class="finalist-avatar" alt="" onerror="this.onerror=null;this.src='${ParticipantCard.getFallbackAvatar(name)}';">
+          <div class="finalist-name">${name}</div>
+          <div class="finalist-score">${Number(user.score || user.points || 0)} pts</div>
+        </div>`;
+    }).join('');
+
+    this.dom.stage.innerHTML = `
+      <div class="scene-frame anim-winner-entrance 3d-winner-stage final-stage">
+        <div class="scene-title-badge">
+          ${IconSystem.get('trophy', { size: 14, color: 'var(--luxury-gold)' })} <span>النهائي</span>
+        </div>
+        <div class="final-hero-box 3d-glass-panel">
+          <div class="final-orbit"></div>
+          <div class="final-title 3d-title-gold">THE FINAL</div>
+          <div class="final-subtitle">بقي المتأهلون فقط • حان وقت اختيار البطل</div>
+        </div>
+        <div class="finalists-grid">
+          ${cards || '<div class="finalist-empty">في انتظار المتأهلين...</div>'}
+        </div>
+        <div class="join-callout-box 3d-callout-panel">
+          <span class="join-instruction">جارٍ الانتقال إلى السحب النهائي:</span>
+          <span class="join-keyword-pill">CHAMPION DRAW</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // 9. LUCKY DRAW & ROULETTE SCENE (3D Spinning Pedestal)
   renderDrawScene() {
     if (this.dom.headerCategory) {
       this.dom.headerCategory.innerHTML = `${IconSystem.get('draw', { size: 16 })} <span>سحب الحظ العشوائي</span>`;
