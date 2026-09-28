@@ -2288,3 +2288,14 @@ body {
   .elimination-player-grid { grid-template-columns: 1fr; }
   .finalists-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* FINAL UI CLEANUP */
+.studio-3d-floor,
+.floor-grid-plane,
+.floor-neon-rim,
+.floor-podium-shadow { display:none !important; }
+.question-source-badge {
+ display:inline-flex;align-items:center;gap:6px;margin-top:-4px;padding:5px 10px;
+ border-radius:999px;color:rgba(148,163,184,.92);background:rgba(3,7,18,.62);
+ border:1px solid rgba(148,163,184,.14);font-size:10px;font-weight:700;
+}
