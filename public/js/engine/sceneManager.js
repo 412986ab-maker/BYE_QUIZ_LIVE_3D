@@ -388,7 +388,7 @@ class SceneManager {
     const rows = Math.min(8, Math.max(2, Number(settings.seatRows) || 4));
     const avatarSize = Math.min(64, Math.max(32, Number(settings.seatAvatarSize) || 44));
     const visibleCapacity = columns * rows;
-    const renderCount = target > 0 ? Math.max(target, visibleCapacity) : Math.max(pool.length, visibleCapacity);
+    const renderCount = target > 0 ? target : Math.max(pool.length, visibleCapacity);
 
     gridEl.style.setProperty('--seat-columns', columns);
     gridEl.style.setProperty('--seat-visible-rows', rows);
