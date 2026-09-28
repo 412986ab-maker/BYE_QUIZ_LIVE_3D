@@ -73,6 +73,84 @@ class GameEngine {
     document.documentElement.style.setProperty("--bye-seat-avatar-size", `${avatarSize}px`);
   }
 
+  applyAuthoritativeGameSnapshot(game = {}) {
+    const settings = this.state.get("settings") || {};
+    if (game.currentQuestion) this.state.set("currentQuestion", game.currentQuestion);
+
+    if (Number.isFinite(Number(game.roundNumber))) {
+      const round = this.state.get("round") || {};
+      this.state.set("round", {
+        ...round,
+        roundNumber: Number(game.roundNumber),
+        targetParticipants: Number(game.targetParticipants || settings.targetParticipants || 36),
+        currentWinner: game.currentWinner || null
+      });
+    }
+
+    if (game.engagement) {
+      this.state.set("engagement", { ...this.state.get("engagement"), ...game.engagement });
+    }
+
+    if (game.participants && Array.isArray(game.participants)) {
+      this.participants.clearParticipants();
+      for (const participant of game.participants) {
+        this.participants.addParticipant({
+          ...participant,
+          username: participant.uniqueId || participant.username || participant.id,
+          displayName: participant.displayName || participant.nickname,
+          avatar: participant.avatar
+        });
+      }
+    }
+
+    const remaining = Number(game.remainingSeconds);
+    if (Number.isFinite(remaining)) {
+      const currentTimer = this.state.get("timer") || {};
+      this.state.set("timer", {
+        ...currentTimer,
+        remaining: Math.max(0, remaining),
+        active: remaining > 0
+      });
+    }
+
+    const phase = game.phase;
+    const phaseSceneMap = {
+      STUDIO_INTRO: "WAITING",
+      REGISTRATION_OPEN: "REGISTRATION",
+      REGISTRATION_CLOSED: "REGISTRATION",
+      NEXT_ROUND_REGISTRATION: "REGISTRATION",
+      SUSPENSE: "PARTICIPANTS",
+      PREPARING: "PREPARING",
+      QUESTION: "QUESTION",
+      ANSWER_LOCK: "LOCK",
+      QUESTION_RESULT: "ANSWERS",
+      ROUND_RESULTS: "ANSWERS",
+      ELIMINATION: "ANSWERS",
+      DRAW: "DRAW",
+      FINAL: "PODIUM",
+      CHAMPION: "WINNER",
+      VICTORY: "WINNER"
+    };
+
+    const stateSceneMap = {
+      LOBBY: "REGISTRATION",
+      PLAYER_SELECTION: "REGISTRATION",
+      PREPARING: "PREPARING",
+      QUESTION: "QUESTION",
+      ANSWERING: "QUESTION",
+      RESULT: "ANSWERS",
+      WINNER: "DRAW",
+      NEXT_ROUND: "REGISTRATION",
+      ENDED: "WINNER",
+      PAUSED: this.scenes.currentScene
+    };
+
+    const scene = phaseSceneMap[phase] || stateSceneMap[game.state] || "WAITING";
+    this.scenes.transitionTo(scene, game);
+
+    this.events.emit("authoritative:snapshot", game);
+  }
+
   updateLiveIndicator(status) {
     const liveTag = document.getElementById("live-status-pill");
     if (!liveTag) return;
@@ -126,12 +204,8 @@ class GameEngine {
         const eng = { ...this.state.get("engagement"), ...payload.engagement };
         this.state.set("engagement", eng);
       }
-      if (payload.game && payload.game.state) {
-        if (payload.game.state === "QUESTION") {
-          if (payload.game.currentQuestion) {
-            this.state.set("currentQuestion", payload.game.currentQuestion);
-          }
-        }
+      if (payload.game) {
+        this.applyAuthoritativeGameSnapshot(payload.game);
       }
     } else if (type === "TIKTOK_STATUS" && payload) {
       this.updateLiveIndicator(payload.status);
@@ -361,6 +435,25 @@ class GameEngine {
         break;
       }
 
+      case "GAME_PHASE_CHANGED": {
+        const p = payload || {};
+        this.state.set("blueprintPhase", p.phase || null);
+        this.state.set("phaseClock", {
+          startedAt: p.startedAt || Date.now(),
+          endsAt: p.endsAt || null,
+          durationMs: Number(p.durationMs || 0)
+        });
+        this.events.emit("GAME_PHASE_CHANGED", p);
+        break;
+      }
+
+      case "ANSWER_LOCK": {
+        this.state.set("answerLocked", true);
+        this.scenes.transitionTo("LOCK", payload || {});
+        this.questions.stopTimer();
+        break;
+      }
+
       case "GAME_STATE_CHANGED": {
         if (payload && payload.state) {
           const serverState = payload.state;
@@ -436,6 +529,7 @@ class GameEngine {
 
       case "QUESTION_ENDED":
       case "END_QUESTION": {
+        this.state.set("answerLocked", false);
         this.questions.stopTimer();
         this.scenes.transitionTo("ANSWERS", payload || {});
         break;
