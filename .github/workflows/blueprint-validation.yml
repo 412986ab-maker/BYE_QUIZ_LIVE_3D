@@ -1,4 +1,4 @@
-name: BYE QUIZ LIVE Blueprint Validation v2
+name: BYE QUIZ LIVE Blueprint Validation v3
 
 on:
   push:
@@ -13,6 +13,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
       - name: Syntax checks
         run: |
           node --check server.js
@@ -33,3 +36,5 @@ jobs:
           }
           console.log('Admin inline scripts: OK');
           NODE
+      - name: Full test suite
+        run: npm test
