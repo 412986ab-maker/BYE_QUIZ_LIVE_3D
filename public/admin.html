@@ -741,6 +741,46 @@
           </div>
 
           <div class="form-group">
+            <label class="form-label">عدد المقاعد في العرض</label>
+            <select id="setting-seat-columns" class="form-input">
+              <option value="3">3 مقاعد</option>
+              <option value="4">4 مقاعد</option>
+              <option value="5" selected>5 مقاعد</option>
+              <option value="6">6 مقاعد</option>
+              <option value="7">7 مقاعد</option>
+              <option value="8">8 مقاعد</option>
+            </select>
+            <small style="color:var(--text-dim);font-size:10px;">مثال: 5 = خمسة مقاعد في كل صف.</small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">عدد الصفوف الظاهرة على الشاشة</label>
+            <select id="setting-seat-rows" class="form-input">
+              <option value="2">صفان</option>
+              <option value="3">3 صفوف</option>
+              <option value="4" selected>4 صفوف</option>
+              <option value="5">5 صفوف</option>
+              <option value="6">6 صفوف</option>
+              <option value="7">7 صفوف</option>
+              <option value="8">8 صفوف</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">حجم دائرة صورة المتسابق</label>
+            <select id="setting-seat-avatar-size" class="form-input">
+              <option value="36">36px</option>
+              <option value="40">40px</option>
+              <option value="44" selected>44px</option>
+              <option value="48">48px</option>
+              <option value="52">52px</option>
+              <option value="56">56px</option>
+              <option value="60">60px</option>
+              <option value="64">64px</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label class="form-label">مدة الإجابة على السؤال بالثواني (Question Duration)</label>
             <input type="number" id="setting-question-duration" class="form-input" min="5" max="60" value="15" required />
           </div>
@@ -952,6 +992,9 @@
             }
             targetSelect.value = targetValue;
           }
+          if (s.seatColumns !== undefined) document.getElementById('setting-seat-columns').value = String(s.seatColumns);
+          if (s.seatRows !== undefined) document.getElementById('setting-seat-rows').value = String(s.seatRows);
+          if (s.seatAvatarSize !== undefined) document.getElementById('setting-seat-avatar-size').value = String(s.seatAvatarSize);
           if (s.questionDuration !== undefined) document.getElementById('setting-question-duration').value = s.questionDuration;
           if (s.autoMode !== undefined) document.getElementById('setting-auto-mode').value = String(s.autoMode);
           if (s.autoCollection !== undefined) document.getElementById('setting-auto-collection').value = String(s.autoCollection);
@@ -971,6 +1014,9 @@
 
       const payload = {
         targetParticipants: parseInt(document.getElementById('setting-target-participants').value, 10),
+        seatColumns: parseInt(document.getElementById('setting-seat-columns').value, 10),
+        seatRows: parseInt(document.getElementById('setting-seat-rows').value, 10),
+        seatAvatarSize: parseInt(document.getElementById('setting-seat-avatar-size').value, 10),
         questionDuration: parseInt(document.getElementById('setting-question-duration').value, 10),
         autoMode: document.getElementById('setting-auto-mode').value === 'true',
         autoCollection: document.getElementById('setting-auto-collection').value === 'true',
