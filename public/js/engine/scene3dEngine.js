@@ -184,18 +184,10 @@
     _buildStudioEnvironment() {
       const THREE = global.THREE;
 
-      // 1. Studio Arena Floor (PBR Metallic Grid Plane)
-      const floorGeo = new THREE.PlaneGeometry(52, 52, 1, 1);
-      const floorMat = new THREE.MeshStandardMaterial({
-        color: 0x070d18,
-        roughness: 0.18,
-        metalness: 0.82
-      });
-      const floorMesh = new THREE.Mesh(floorGeo, floorMat);
-      floorMesh.position.set(0, -0.05, 0);
-      this.scene.add(floorMesh);
+      // 1. Open studio background — no metallic floor panel.
+      // The 3D stage remains through lighting, backdrop and central elements.
 
-      // 2. Concentric Neon Stage Rings on Floor (Shared Geometry)
+      // 2. Concentric Neon Stage Rings on the open stage (Shared Geometry)
       const ringOuterGeo = new THREE.TorusGeometry(12, 0.08, 4, 24);
       const ringOuterMat = new THREE.MeshStandardMaterial({
         color: 0x00f3ff,
