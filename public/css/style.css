@@ -2389,7 +2389,7 @@ body.webgl-active .studio-volumetric-lights { opacity: .18 !important; }
   grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
   grid-auto-rows: 70px !important;
   height: auto !important;
-  max-height: calc(6 * 70px + 5 * 8px) !important;
+  max-height: calc(8 * 70px + 7 * 8px) !important;
   gap: 8px 10px !important;
   padding: 4px 8px 10px !important;
   overflow-y: auto !important;
@@ -2407,3 +2407,9 @@ body.webgl-active .studio-volumetric-lights { opacity: .18 !important; }
 
 /* BYE QUIZ LIVE — CLEAN DARK STUDIO: remove legacy gray floor */
 .studio-3d-floor,.floor-grid-plane,.floor-neon-rim,.floor-podium-shadow{display:none!important;visibility:hidden!important;opacity:0!important}
+
+
+/* FINAL GUEST GRID HARDENING — TikTok-style 5 columns, no legacy WebGL floor. */
+.webgl-stage-canvas { background: #030712 !important; }
+.studio-arena-viewport { background: #030712 !important; }
+.join-grid-container { grid-template-columns: repeat(5, minmax(0,1fr)) !important; }
