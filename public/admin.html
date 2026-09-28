@@ -691,6 +691,42 @@ body{background:var(--admin-bg)!important;color:var(--admin-text)!important;padd
   .admin-panel{display:none!important}
   .admin-panel.active{display:flex!important}
 }
+</style><style id="bye-admin-final-v4">
+:root{--a-bg:#05080d;--a-surface:#0b1118;--a-surface-2:#0e1620;--a-border:rgba(255,255,255,.08);--a-accent:#22d3ee;--a-accent-soft:rgba(34,211,238,.09);--a-text:#f4f7f9;--a-muted:#8b98a7}
+html,body{background:var(--a-bg)!important;color:var(--a-text)!important}
+body{padding:18px!important}
+.admin-wrapper{width:min(100%,1500px)!important;max-width:1500px!important;margin:auto!important;display:grid!important;grid-template-columns:230px minmax(0,1fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;gap:12px!important}
+.admin-header{grid-column:1/-1!important;background:var(--a-surface)!important;border:1px solid var(--a-border)!important;border-radius:16px!important;box-shadow:0 16px 45px rgba(0,0,0,.28)!important}
+.admin-title{color:var(--a-text)!important}
+.conn-status-pill{background:var(--a-surface-2)!important;border:1px solid var(--a-border)!important;color:var(--a-muted)!important}
+.conn-indicator-dot,.conn-indicator-dot.active{background:var(--a-accent)!important;box-shadow:0 0 10px rgba(34,211,238,.45)!important}
+.tiktok-topbar{grid-column:1/-1!important;background:var(--a-surface)!important;border:1px solid var(--a-border)!important;box-shadow:none!important}
+.tiktok-live-dot{background:var(--a-accent)!important;box-shadow:0 0 10px rgba(34,211,238,.4)!important}
+.tiktok-topbar-field label{color:var(--a-muted)!important}
+.admin-nav-tabs{grid-column:1!important;grid-row:3!important;align-self:start!important;position:sticky!important;top:12px!important;display:flex!important;flex-direction:column!important;gap:4px!important;padding:8px!important;background:var(--a-surface)!important;border:1px solid var(--a-border)!important;border-radius:16px!important;overflow:visible!important;box-shadow:none!important}
+.nav-tab-btn{width:100%!important;text-align:right!important;color:var(--a-muted)!important;background:transparent!important;border:1px solid transparent!important;border-radius:10px!important;padding:12px 13px!important}
+.nav-tab-btn:hover,.nav-tab-btn.active{color:var(--a-text)!important;background:var(--a-accent-soft)!important;border-color:rgba(34,211,238,.20)!important;box-shadow:none!important}
+.nav-tab-btn.active::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--a-accent);margin-left:8px;vertical-align:middle}
+.admin-panel{grid-column:2!important;grid-row:3!important;background:transparent!important;border:0!important;padding:0!important;gap:12px!important}
+.admin-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+.control-card,.metric-box{background:var(--a-surface)!important;border:1px solid var(--a-border)!important;border-radius:14px!important;box-shadow:none!important}
+.control-card{padding:16px!important}
+.card-title{color:var(--a-text)!important;border-bottom:1px solid var(--a-border)!important}
+.metric-val{color:var(--a-accent)!important}
+.metric-lbl,.form-label,.tiktok-topbar-label small,.tiktok-topbar-status{color:var(--a-muted)!important}
+.admin-btn,.admin-btn.btn-primary,.admin-btn.btn-danger,.admin-btn.btn-warning{background:var(--a-surface-2)!important;color:var(--a-text)!important;border:1px solid var(--a-border)!important;box-shadow:none!important}
+.admin-btn:hover{background:var(--a-accent-soft)!important;color:var(--a-text)!important;border-color:rgba(34,211,238,.25)!important}
+.admin-btn.btn-primary{background:var(--a-accent)!important;color:#041014!important;border-color:var(--a-accent)!important}
+.form-input,select,textarea{background:#070c12!important;color:var(--a-text)!important;border:1px solid var(--a-border)!important}
+.form-input:focus,select:focus,textarea:focus{outline:none!important;border-color:rgba(34,211,238,.35)!important;box-shadow:0 0 0 2px var(--a-accent-soft)!important}
+.players-table th{background:var(--a-surface-2)!important;color:var(--a-muted)!important}
+.players-table th,.players-table td{border-bottom-color:var(--a-border)!important}
+.settings-status-badge{background:var(--a-accent-soft)!important;color:var(--a-accent)!important;border-color:rgba(34,211,238,.2)!important}
+@media(max-width:900px){
+body{padding:8px!important}.admin-wrapper{display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto auto auto minmax(0,1fr)!important}
+.admin-header,.tiktok-topbar{grid-column:1!important}.admin-nav-tabs{grid-column:1!important;grid-row:3!important;position:sticky!important;top:0!important;z-index:60!important;flex-direction:row!important;overflow-x:auto!important}.nav-tab-btn{width:auto!important;flex:0 0 auto!important;text-align:center!important}.admin-panel{grid-column:1!important;grid-row:4!important}.admin-grid-2{grid-template-columns:1fr!important}
+}
+@media(max-width:600px){.admin-wrapper{gap:8px!important}.admin-header{padding:12px!important}.tiktok-topbar{padding:10px!important}.control-card{padding:12px!important}.admin-nav-tabs{padding:5px!important}.nav-tab-btn{padding:10px 12px!important;font-size:11px!important}}
 </style></head>
 <body>
 
