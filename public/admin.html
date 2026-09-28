@@ -1200,13 +1200,19 @@
           enabled: true
         };
       }
-      await sendCmd('SIMULATE_EVENT', {
-        type: 'SPECIAL_ENTRANCE',
-        data: {
-          user: { uniqueId: item.uniqueId, displayName: item.displayName, nickname: item.displayName, avatar: item.imageUrl || '' },
-          config: item
-        }
+      const res = await fetch('/api/special-entrances/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(item)
       });
+      const data = await res.json();
+      const status = document.getElementById('special-form-status');
+      if (!res.ok || !data.success) throw new Error(data.error || 'فشل تشغيل تجربة الدخول');
+      if (status) {
+        status.style.color = '#10b981';
+        status.textContent = 'تم إرسال تجربة الدخول إلى واجهة البث';
+        setTimeout(() => { if (status) status.textContent = ''; }, 3500);
+      }
     }
 
     // Simulator Helpers
