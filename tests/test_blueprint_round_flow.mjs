@@ -32,6 +32,7 @@ function seedScores(ids) {
 }
 
 async function finishQuestionAndEliminate() {
+  serverGameState.answerLockDuration = 0;
   serverGameState.endQuestion();
   await wait(300);
   assert.equal(serverGameState.state, GAME_STATES.RESULT);
