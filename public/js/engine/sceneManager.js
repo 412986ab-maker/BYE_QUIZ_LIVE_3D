@@ -393,7 +393,7 @@ class SceneManager {
     gridEl.style.setProperty('--seat-columns', columns);
     gridEl.style.setProperty('--seat-visible-rows', rows);
     gridEl.style.setProperty('--seat-avatar-size', avatarSize + 'px');
-    gridEl.style.setProperty('--seat-cell-size', Math.max(62, Math.min(92, Math.round(360 / columns)) + 'px');
+    gridEl.style.setProperty('--seat-cell-size', Math.max(62, Math.min(92, Math.round(360 / columns)) + 'px'));
 
     if (pool.length === 0) {
       gridEl.innerHTML = `
