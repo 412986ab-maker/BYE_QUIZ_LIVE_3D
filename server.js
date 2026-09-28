@@ -486,6 +486,35 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (pathname === '/api/special-entrances/test' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      const raw = safeJSONParse(body, {});
+      const checked = validateSpecialEntrance(raw);
+      if (!checked.success) return sendJSON(res, 400, checked);
+
+      const user = {
+        id: 'special_test_' + Date.now(),
+        uniqueId: checked.item.uniqueId,
+        nickname: checked.item.displayName || checked.item.uniqueId,
+        displayName: checked.item.displayName || checked.item.uniqueId,
+        avatar: checked.item.imageUrl || null,
+        isRealAvatar: Boolean(checked.item.imageUrl)
+      };
+
+      eventBus.dispatch('SPECIAL_ENTRANCE', {
+        user,
+        config: checked.item,
+        member: { action: 'test' },
+        timestamp: Date.now()
+      }, 'ADMIN_TEST');
+
+      return sendJSON(res, 200, { success: true, tested: checked.item });
+    });
+    return;
+  }
+
   if (pathname === '/api/special-entrances' && req.method === 'DELETE') {
     const id = String(parsedUrl.searchParams.get('id') || '').trim();
     if (!id) return sendJSON(res, 400, { success: false, error: 'معرف الحساب مطلوب' });
