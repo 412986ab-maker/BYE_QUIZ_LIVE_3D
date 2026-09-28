@@ -811,6 +811,33 @@
             <label class="form-label">مدة تجهيز المشاركين والسؤال (ثانية)</label>
             <input type="number" id="setting-preparation-duration" class="form-input" min="2" max="60" value="5" required />
           </div>
+          
+          <div class="form-group">
+            <label class="form-label">مدة الترقب قبل التجهيز (Suspense)</label>
+            <input type="number" id="setting-suspense-duration" class="form-input" min="0" max="30" step="0.5" value="3" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">مدة قفل الإجابات قبل الكشف (ثانية)</label>
+            <input type="number" id="setting-answer-lock-duration" class="form-input" min="0" max="10" step="0.1" value="1.2" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">نوع السحب</label>
+            <select id="setting-draw-type" class="form-input">
+              <option value="LUCKY_DRAW">Lucky Draw</option>
+              <option value="SCORE_BASED">Score Based</option>
+              <option value="TIE_BREAKER">Tie Breaker</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">مشاركون جدد في الجولة التالية</label>
+            <select id="setting-new-round-participants" class="form-input">
+              <option value="true">مسموح</option>
+              <option value="false">غير مسموح</option>
+            </select>
+          </div>
 
           <div class="form-group">
             <label class="form-label">الانتقال الآلي بين المراحل (Auto Transition)</label>
@@ -967,6 +994,7 @@
 
       if (tabId === 'tab-players') loadParticipantsTable();
       if (tabId === 'tab-questions') loadQuestionsTable();
+      if (tabId === 'tab-diagnostics') loadDiagnostics();
     }
 
     // Send Admin Command to Server Authoritative Engine
@@ -1031,6 +1059,10 @@
           if (s.autoSeatAssignment !== undefined) document.getElementById('setting-auto-seat').value = String(s.autoSeatAssignment);
           if (s.collectionDuration !== undefined) document.getElementById('setting-collection-duration').value = s.collectionDuration;
           if (s.preparationDuration !== undefined) document.getElementById('setting-preparation-duration').value = s.preparationDuration;
+          if (s.suspenseDuration !== undefined) document.getElementById('setting-suspense-duration').value = s.suspenseDuration;
+          if (s.answerLockDuration !== undefined) document.getElementById('setting-answer-lock-duration').value = s.answerLockDuration;
+          if (s.drawType !== undefined) document.getElementById('setting-draw-type').value = String(s.drawType);
+          if (s.allowNewParticipantsNextRound !== undefined) document.getElementById('setting-new-round-participants').value = String(s.allowNewParticipantsNextRound);
           if (s.excludePreviousWinner !== undefined) document.getElementById('setting-exclude-prev').value = String(s.excludePreviousWinner);
         }
       } catch (e) {
@@ -1054,6 +1086,10 @@
         autoSeatAssignment: document.getElementById('setting-auto-seat').value === 'true',
         collectionDuration: parseInt(document.getElementById('setting-collection-duration').value, 10),
         preparationDuration: parseInt(document.getElementById('setting-preparation-duration').value, 10),
+        suspenseDuration: Number(document.getElementById('setting-suspense-duration').value),
+        answerLockDuration: Number(document.getElementById('setting-answer-lock-duration').value),
+        drawType: document.getElementById('setting-draw-type').value,
+        allowNewParticipantsNextRound: document.getElementById('setting-new-round-participants').value === 'true',
         excludePreviousWinner: document.getElementById('setting-exclude-prev').value === 'true'
       };
 
@@ -1077,6 +1113,26 @@
       }
     }
 
+    async function loadDiagnostics() {
+      try {
+        const res = await fetch('/api/diagnostics', { cache: 'no-store' });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'diagnostics failed');
+        const b = data.blueprint || {};
+        const s = data.server || {};
+        document.getElementById('diag-state').textContent = b.state || '—';
+        document.getElementById('diag-phase').textContent = b.phase || '—';
+        document.getElementById('diag-round').textContent = b.roundNumber ?? '—';
+        document.getElementById('diag-participants').textContent = b.participants ?? '—';
+        document.getElementById('diag-events').textContent = data.events?.totalEvents ?? '—';
+        document.getElementById('diag-sse').textContent = s.activeSSEClients ?? '—';
+        document.getElementById('diag-connection').innerHTML = 'TikTok: <b>' + (data.tiktok?.status || '—') + '</b><br>Provider: <b>' + (data.tiktok?.provider || '—') + '</b><br>Database: <b>' + (data.database?.type || '—') + '</b><br>Uptime: <b>' + (s.uptimeSeconds || 0) + 's</b>';
+        document.getElementById('diag-last-event').textContent = JSON.stringify(data.events?.lastEvent || {}, null, 2);
+      } catch (e) {
+        const el = document.getElementById('diag-connection');
+        if (el) el.textContent = 'تعذر تحميل التشخيص: ' + e.message;
+      }
+    }
     // Load Participants Table
     async function loadParticipantsTable() {
       try {
