@@ -23,11 +23,6 @@
         <div class="spotlight spot-right"></div>
         <div class="studio-haze-layer"></div>
       </div>
-      <div class="studio-3d-floor">
-        <div class="floor-grid-plane"></div>
-        <div class="floor-neon-rim"></div>
-        <div class="floor-podium-shadow"></div>
-      </div>
     </div>
 
     <!-- Continuous Atmospheric & Event Particles Canvas -->
@@ -37,7 +32,7 @@
     <header class="global-top-hud">
       <!-- Brand & Status Row -->
       <div class="brand-row">
-        <div class="brand-badge" id="brand-badge-logo" onclick="handleBrandSecretClick()" title="BYE QUIZ">
+        <div class="brand-badge" id="brand-badge-logo" onclick="openAdminPanel()" title="فتح لوحة التحكم">
           <span class="brand-name">BYE QUIZ</span>
           <span class="live-pill-tag" id="live-status-pill">
             <svg class="icon-svg icon-live" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
@@ -195,16 +190,8 @@
 
   <!-- PWA Service Worker & Fullscreen Scripts -->
   <script>
-    let brandClicks = 0;
-    let brandTimer = null;
-    function handleBrandSecretClick() {
-      brandClicks++;
-      clearTimeout(brandTimer);
-      brandTimer = setTimeout(() => { brandClicks = 0; }, 1000);
-      if (brandClicks >= 3) {
-        brandClicks = 0;
-        window.location.href = '/admin';
-      }
+    function openAdminPanel() {
+      window.location.href = '/admin';
     }
 
     function toggleFullscreen() {
