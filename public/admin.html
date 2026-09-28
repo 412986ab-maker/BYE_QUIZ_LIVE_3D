@@ -531,7 +531,111 @@ body{background:var(--admin-bg)!important;color:var(--admin-text)!important;padd
 @media(max-width:560px){.admin-nav-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}.admin-header{padding:12px!important}.control-card{padding:14px!important}.admin-btn{width:100%;justify-content:center}}
 
   </style>
-</head>
+<style id="bye-admin-v2">
+:root{
+  --admin-bg:#05080f;
+  --admin-panel:#0a101a;
+  --admin-panel-2:#0d1521;
+  --admin-border:rgba(255,255,255,.08);
+  --admin-border-strong:rgba(34,211,238,.28);
+  --admin-accent:#22d3ee;
+  --admin-text:#f8fafc;
+  --admin-muted:#8b9bb0;
+}
+body{background:var(--admin-bg)!important;color:var(--admin-text)!important;padding:14px!important;}
+.admin-wrapper{
+  width:min(1440px,100%)!important;
+  display:grid!important;
+  grid-template-columns:220px minmax(0,1fr);
+  grid-template-rows:auto auto auto;
+  gap:12px!important;
+}
+.admin-header{grid-column:1/-1;background:var(--admin-panel)!important;border:1px solid var(--admin-border)!important;border-radius:14px!important;box-shadow:none!important;padding:14px 18px!important}
+.admin-title{color:var(--admin-accent)!important;letter-spacing:.2px}
+.conn-status-pill{background:var(--admin-panel-2)!important;border-color:var(--admin-border)!important}
+.admin-nav-tabs{
+  grid-column:1;grid-row:3;
+  align-self:start;
+  position:sticky;top:12px;
+  display:flex!important;flex-direction:column!important;
+  gap:4px!important;padding:7px!important;
+  background:var(--admin-panel)!important;
+  border:1px solid var(--admin-border)!important;
+  border-radius:14px!important;
+  overflow:visible!important;
+}
+.nav-tab-btn{
+  width:100%;text-align:right!important;
+  color:var(--admin-muted)!important;
+  background:transparent!important;
+  border:1px solid transparent!important;
+  border-radius:9px!important;
+  padding:11px 12px!important;
+}
+.nav-tab-btn:hover,.nav-tab-btn.active{
+  background:rgba(34,211,238,.09)!important;
+  border-color:var(--admin-border-strong)!important;
+  color:var(--admin-accent)!important;
+  box-shadow:none!important;
+}
+.admin-panel{
+  grid-column:2;
+  grid-row:3;
+  background:transparent!important;
+  border:0!important;
+  padding:0!important;
+  gap:12px!important;
+}
+.control-card,.tiktok-topbar{
+  background:var(--admin-panel)!important;
+  border:1px solid var(--admin-border)!important;
+  box-shadow:none!important;
+}
+.control-card{border-radius:14px!important}
+.card-title{color:var(--admin-text)!important;border-bottom-color:var(--admin-border)!important}
+.metrics-bar-grid{gap:8px!important}
+.metric-box{background:var(--admin-panel-2)!important;border-color:var(--admin-border)!important}
+.metric-val{color:var(--admin-accent)!important}
+.metric-lbl,.form-label,.tiktok-topbar-label small,.tiktok-topbar-status{color:var(--admin-muted)!important}
+.form-input{
+  background:#070c14!important;
+  border-color:var(--admin-border)!important;
+  color:var(--admin-text)!important;
+}
+.form-input:focus{border-color:var(--admin-accent)!important;box-shadow:0 0 0 2px rgba(34,211,238,.08)!important}
+.admin-btn{
+  background:#0c1420!important;
+  border:1px solid var(--admin-border)!important;
+  color:var(--admin-text)!important;
+  box-shadow:none!important;
+}
+.admin-btn:hover{background:rgba(34,211,238,.08)!important;border-color:var(--admin-border-strong)!important;color:#fff!important}
+.admin-btn.btn-primary,.admin-btn.btn-warning,.admin-btn.btn-danger{
+  background:var(--admin-accent)!important;
+  color:#041017!important;
+  border-color:var(--admin-accent)!important;
+}
+.tiktok-topbar{border-color:var(--admin-border-strong)!important}
+.tiktok-topbar-field label{color:var(--admin-accent)!important}
+.tiktok-live-dot{background:var(--admin-accent)!important;box-shadow:0 0 10px rgba(34,211,238,.5)!important}
+.players-table th{background:#080e17!important;color:var(--admin-muted)!important}
+.players-table th,.players-table td{border-bottom-color:var(--admin-border)!important}
+.settings-status-badge{color:var(--admin-accent)!important}
+@media(max-width:800px){
+  body{padding:7px!important}
+  .admin-wrapper{display:flex!important;flex-direction:column!important;gap:8px!important}
+  .admin-header,.tiktok-topbar,.admin-nav-tabs,.admin-panel{width:100%!important}
+  .admin-nav-tabs{
+    position:sticky;top:0;z-index:100;
+    flex-direction:row!important;
+    overflow-x:auto!important;
+    scrollbar-width:none;
+  }
+  .nav-tab-btn{width:auto!important;flex:0 0 auto!important;text-align:center!important}
+  .admin-panel{display:none!important}
+  .admin-panel.active{display:flex!important}
+}
+</style></head>
 <body>
 
   <div class="admin-wrapper">
@@ -731,6 +835,7 @@ body{background:var(--admin-bg)!important;color:var(--admin-text)!important;padd
                 <th>التصنيف</th>
                 <th>الإجابة الصحيحة</th>
                 <th>النقاط</th>
+                <th>طرح</th>
               </tr>
             </thead>
             <tbody id="questions-table-body">
@@ -1265,6 +1370,7 @@ body{background:var(--admin-bg)!important;color:var(--admin-text)!important;padd
             <td><span style="color:var(--cyber-cyan); font-weight:700;">${q.category || 'عام'}</span></td>
             <td><span style="color:#10b981; font-weight:800;">${q.correctAnswer}</span></td>
             <td>${q.points || 100}</td>
+            <td><button class="admin-btn btn-primary" style="padding:6px 10px;font-size:10px;" onclick="sendCmd('START_QUESTION',{questionId:'${escapeHtml(q.id || '')}'})">طرح الآن</button></td>
           </tr>
         `).join('');
       } catch (e) {
