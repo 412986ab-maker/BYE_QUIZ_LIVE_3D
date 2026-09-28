@@ -64,6 +64,13 @@ class GameEngine {
       timerEl.textContent = String(duration);
     }
     document.documentElement.style.setProperty("--bye-target-participants", Number.isFinite(target) ? String(target) : "36");
+
+    const columns = Math.min(8, Math.max(3, Number(settings.seatColumns) || 5));
+    const rows = Math.min(8, Math.max(2, Number(settings.seatRows) || 4));
+    const avatarSize = Math.min(64, Math.max(32, Number(settings.seatAvatarSize) || 44));
+    document.documentElement.style.setProperty("--bye-seat-columns", String(columns));
+    document.documentElement.style.setProperty("--bye-seat-rows", String(rows));
+    document.documentElement.style.setProperty("--bye-seat-avatar-size", `${avatarSize}px`);
   }
 
   updateLiveIndicator(status) {
