@@ -316,6 +316,8 @@
         this.instancedLedPillars.setColorAt(i, col);
       }
 
+      // Decorative vertical LED columns are disabled for the clean registration stage.
+      this.instancedLedPillars.visible = false;
       this.scene.add(this.instancedLedPillars);
     }
 
