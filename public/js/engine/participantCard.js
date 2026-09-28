@@ -43,8 +43,8 @@ class ParticipantCard {
   static renderSlot(user, index = 0, total = 36) {
     if (!user) {
       return `
-        <div class="p-slot empty 3d-card-pedestal">
-          <span class="slot-num">${index + 1}</span>
+        <div class="p-slot empty guest-slot" aria-label="مقعد ضيف فارغ">
+          <div class="guest-avatar-placeholder"><span></span></div>
         </div>
       `;
     }
@@ -55,11 +55,9 @@ class ParticipantCard {
     const isCorrect = user.score > 0;
 
     return `
-      <div class="p-slot occupied 3d-card-pedestal animate-pop ${isWinner ? 'state-winner' : (isCorrect ? 'state-elevated' : '')}" id="slot-${user.id || index}">
-        <div class="slot-pedestal-light"></div>
+      <div class="p-slot occupied guest-slot animate-pop ${isWinner ? 'state-winner' : (isCorrect ? 'state-elevated' : '')}" id="slot-${user.id || index}">
         ${avatar}
         <span class="slot-name">${name}</span>
-        ${user.score > 0 ? `<span class="slot-mini-score">${user.score}</span>` : ''}
       </div>
     `;
   }
