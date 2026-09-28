@@ -794,6 +794,14 @@
           </div>
 
           <div class="form-group">
+            <label class="form-label">التعبئة التلقائية للمقاعد من الشات</label>
+            <select id="setting-auto-seat" class="form-input">
+              <option value="true">مفعل — كل من يكتب «تم» يحصل على مقعد تلقائياً</option>
+              <option value="false">معطل — تسجيل المقاعد يدوياً</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label class="form-label">مدة تجميع المشاركين (ثانية)</label>
             <input type="number" id="setting-collection-duration" class="form-input" min="5" max="600" value="30" required />
           </div>
@@ -998,6 +1006,7 @@
           if (s.questionDuration !== undefined) document.getElementById('setting-question-duration').value = s.questionDuration;
           if (s.autoMode !== undefined) document.getElementById('setting-auto-mode').value = String(s.autoMode);
           if (s.autoCollection !== undefined) document.getElementById('setting-auto-collection').value = String(s.autoCollection);
+          if (s.autoSeatAssignment !== undefined) document.getElementById('setting-auto-seat').value = String(s.autoSeatAssignment);
           if (s.collectionDuration !== undefined) document.getElementById('setting-collection-duration').value = s.collectionDuration;
           if (s.preparationDuration !== undefined) document.getElementById('setting-preparation-duration').value = s.preparationDuration;
           if (s.excludePreviousWinner !== undefined) document.getElementById('setting-exclude-prev').value = String(s.excludePreviousWinner);
@@ -1020,6 +1029,7 @@
         questionDuration: parseInt(document.getElementById('setting-question-duration').value, 10),
         autoMode: document.getElementById('setting-auto-mode').value === 'true',
         autoCollection: document.getElementById('setting-auto-collection').value === 'true',
+        autoSeatAssignment: document.getElementById('setting-auto-seat').value === 'true',
         collectionDuration: parseInt(document.getElementById('setting-collection-duration').value, 10),
         preparationDuration: parseInt(document.getElementById('setting-preparation-duration').value, 10),
         excludePreviousWinner: document.getElementById('setting-exclude-prev').value === 'true'
