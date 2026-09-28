@@ -504,7 +504,7 @@ class SceneManager {
   renderQuestionScene() {
     const q = this.state.get('currentQuestion') || {
       category: 'ثقافة عامة',
-      question: 'في انتظار طرح السؤال من لوحة التحكم',
+      question: 'لم يتم اختيار سؤال بعد',
       options: [],
       points: 100
     };
@@ -532,7 +532,7 @@ class SceneManager {
           ${IconSystem.get('question', { size: 14 })} <span>سؤال التحدي (+${q.points || 100} نقطة)</span>
         </div>
         <div class="question-source-badge">
-          ${IconSystem.get('database', { size: 13 })} <span>المصدر: بنك الأسئلة — يختاره المدير ثم يطرحه من لوحة التحكم</span>
+          ${IconSystem.get('database', { size: 13 })} <span>المصدر: بنك الأسئلة — يُختار تلقائياً عند بدء السؤال، ويمكن للمدير اختيار سؤال محدد من لوحة التحكم</span>
         </div>
         <div class="question-hero-box 3d-hologram-screen">
           <div class="question-hologram-scanline"></div>
