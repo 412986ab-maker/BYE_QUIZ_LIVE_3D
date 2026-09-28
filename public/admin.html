@@ -782,6 +782,16 @@
           </div>
 
           <div class="form-group">
+            <label class="form-label">عدد الجولات</label>
+            <input type="number" id="setting-total-rounds" class="form-input" min="1" max="20" value="3" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">عدد الأسئلة في كل جولة</label>
+            <input type="number" id="setting-questions-per-round" class="form-input" min="1" max="50" value="3" />
+          </div>
+
+          <div class="form-group">
             <label class="form-label">مدة الإجابة على السؤال بالثواني (Question Duration)</label>
             <input type="number" id="setting-question-duration" class="form-input" min="5" max="60" value="15" required />
           </div>
@@ -1053,6 +1063,8 @@
           if (s.seatColumns !== undefined) document.getElementById('setting-seat-columns').value = String(s.seatColumns);
           if (s.seatRows !== undefined) document.getElementById('setting-seat-rows').value = String(s.seatRows);
           if (s.seatAvatarSize !== undefined) document.getElementById('setting-seat-avatar-size').value = String(s.seatAvatarSize);
+          if (s.totalRounds !== undefined) document.getElementById('setting-total-rounds').value = s.totalRounds;
+          if (s.questionsPerRound !== undefined) document.getElementById('setting-questions-per-round').value = s.questionsPerRound;
           if (s.questionDuration !== undefined) document.getElementById('setting-question-duration').value = s.questionDuration;
           if (s.autoMode !== undefined) document.getElementById('setting-auto-mode').value = String(s.autoMode);
           if (s.autoCollection !== undefined) document.getElementById('setting-auto-collection').value = String(s.autoCollection);
@@ -1080,6 +1092,8 @@
         seatColumns: parseInt(document.getElementById('setting-seat-columns').value, 10),
         seatRows: parseInt(document.getElementById('setting-seat-rows').value, 10),
         seatAvatarSize: parseInt(document.getElementById('setting-seat-avatar-size').value, 10),
+        totalRounds: parseInt(document.getElementById('setting-total-rounds').value, 10),
+        questionsPerRound: parseInt(document.getElementById('setting-questions-per-round').value, 10),
         questionDuration: parseInt(document.getElementById('setting-question-duration').value, 10),
         autoMode: document.getElementById('setting-auto-mode').value === 'true',
         autoCollection: document.getElementById('setting-auto-collection').value === 'true',
