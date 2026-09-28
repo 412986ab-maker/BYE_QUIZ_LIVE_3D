@@ -1185,10 +1185,12 @@ body.webgl-active .studio-volumetric-lights {
 .cinematic-gift-card {
   position: absolute;
   top: 24%;
-  left: 50%;
-  width: min(420px, calc(100% - 28px));
+  right: 10px;
+  left: auto;
+  width: min(350px, calc(100% - 20px));
   min-height: 54px;
-  transform: translate(-50%, -50%);
+  transform: translate3d(0, -50%, 0);
+  direction: rtl;
   z-index: 80;
   background: linear-gradient(90deg, rgba(3, 7, 18, 0.38), rgba(15, 23, 42, 0.62), rgba(3, 7, 18, 0.34));
   border: 1px solid rgba(255, 255, 255, 0.10);
@@ -1232,6 +1234,7 @@ body.webgl-active .studio-volumetric-lights {
   display: flex;
   align-items: center;
   gap: 8px;
+  direction: rtl;
 }
 
 .gift-visual-core {
@@ -1940,6 +1943,10 @@ body {
 }
 
 @media (max-width: 520px) {
+  .cinematic-gift-card {
+    right: 8px;
+    width: min(330px, calc(100vw - 16px));
+  }
   .special-entrance-card {
     top: clamp(82px, 15dvh, 132px);
     width: calc(100vw - 22px);
