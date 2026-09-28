@@ -504,8 +504,8 @@ class SceneManager {
   renderQuestionScene() {
     const q = this.state.get('currentQuestion') || {
       category: 'ثقافة عامة',
-      question: 'في انتظار طرح السؤال...',
-      options: ['أ', 'ب', 'ج', 'د'],
+      question: 'جاري تجهيز السؤال من بنك الأسئلة...',
+      options: [],
       points: 100
     };
 
@@ -530,6 +530,9 @@ class SceneManager {
       <div class="scene-frame anim-question-enter 3d-question-stage">
         <div class="scene-title-badge">
           ${IconSystem.get('question', { size: 14 })} <span>سؤال التحدي (+${q.points || 100} نقطة)</span>
+        </div>
+        <div class="question-source-badge">
+          ${IconSystem.get('database', { size: 13 })} <span>المصدر: بنك الأسئلة — يُطرح تلقائياً عند بدء السؤال</span>
         </div>
         <div class="question-hero-box 3d-hologram-screen">
           <div class="question-hologram-scanline"></div>
