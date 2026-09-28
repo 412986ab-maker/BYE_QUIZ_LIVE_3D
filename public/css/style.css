@@ -1983,3 +1983,308 @@ body {
 /* Clean registration background: remove decorative vertical columns. */
 .studio-volumetric-lights .spotlight { opacity: 0 !important; }
 .studio-3d-floor { opacity: 0 !important; }
+
+
+/* ==========================================================
+   ELIMINATION + FINAL — extends the existing 3D Studio identity.
+   No palette replacement: uses the existing cyan / magenta / gold tokens.
+   ========================================================== */
+.elimination-stage {
+  gap: 8px;
+}
+
+.elimination-hero-box {
+  position: relative;
+  min-height: 108px;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.elimination-core-ring {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  border: 2px solid var(--neon-magenta);
+  background: radial-gradient(circle, rgba(255,255,255,.08), rgba(255,255,255,.015) 65%);
+  box-shadow: 0 0 28px rgba(236,72,153,.22), inset 0 0 22px rgba(34,211,238,.08);
+}
+
+.elimination-core-number {
+  font-family: var(--font-hud);
+  font-size: 23px;
+  font-weight: 1000;
+  color: var(--cyber-cyan);
+  line-height: 1;
+}
+
+.elimination-core-label {
+  margin-top: 4px;
+  font-size: 7px;
+  color: var(--text-dim);
+  font-weight: 900;
+}
+
+.elimination-headline {
+  font-size: 15px;
+  font-weight: 1000;
+  color: #fff;
+}
+
+.elimination-subline {
+  margin-top: 5px;
+  font-size: 9px;
+  color: var(--text-dim);
+  font-weight: 800;
+}
+
+.elimination-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  min-height: 0;
+}
+
+.elimination-panel {
+  padding: 8px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.elimination-panel-survivors {
+  border-color: rgba(34,211,238,.18);
+}
+
+.elimination-panel-out {
+  border-color: rgba(236,72,153,.16);
+}
+
+.elimination-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 8px;
+  font-weight: 1000;
+  margin-bottom: 6px;
+  color: var(--text-dim);
+}
+
+.elimination-panel-title b {
+  margin-inline-start: auto;
+  color: #fff;
+  font-family: var(--font-hud);
+  font-size: 9px;
+}
+
+.elimination-player-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.elimination-player-card {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.07);
+  background: rgba(255,255,255,.025);
+}
+
+.elimination-player-card.elimination-survivor {
+  border-color: rgba(34,211,238,.12);
+}
+
+.elimination-player-card.elimination-eliminated {
+  opacity: .58;
+  border-color: rgba(236,72,153,.1);
+}
+
+.elimination-player-avatar {
+  width: 27px;
+  height: 27px;
+  flex: 0 0 27px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.14);
+}
+
+.elimination-player-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.elimination-player-copy {
+  min-width: 0;
+  display: grid;
+  line-height: 1.05;
+}
+
+.elimination-player-rank {
+  font-family: var(--font-hud);
+  font-size: 6px;
+  color: var(--text-dim);
+}
+
+.elimination-player-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 8px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.elimination-player-score {
+  font-family: var(--font-hud);
+  font-size: 6px;
+  color: var(--cyber-cyan);
+}
+
+.elimination-more {
+  margin-top: 5px;
+  text-align: center;
+  font-size: 7px;
+  font-weight: 900;
+  color: var(--text-dim);
+}
+
+.final-stage {
+  gap: 8px;
+}
+
+.final-hero-box {
+  position: relative;
+  min-height: 108px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  text-align: center;
+}
+
+.final-orbit {
+  position: absolute;
+  width: 155px;
+  height: 155px;
+  border: 1px solid rgba(255,216,74,.22);
+  border-radius: 50%;
+  box-shadow: 0 0 35px rgba(255,216,74,.08);
+  animation: finalOrbitSpin 7s linear infinite;
+}
+
+.final-orbit::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  top: 7px;
+  left: 50%;
+  border-radius: 50%;
+  background: var(--luxury-gold);
+  box-shadow: 0 0 15px var(--luxury-gold);
+}
+
+.final-title {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-hud);
+  font-size: 26px;
+  letter-spacing: 3px;
+}
+
+.final-subtitle {
+  position: relative;
+  z-index: 2;
+  margin-top: 4px;
+  font-size: 9px;
+  color: var(--text-dim);
+  font-weight: 900;
+}
+
+.finalists-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  max-height: 150px;
+  overflow: hidden;
+}
+
+.finalist-card {
+  min-width: 0;
+  padding: 7px 5px;
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  text-align: center;
+  border-color: rgba(255,216,74,.12);
+}
+
+.finalist-position {
+  font-family: var(--font-hud);
+  font-size: 6px;
+  color: var(--luxury-gold);
+  letter-spacing: .7px;
+}
+
+.finalist-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255,216,74,.55);
+  box-shadow: 0 0 15px rgba(255,216,74,.12);
+}
+
+.finalist-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 8px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.finalist-score {
+  font-family: var(--font-hud);
+  font-size: 7px;
+  color: var(--cyber-cyan);
+}
+
+.finalist-empty {
+  grid-column: 1 / -1;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 9px;
+}
+
+@keyframes finalOrbitSpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 420px) {
+  .elimination-hero-box {
+    grid-template-columns: 72px 1fr;
+    min-height: 92px;
+  }
+  .elimination-core-ring {
+    width: 62px;
+    height: 62px;
+  }
+  .elimination-core-number { font-size: 19px; }
+  .elimination-headline { font-size: 12px; }
+  .elimination-columns { gap: 5px; }
+  .elimination-player-grid { grid-template-columns: 1fr; }
+  .finalists-grid { grid-template-columns: repeat(3, 1fr); }
+}
