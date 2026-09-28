@@ -225,6 +225,42 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ==========================================
+  // 2.1 MASTER BLUEPRINT DIAGNOSTICS
+  // ==========================================
+  if (pathname === '/api/diagnostics' && req.method === 'GET') {
+    const game = serverGameState.getSnapshot();
+    const tiktok = tiktokConnector.getStatus();
+    const database = db.getStatus();
+    return sendJSON(res, 200, {
+      success: true,
+      timestamp: Date.now(),
+      server: {
+        uptimeSeconds: Math.floor((Date.now() - serverStartTime) / 1000),
+        activeSSEClients: clients.size,
+        node: process.version
+      },
+      blueprint: {
+        state: game.state,
+        phase: game.phase,
+        phaseStartedAt: game.phaseStartedAt,
+        phaseEndsAt: game.phaseEndsAt,
+        roundNumber: game.roundNumber,
+        participants: game.currentParticipantsCount,
+        questionActive: Boolean(game.currentQuestion),
+        timerRemaining: game.remainingSeconds
+      },
+      tiktok,
+      events: eventBus.getDiagnostics(),
+      database,
+      recovery: {
+        authoritativeState: 'SERVER',
+        settingsPersistent: true,
+        lastSnapshotAt: Date.now()
+      }
+    });
+  }
+
+  // ==========================================
   // 3. AUTHENTICATION & RBAC APIS
   // ==========================================
   if (pathname === '/api/auth/login' && req.method === 'POST') {
