@@ -493,7 +493,7 @@ body.webgl-active .studio-volumetric-lights {
   transform-style: preserve-3d;
 }
 
-.scene-frame.3d-seats-stage {
+[class~="3d-seats-stage"] {
   justify-content: flex-start;
   gap: 7px;
   padding-top: 2px;
