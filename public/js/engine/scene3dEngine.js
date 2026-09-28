@@ -368,6 +368,13 @@
       this.scene.add(this.instancedBases);
       this.scene.add(this.instancedRings);
 
+      // The public guest UI uses TikTok-style circular DOM seats.
+      // Hide the legacy WebGL pedestal grid so the old 36-seat floor
+      // can never appear behind the new guest layout.
+      this.instancedShadows.visible = false;
+      this.instancedBases.visible = false;
+      this.instancedRings.visible = false;
+
       // Arrange 36 seats in a 6x6 arena layout with circular curving
       const cols = 6;
       const rows = 6;
