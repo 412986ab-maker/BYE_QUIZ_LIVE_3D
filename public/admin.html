@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />\n  <meta http-equiv="Pragma" content="no-cache" />\n  <meta http-equiv="Expires" content="0" />
   <title>BYE QUIZ LIVE - مركز تحكم الإدارة الشامل</title>
   <link rel="stylesheet" href="/css/style.css" />
   <style>
@@ -530,6 +530,62 @@ body{background:var(--admin-bg)!important;color:var(--admin-text)!important;padd
 @media(max-width:900px){body{padding:8px!important}.admin-nav-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important;position:relative;top:0}}
 @media(max-width:560px){.admin-nav-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}.admin-header{padding:12px!important}.control-card{padding:14px!important}.admin-btn{width:100%;justify-content:center}}
 
+  
+    /* ==========================================================
+       BYE QUIZ ADMIN — CONTROL CENTER v2
+       Unified dark / cyan system. No rainbow accents.
+       ========================================================== */
+    :root {
+      --admin-bg:#05080f;
+      --admin-surface:#0a101b;
+      --admin-surface-2:#0d1522;
+      --admin-line:rgba(255,255,255,.08);
+      --admin-text:#edf6f8;
+      --admin-muted:#81909e;
+      --admin-accent:#22d3ee;
+      --admin-accent-soft:rgba(34,211,238,.10);
+      --admin-accent-line:rgba(34,211,238,.28);
+    }
+    html, body { background:var(--admin-bg) !important; color:var(--admin-text) !important; }
+    body { padding:0 !important; }
+    .admin-wrapper { max-width:1500px !important; min-height:100dvh; display:grid !important; grid-template-columns:220px minmax(0,1fr); grid-template-rows:auto auto 1fr; gap:14px !important; padding:14px; }
+    .admin-header { grid-column:1 / -1; background:linear-gradient(180deg,var(--admin-surface-2),var(--admin-surface)) !important; border:1px solid var(--admin-line) !important; border-radius:18px !important; padding:14px 18px !important; box-shadow:0 12px 35px rgba(0,0,0,.25); }
+    .admin-title { color:var(--admin-text) !important; letter-spacing:.2px; }
+    .admin-title svg { stroke:var(--admin-accent); }
+    .conn-status-pill { background:var(--admin-accent-soft) !important; border-color:var(--admin-accent-line) !important; color:var(--admin-text); }
+    .conn-indicator-dot { background:#52606d !important; box-shadow:none !important; }
+    .conn-indicator-dot.active { background:var(--admin-accent) !important; box-shadow:0 0 12px rgba(34,211,238,.55) !important; }
+    .tiktok-topbar { grid-column:1 / -1; background:var(--admin-surface) !important; border:1px solid var(--admin-line) !important; border-radius:16px !important; }
+    .tiktok-live-dot { background:var(--admin-accent) !important; box-shadow:0 0 12px rgba(34,211,238,.45) !important; }
+    .admin-nav-tabs { grid-column:1; grid-row:3; align-self:start; position:sticky; top:14px; flex-direction:column !important; background:var(--admin-surface) !important; border:1px solid var(--admin-line) !important; border-radius:16px !important; padding:8px !important; overflow:visible !important; gap:5px !important; }
+    .nav-tab-btn { width:100%; text-align:right; color:var(--admin-muted) !important; background:transparent !important; border:1px solid transparent !important; border-radius:10px !important; padding:12px 13px !important; font-size:12px !important; }
+    .nav-tab-btn:hover, .nav-tab-btn.active { color:var(--admin-text) !important; background:var(--admin-accent-soft) !important; border-color:var(--admin-accent-line) !important; box-shadow:none !important; }
+    .nav-tab-btn.active::before { content:' '; display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--admin-accent); margin-left:8px; vertical-align:middle; }
+    .admin-panel { grid-column:2; grid-row:3; background:transparent !important; border:0 !important; padding:0 !important; }
+    .metrics-bar-grid { grid-template-columns:repeat(6,minmax(100px,1fr)) !important; gap:8px !important; }
+    .metric-box, .control-card, .admin-panel > .control-card { background:var(--admin-surface) !important; border:1px solid var(--admin-line) !important; border-radius:14px !important; box-shadow:none !important; }
+    .metric-box { padding:13px 10px !important; }
+    .metric-val { color:var(--admin-text) !important; }
+    .metric-lbl, .form-label, .control-card small { color:var(--admin-muted) !important; }
+    .card-title { color:var(--admin-text) !important; border-bottom-color:var(--admin-line) !important; }
+    .card-title::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--admin-accent); box-shadow:0 0 8px rgba(34,211,238,.35); }
+    .admin-btn { background:var(--admin-surface-2) !important; border:1px solid var(--admin-line) !important; color:var(--admin-text) !important; box-shadow:none !important; }
+    .admin-btn:hover { background:var(--admin-accent-soft) !important; border-color:var(--admin-accent-line) !important; }
+    .admin-btn.btn-primary, .admin-btn.btn-warning, .admin-btn.btn-danger { background:var(--admin-accent) !important; color:#031018 !important; border-color:var(--admin-accent) !important; }
+    .form-input, select, textarea { background:#070d16 !important; color:var(--admin-text) !important; border-color:var(--admin-line) !important; }
+    .form-input:focus, select:focus, textarea:focus { border-color:var(--admin-accent-line) !important; box-shadow:0 0 0 3px var(--admin-accent-soft) !important; outline:none; }
+    .players-table th { background:var(--admin-surface-2) !important; color:var(--admin-muted) !important; border-color:var(--admin-line) !important; }
+    .players-table td { border-color:var(--admin-line) !important; color:var(--admin-text) !important; }
+    .activity-feed-container { background:#070d16 !important; border-color:var(--admin-line) !important; }
+    .settings-status-badge { background:var(--admin-accent-soft) !important; color:var(--admin-accent) !important; border-color:var(--admin-accent-line) !important; }
+    @media (max-width:900px) {
+      .admin-wrapper { grid-template-columns:1fr; grid-template-rows:auto auto auto 1fr; padding:10px; }
+      .admin-nav-tabs { grid-column:1; grid-row:3; position:sticky; top:0; z-index:50; flex-direction:row !important; overflow-x:auto !important; }
+      .nav-tab-btn { width:auto; min-width:max-content; text-align:center; }
+      .admin-panel { grid-column:1; grid-row:4; }
+      .metrics-bar-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
+    }
+    @media (max-width:520px) { .metrics-bar-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; } }
   </style>
 <style id="bye-admin-v2">
 :root{
