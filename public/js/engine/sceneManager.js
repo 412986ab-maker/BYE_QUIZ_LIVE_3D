@@ -353,21 +353,22 @@ class SceneManager {
       this.dom.headerCategory.innerHTML = `${IconSystem.get('participants', { size: 16 })} <span>مرحلة حجز المقاعد والتسجيل</span>`;
     }
 
-    const targetValue = Number(this.state.get('settings').targetParticipants);
+    const settings = this.state.get('settings') || {};
+    const targetValue = Number(settings.targetParticipants);
     const target = Number.isFinite(targetValue) ? Math.max(0, targetValue) : 36;
     const pool = this.participants.getDrawPoolUsers();
+    const columns = Math.min(8, Math.max(3, Number(settings.seatColumns) || 5));
+    const rows = Math.min(8, Math.max(2, Number(settings.seatRows) || 4));
+    const avatarSize = Math.min(64, Math.max(32, Number(settings.seatAvatarSize) || 44));
+    const cellSize = Math.max(62, Math.min(92, Math.round(360 / columns)));
 
     this.dom.stage.innerHTML = `
       <div class="scene-frame anim-seats-enter 3d-seats-stage">
         <div class="scene-title-badge">
-          ${IconSystem.get('participants', { size: 14 })} <span>مقاعد المتسابقين (${pool.length} / ${target})</span>
+          ${IconSystem.get('participants', { size: 14 })} <span>مقاعد المتسابقين (${pool.length} / ${target > 0 ? target : '∞'})</span>
         </div>
-        <div class="join-grid-container 3d-grid-viewport" id="reg-grid">
-          <!-- Filled dynamically -->
-        </div>
-        <div class="join-callout-box 3d-callout-panel">
-          <span class="join-instruction">اكتب في الشات للانضمام وحجز المقعد:</span>
-          <span class="join-keyword-pill">!join أو "تم"</span>
+        <div class="join-grid-container 3d-grid-viewport" id="reg-grid"
+             style="--seat-columns:${columns};--seat-visible-rows:${rows};--seat-avatar-size:${avatarSize}px;--seat-cell-size:${cellSize}px;">
         </div>
       </div>
     `;
@@ -379,12 +380,20 @@ class SceneManager {
     const gridEl = document.getElementById('reg-grid');
     if (!gridEl) return;
 
-    const targetValue = Number(this.state.get('settings').targetParticipants);
+    const settings = this.state.get('settings') || {};
+    const targetValue = Number(settings.targetParticipants);
     const target = Number.isFinite(targetValue) ? Math.max(0, targetValue) : 36;
     const pool = this.participants.getDrawPoolUsers();
+    const columns = Math.min(8, Math.max(3, Number(settings.seatColumns) || 5));
+    const rows = Math.min(8, Math.max(2, Number(settings.seatRows) || 4));
+    const avatarSize = Math.min(64, Math.max(32, Number(settings.seatAvatarSize) || 44));
+    const visibleCapacity = columns * rows;
+    const renderCount = target > 0 ? Math.max(target, visibleCapacity) : Math.max(pool.length, visibleCapacity);
 
-    // Keep large participant pools compact and evenly organized.
-    gridEl.classList.toggle('dense-grid', target >= 48);
+    gridEl.style.setProperty('--seat-columns', columns);
+    gridEl.style.setProperty('--seat-visible-rows', rows);
+    gridEl.style.setProperty('--seat-avatar-size', avatarSize + 'px');
+    gridEl.style.setProperty('--seat-cell-size', Math.max(62, Math.min(92, Math.round(360 / columns)) + 'px');
 
     if (pool.length === 0) {
       gridEl.innerHTML = `
@@ -397,14 +406,14 @@ class SceneManager {
     }
 
     let html = '';
-    for (let i = 0; i < target; i++) {
+    for (let i = 0; i < renderCount; i++) {
       const user = pool[i] || null;
-      html += ParticipantCard.renderSlot(user, i, target);
+      html += ParticipantCard.renderSlot(user, i, renderCount);
     }
     gridEl.innerHTML = html;
 
     if (window.scene3dEngine && window.scene3dEngine.isSupported) {
-      for (let i = 0; i < target; i++) {
+      for (let i = 0; i < Math.min(renderCount, 36); i++) {
         window.scene3dEngine.setPedestalUser(i, pool[i] || null);
       }
     }
