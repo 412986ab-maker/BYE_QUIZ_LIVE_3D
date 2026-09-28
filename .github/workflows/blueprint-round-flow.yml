@@ -1,0 +1,21 @@
+name: BYE QUIZ LIVE Blueprint Round Flow Test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  round-flow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm install
+      - name: Run elimination engine test
+        run: node tests/test_elimination_engine.mjs
+      - name: Run authoritative multi-round flow
+        run: node tests/test_blueprint_round_flow.mjs
