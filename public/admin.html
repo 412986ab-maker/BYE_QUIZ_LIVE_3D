@@ -552,6 +552,7 @@
       <button class="nav-tab-btn" onclick="showTab('tab-questions')">بنك الأسئلة</button>
       <button class="nav-tab-btn" onclick="showTab('tab-settings')">إعدادات اللعبة</button>
       <button class="nav-tab-btn" onclick="showTab('tab-special-entrances')">الدخول المميز</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-diagnostics')">التشخيص</button>
       <button class="nav-tab-btn" onclick="showTab('tab-simulator')">محاكي التطوير (Dev/Test)</button>
     </nav>
 
@@ -916,6 +917,27 @@
       </div>
     </section>
 
+    <!-- TAB: Master Blueprint Diagnostics -->
+    <section class="admin-panel" id="tab-diagnostics">
+      <div class="control-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div><div class="card-title">تشخيص Master Blueprint</div><div style="font-size:11px;color:var(--text-dim);margin-top:4px;">حالة السيرفر، مرحلة اللعبة، TikTok، قاعدة البيانات، والأحداث الأخيرة.</div></div>
+          <button class="admin-btn" type="button" onclick="loadDiagnostics()">تحديث الآن</button>
+        </div>
+        <div class="metrics-bar-grid" style="margin-top:12px;">
+          <div class="metric-box"><div class="metric-val" id="diag-state">—</div><div class="metric-lbl">Game State</div></div>
+          <div class="metric-box"><div class="metric-val" id="diag-phase">—</div><div class="metric-lbl">Blueprint Phase</div></div>
+          <div class="metric-box"><div class="metric-val" id="diag-round">—</div><div class="metric-lbl">Round</div></div>
+          <div class="metric-box"><div class="metric-val" id="diag-participants">—</div><div class="metric-lbl">Participants</div></div>
+          <div class="metric-box"><div class="metric-val" id="diag-events">—</div><div class="metric-lbl">Total Events</div></div>
+          <div class="metric-box"><div class="metric-val" id="diag-sse">—</div><div class="metric-lbl">SSE Clients</div></div>
+        </div>
+      </div>
+      <div class="admin-grid-2">
+        <div class="control-card"><div class="card-title">الاتصال والتخزين</div><div id="diag-connection" style="font-size:12px;line-height:1.9;color:var(--text-dim);">جارٍ التحميل...</div></div>
+        <div class="control-card"><div class="card-title">آخر حدث</div><pre id="diag-last-event" style="white-space:pre-wrap;word-break:break-word;font-size:11px;color:#cbd5e1;margin:0;">جارٍ التحميل...</pre></div>
+      </div>
+    </section>
     <!-- TAB 5: Developer / Test Simulator Mode -->
     <section class="admin-panel" id="tab-simulator">
       <div class="control-card">
