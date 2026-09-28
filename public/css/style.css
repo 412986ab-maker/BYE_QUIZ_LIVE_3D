@@ -2403,3 +2403,7 @@ body.webgl-active .studio-volumetric-lights { opacity: .18 !important; }
 
 /* One unified accent for the public game controls. */
 :root { --cyber-cyan:#22d3ee; --cyber-blue:#22d3ee; --neon-magenta:#22d3ee; --electric-purple:#22d3ee; --luxury-gold:#22d3ee; }
+
+
+/* BYE QUIZ LIVE — CLEAN DARK STUDIO: remove legacy gray floor */
+.studio-3d-floor,.floor-grid-plane,.floor-neon-rim,.floor-podium-shadow{display:none!important;visibility:hidden!important;opacity:0!important}
