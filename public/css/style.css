@@ -2370,3 +2370,36 @@ body {
 [class~="3d-seats-stage"] .scene-title-badge {
   margin-bottom: 2px;
 }
+
+
+/* ==========================================================
+   BYE QUIZ LIVE — CLEAN STAGE + TIKTOK GUEST GRID
+   ========================================================== */
+/* Remove the old silver/grey-looking lower stage layers. Keep the dark 3D studio. */
+.studio-haze-layer,
+.studio-3d-floor,
+.floor-grid-plane,
+.floor-neon-rim,
+.floor-podium-shadow { display:none !important; }
+.stream-container { background: #030712 !important; }
+body.webgl-active .studio-volumetric-lights { opacity: .18 !important; }
+
+/* TikTok-style guest seats: five circular guest icons per horizontal row. */
+.join-grid-container {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  grid-auto-rows: 70px !important;
+  height: auto !important;
+  max-height: calc(6 * 70px + 5 * 8px) !important;
+  gap: 8px 10px !important;
+  padding: 4px 8px 10px !important;
+  overflow-y: auto !important;
+}
+.p-slot.guest-slot { height:70px !important; justify-content:flex-start !important; background:transparent !important; border:0 !important; box-shadow:none !important; }
+.p-slot.guest-slot .avatar-3d-wrapper { width:48px !important; height:48px !important; margin:0 auto !important; }
+.p-slot.guest-slot .p-avatar { width:48px !important; height:48px !important; border:2px solid rgba(255,255,255,.78) !important; box-shadow:0 0 0 1px rgba(34,211,238,.22), 0 4px 16px rgba(0,0,0,.45) !important; }
+.p-slot.guest-slot .avatar-neon-aura { display:none !important; }
+.p-slot.guest-slot .slot-name { max-width:72px; margin-top:4px; font-size:9px; color:#d7dee8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.p-slot.guest-slot.empty .guest-avatar-placeholder { width:48px !important; height:48px !important; border-radius:50%; border:1px dashed rgba(148,163,184,.22); background:rgba(255,255,255,.025); }
+
+/* One unified accent for the public game controls. */
+:root { --cyber-cyan:#22d3ee; --cyber-blue:#22d3ee; --neon-magenta:#22d3ee; --electric-purple:#22d3ee; --luxury-gold:#22d3ee; }
