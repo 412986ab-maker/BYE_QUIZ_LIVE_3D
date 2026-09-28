@@ -125,9 +125,9 @@ class GameEngine {
       ANSWER_LOCK: "LOCK",
       QUESTION_RESULT: "ANSWERS",
       ROUND_RESULTS: "ANSWERS",
-      ELIMINATION: "ANSWERS",
+      ELIMINATION: "ELIMINATION",
       DRAW: "DRAW",
-      FINAL: "PODIUM",
+      FINAL: "FINAL",
       CHAMPION: "WINNER",
       VICTORY: "WINNER"
     };
@@ -535,6 +535,28 @@ class GameEngine {
         break;
       }
 
+      case "ELIMINATION_STARTED": {
+        const p = payload || {};
+        this.state.set("elimination", p);
+        this.events.emit("elimination:started", p);
+        this.scenes.transitionTo("ELIMINATION", p);
+        break;
+      }
+
+      case "ELIMINATION_COMPLETED": {
+        const p = payload || {};
+        this.state.set("elimination", p);
+        this.events.emit("elimination:completed", p);
+        break;
+      }
+
+      case "FINAL_STARTED": {
+        const p = payload || {};
+        this.state.set("final", p);
+        this.scenes.transitionTo("FINAL", p);
+        break;
+      }
+
       case "DRAW_STARTED":
       case "START_DRAW": {
         this.scenes.transitionTo("DRAW", payload || {});
@@ -548,6 +570,20 @@ class GameEngine {
         const winnerId = payload?.winner?.id || payload?.participant?.id || payload?.winnerId || null;
         this.scenes.transitionTo("DRAW", payload || {});
         this.draw.spin(winnerId);
+        break;
+      }
+
+      case "CHAMPION": {
+        const p = payload || {};
+        this.state.set("currentWinner", p.winner || p.participant || null);
+        this.scenes.transitionTo("WINNER", p);
+        break;
+      }
+
+      case "VICTORY": {
+        const p = payload || {};
+        this.state.set("currentWinner", p.winner || p.participant || null);
+        this.scenes.transitionTo("WINNER", p);
         break;
       }
 
@@ -589,9 +625,25 @@ class GameEngine {
       }
 
       case "ROUND_STARTED": {
-        this.participants.clearParticipants();
+        const p = payload || {};
         this.state.resetRound();
-        this.scenes.transitionTo("REGISTRATION", payload || {});
+
+        // Server sends the qualified players that carry into the next round.
+        // Keep those seats and open only the remaining capacity for new joins.
+        if (Array.isArray(p.qualified)) {
+          this.participants.clearParticipants();
+          for (const participant of p.qualified) {
+            this.participants.addParticipant({
+              ...participant,
+              username: participant.uniqueId || participant.username || participant.id,
+              displayName: participant.displayName || participant.nickname,
+              avatar: participant.avatar
+            });
+          }
+        }
+
+        this.state.set("elimination", null);
+        this.scenes.transitionTo("REGISTRATION", p);
         break;
       }
 
