@@ -32,7 +32,7 @@
     <header class="global-top-hud">
       <!-- Brand & Status Row -->
       <div class="brand-row">
-        <div class="brand-badge" id="brand-badge-logo" onclick="openAdminPanel()" title="فتح لوحة التحكم">
+        <div class="brand-badge" id="brand-badge-logo" role="button" tabindex="0" onclick="openAdminPanel()" onkeydown="if(event.key==='Enter'||event.key===' ')openAdminPanel()" title="فتح لوحة التحكم">
           <span class="brand-name">BYE QUIZ</span>
           <span class="live-pill-tag" id="live-status-pill">
             <svg class="icon-svg icon-live" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
@@ -191,7 +191,7 @@
   <!-- PWA Service Worker & Fullscreen Scripts -->
   <script>
     function openAdminPanel() {
-      window.location.href = '/admin';
+      window.location.assign('/admin?build=20260928');
     }
 
     function toggleFullscreen() {
