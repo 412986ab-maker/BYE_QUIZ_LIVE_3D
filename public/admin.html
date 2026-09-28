@@ -500,6 +500,36 @@
       }
     }
 
+
+/* BYE QUIZ LIVE — ADMIN CONTROL CENTER v3: unified graphite + cyan */
+:root{--admin-bg:#05080d;--admin-surface:#0a1018;--admin-line:rgba(255,255,255,.08);--admin-line-strong:rgba(0,242,254,.24);--admin-accent:#00f2fe;--admin-accent-soft:rgba(0,242,254,.10);--admin-text:#f5f7fa;--admin-muted:#8793a3}
+body{background:var(--admin-bg)!important;color:var(--admin-text)!important;padding:18px!important}
+.admin-wrapper{max-width:1440px!important;gap:12px!important}
+.admin-header{background:linear-gradient(180deg,#0c131c,#080d14)!important;border:1px solid var(--admin-line)!important;border-radius:18px!important;padding:16px 20px!important;box-shadow:0 18px 50px rgba(0,0,0,.32)!important}
+.admin-title{color:var(--admin-accent)!important}
+.conn-status-pill{background:#080d14!important;border-color:var(--admin-line)!important;color:var(--admin-muted)!important}
+.conn-indicator-dot,.conn-indicator-dot.active{background:var(--admin-accent)!important;box-shadow:0 0 12px rgba(0,242,254,.45)!important}
+.tiktok-topbar{background:var(--admin-surface)!important;border:1px solid var(--admin-line-strong)!important;box-shadow:none!important;border-radius:16px!important}
+.tiktok-live-dot{background:var(--admin-accent)!important;box-shadow:0 0 12px rgba(0,242,254,.45)!important}
+.tiktok-topbar-field label{color:var(--admin-accent)!important}
+.admin-nav-tabs{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:4px!important;padding:5px!important;background:var(--admin-surface)!important;border:1px solid var(--admin-line)!important;border-radius:14px!important;overflow:visible!important;position:sticky;top:8px;z-index:50;box-shadow:0 12px 30px rgba(0,0,0,.24)}
+.nav-tab-btn{color:var(--admin-muted)!important;background:transparent!important;border:1px solid transparent!important;padding:10px 8px!important;border-radius:10px!important;font-size:12px!important}
+.nav-tab-btn:hover,.nav-tab-btn.active{color:var(--admin-accent)!important;background:var(--admin-accent-soft)!important;border-color:rgba(0,242,254,.18)!important;box-shadow:none!important}
+.admin-panel{background:transparent!important;border:0!important;padding:0!important;gap:12px!important}
+.control-card,.metric-box{background:var(--admin-surface)!important;border-color:var(--admin-line)!important;box-shadow:none!important}
+.control-card{border-radius:16px!important;padding:18px!important}
+.card-title{color:var(--admin-accent)!important;border-bottom-color:var(--admin-line)!important;font-size:13px!important}
+.metric-val{color:var(--admin-accent)!important}
+.metric-lbl,.form-label,.tiktok-topbar-status{color:var(--admin-muted)!important}
+.admin-btn,.admin-btn.btn-primary,.admin-btn.btn-danger,.admin-btn.btn-warning{background:#0b121b!important;color:var(--admin-text)!important;border:1px solid var(--admin-line)!important;box-shadow:none!important}
+.admin-btn:hover{background:var(--admin-accent-soft)!important;color:var(--admin-accent)!important;border-color:rgba(0,242,254,.30)!important}
+.form-input{background:#070c12!important;color:var(--admin-text)!important;border-color:var(--admin-line)!important}
+.form-input:focus{border-color:var(--admin-accent)!important;box-shadow:0 0 0 2px rgba(0,242,254,.08)!important}
+.players-table th{background:#070c12!important;color:var(--admin-muted)!important}
+.players-table th,.players-table td{border-bottom-color:var(--admin-line)!important}
+@media(max-width:900px){body{padding:8px!important}.admin-nav-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important;position:relative;top:0}}
+@media(max-width:560px){.admin-nav-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}.admin-header{padding:12px!important}.control-card{padding:14px!important}.admin-btn{width:100%;justify-content:center}}
+
   </style>
 </head>
 <body>
@@ -547,13 +577,13 @@
 
     <!-- Navigation Tabs -->
     <nav class="admin-nav-tabs">
-      <button class="nav-tab-btn active" onclick="showTab('tab-control')">التحكم المباشر</button>
-      <button class="nav-tab-btn" onclick="showTab('tab-players')">المتسابقون والمقاعد</button>
-      <button class="nav-tab-btn" onclick="showTab('tab-questions')">بنك الأسئلة</button>
-      <button class="nav-tab-btn" onclick="showTab('tab-settings')">إعدادات اللعبة</button>
+      <button class="nav-tab-btn active" onclick="showTab('tab-control')">البث والتحكم</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-players')">المتسابقون</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-questions')">الأسئلة</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-settings')">إعدادات المسابقة</button>
       <button class="nav-tab-btn" onclick="showTab('tab-special-entrances')">الدخول المميز</button>
-      <button class="nav-tab-btn" onclick="showTab('tab-diagnostics')">التشخيص</button>
-      <button class="nav-tab-btn" onclick="showTab('tab-simulator')">محاكي التطوير (Dev/Test)</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-diagnostics')">الحالة والتشخيص</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-simulator')">الأدوات المتقدمة</button>
     </nav>
 
     <!-- TAB 1: Real-Time Live Control -->
