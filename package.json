@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "node scripts/build.mjs",
-    "test": "node tests/test_scene3d_engine.mjs && node tests/test_production_phase6.mjs && node tests/test_production_integration.mjs && node tests/test_final_audit.mjs && node tests/test_abcd_answers.mjs",
+    "test": "node tests/test_elimination_engine.mjs && node tests/test_scene3d_engine.mjs && node tests/test_production_phase6.mjs && node tests/test_production_integration.mjs && node tests/test_final_audit.mjs && node tests/test_abcd_answers.mjs",
     "check": "node -c server.js && for f in public/js/engine/*.js lib/*.js tests/*.mjs; do node -c \"$f\"; done",
     "migrate": "echo 'PostgreSQL schema ready in migrations/001_initial_schema.sql'"
   },
