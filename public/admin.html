@@ -842,6 +842,25 @@
           </div>
 
           <div class="form-group">
+            <label class="form-label">نظام الإقصاء</label>
+            <select id="setting-elimination-mode" class="form-input">
+              <option value="LOWEST_SCORE">إقصاء الأقل نقاطاً</option>
+              <option value="LOWEST_CORRECT">إقصاء الأقل إجابات صحيحة</option>
+              <option value="SCORE_THEN_SPEED">النقاط ثم سرعة الإجابة</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">نسبة المتأهلين لكل جولة</label>
+            <input type="number" id="setting-survivor-ratio" class="form-input" min="0.25" max="0.95" step="0.05" value="0.5" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">عدد المتأهلين للنهائي</label>
+            <input type="number" id="setting-finalist-count" class="form-input" min="1" max="12" value="3" />
+          </div>
+
+          <div class="form-group">
             <label class="form-label">مشاركون جدد في الجولة التالية</label>
             <select id="setting-new-round-participants" class="form-input">
               <option value="true">مسموح</option>
@@ -1074,6 +1093,9 @@
           if (s.suspenseDuration !== undefined) document.getElementById('setting-suspense-duration').value = s.suspenseDuration;
           if (s.answerLockDuration !== undefined) document.getElementById('setting-answer-lock-duration').value = s.answerLockDuration;
           if (s.drawType !== undefined) document.getElementById('setting-draw-type').value = String(s.drawType);
+          if (s.eliminationMode !== undefined) document.getElementById('setting-elimination-mode').value = String(s.eliminationMode);
+          if (s.survivorRatio !== undefined) document.getElementById('setting-survivor-ratio').value = String(s.survivorRatio);
+          if (s.finalistCount !== undefined) document.getElementById('setting-finalist-count').value = String(s.finalistCount);
           if (s.allowNewParticipantsNextRound !== undefined) document.getElementById('setting-new-round-participants').value = String(s.allowNewParticipantsNextRound);
           if (s.excludePreviousWinner !== undefined) document.getElementById('setting-exclude-prev').value = String(s.excludePreviousWinner);
         }
@@ -1103,6 +1125,9 @@
         suspenseDuration: Number(document.getElementById('setting-suspense-duration').value),
         answerLockDuration: Number(document.getElementById('setting-answer-lock-duration').value),
         drawType: document.getElementById('setting-draw-type').value,
+        eliminationMode: document.getElementById('setting-elimination-mode').value,
+        survivorRatio: parseFloat(document.getElementById('setting-survivor-ratio').value),
+        finalistCount: parseInt(document.getElementById('setting-finalist-count').value, 10),
         allowNewParticipantsNextRound: document.getElementById('setting-new-round-participants').value === 'true',
         excludePreviousWinner: document.getElementById('setting-exclude-prev').value === 'true'
       };
