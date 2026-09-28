@@ -1,0 +1,35 @@
+name: BYE QUIZ LIVE Blueprint Validation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Syntax checks
+        run: |
+          node --check server.js
+          for f in lib/*.js tests/*.mjs; do node --check "$f"; done
+          for f in public/js/*.js public/js/engine/*.js; do node --check "$f"; done
+      - name: Admin inline script check
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const html = fs.readFileSync('public/admin.html', 'utf8');
+          const scripts = [...html.matchAll(/<script(?:[^>]*)>([\s\S]*?)<\/script>/g)].map(m => m[1]);
+          for (const [i, code] of scripts.entries()) {
+            try { new Function(code); }
+            catch (error) {
+              console.error('admin inline script', i, error.stack || error.message);
+              process.exit(1);
+            }
+          }
+          console.log('Admin inline scripts: OK');
+          NODE
