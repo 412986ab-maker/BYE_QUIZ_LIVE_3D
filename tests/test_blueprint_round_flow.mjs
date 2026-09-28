@@ -22,6 +22,15 @@ function register(ids) {
   }
 }
 
+function seedScores(ids) {
+  ids.forEach((id, index) => {
+    const participant = serverGameState.participants.get(id);
+    participant.score = (index + 1) * 10;
+    participant.points = participant.score;
+    participant.correctAnswers = index + 1;
+  });
+}
+
 async function finishQuestionAndEliminate() {
   serverGameState.endQuestion();
   await wait(80);
@@ -46,6 +55,7 @@ serverGameState.answerLockDuration = 0;
 
 const round1 = ['r1a','r1b','r1c','r1d','r1e','r1f'];
 register(round1);
+seedScores(round1);
 assert.equal(serverGameState.drawPool.length, 6);
 serverGameState.startQuestion();
 assert.equal(serverGameState.phase, GAME_PHASES.QUESTION);
@@ -64,6 +74,8 @@ assert.deepEqual(serverGameState.drawPool, qualifiedR1);
 
 const round2New = ['r2a','r2b','r2c'];
 register(round2New);
+const round2Pool = [...serverGameState.drawPool];
+seedScores(round2Pool);
 assert.equal(serverGameState.drawPool.length, 6);
 assert.equal(serverGameState.drawPool.filter(id => qualifiedR1.includes(id)).length, 3);
 
@@ -77,6 +89,7 @@ serverGameState.startLuckyDraw();
 serverGameState.startNewRound(3);
 assert.deepEqual(serverGameState.drawPool, qualifiedR2);
 
+seedScores(qualifiedR2);
 serverGameState.startQuestion();
 await finishQuestionAndEliminate();
 assert.equal(serverGameState.lastElimination.finalRound, true);
