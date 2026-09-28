@@ -33,7 +33,7 @@ function seedScores(ids) {
 
 async function finishQuestionAndEliminate() {
   serverGameState.endQuestion();
-  await wait(80);
+  await wait(300);
   assert.equal(serverGameState.state, GAME_STATES.RESULT);
   serverGameState.startElimination();
   assert.equal(serverGameState.phase, GAME_PHASES.ELIMINATION);
