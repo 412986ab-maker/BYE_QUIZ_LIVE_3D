@@ -152,6 +152,8 @@ class SceneManager {
   transitionTo(sceneName, payload = {}) {
     this.currentScene = sceneName;
     this.state.set('scene', sceneName);
+    const root = document.getElementById('main-stream-container');
+    if (root) root.dataset.scene = String(sceneName).toLowerCase();
     if (window.soundFX && window.soundFX.playTransition) {
       window.soundFX.playTransition();
     }
@@ -490,7 +492,7 @@ class SceneManager {
   renderQuestionScene() {
     const q = this.state.get('currentQuestion') || {
       category: 'ثقافة عامة',
-      question: 'جاري تجهيز السؤال التالي…',
+      question: 'في انتظار طرح السؤال من بنك الأسئلة أو من لوحة التحكم',
       options: [],
       points: 100
     };
@@ -518,7 +520,7 @@ class SceneManager {
           ${IconSystem.get('question', { size: 14 })} <span>سؤال التحدي (+${q.points || 100} نقطة)</span>
         </div>
         <div class="question-source-badge">
-          ${IconSystem.get('database', { size: 13 })} <span>المصدر: بنك الأسئلة • يختاره النظام تلقائياً عند بدء الجولة أو يطرحه المدير من: لوحة التحكم ← الأسئلة</span>
+          ${IconSystem.get('database', { size: 13 })} <span>المصدر: بنك الأسئلة • يختاره النظام تلقائياً، ويمكن للمدير طرح سؤال محدد فوراً من: لوحة التحكم ← الأسئلة والبنك</span>
         </div>
         <div class="question-hero-box 3d-hologram-screen">
           <div class="question-hologram-scanline"></div>
