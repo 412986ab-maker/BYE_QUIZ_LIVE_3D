@@ -14,7 +14,7 @@ const STATIC_ASSETS = [
   '/index.html',
   '/broadcast.html',
   '/css/style.css',
-  '/css/identity.css?v=20261003-1',
+  '/css/identity.css',
   '/js/audio.js',
   '/js/game.js',
   '/js/engine/iconSystem.js',
