@@ -2513,3 +2513,11 @@ body{background:var(--ae-abyss)!important}
 @media(max-width:700px){
   .join-grid-container{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:8px 4px!important}
 }
+
+/* BYE QUIZ LIVE V6 — REMOVE LEGACY SILVER/GRAY FLOOR */
+.studio-3d-floor,.floor-grid-plane,.floor-neon-rim,.floor-podium-shadow{display:none!important;opacity:0!important;background:none!important;box-shadow:none!important}
+:root{--bye-spectrum-a:#39d8ff;--bye-spectrum-b:#148dff;--bye-spectrum-c:#6d5cff;--bye-spectrum:linear-gradient(135deg,var(--bye-spectrum-a),var(--bye-spectrum-b) 55%,var(--bye-spectrum-c))}
+#confetti-canvas{filter:saturate(.8) brightness(1.05)}
+.scene-frame .scene-title-badge,.scene-frame .question-source-badge{border-color:rgba(57,216,255,.22)!important;color:#bdefff!important}
+.scene-frame .waiting-title,.scene-frame .question-text-title,.scene-frame .countdown-big-num,.scene-frame .draw-title,.scene-frame .winner-title{background:var(--bye-spectrum)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
+.join-grid-container{background:transparent!important}.join-grid-container::before{display:none!important}
