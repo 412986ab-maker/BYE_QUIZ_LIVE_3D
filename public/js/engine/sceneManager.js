@@ -407,16 +407,6 @@ class SceneManager {
     gridEl.style.setProperty('--seat-avatar-size', avatarSize + 'px');
     gridEl.style.setProperty('--seat-cell-size', Math.max(62, Math.min(92, Math.round(360 / columns)) + 'px'));
 
-    if (pool.length === 0) {
-      gridEl.innerHTML = `
-        <div class="seats-empty-waiting 3d-glass-panel">
-          <div class="seats-waiting-pulse"></div>
-          <span>بانتظار انضمام أول متسابق... اكتب <b>!join</b> أو <b>تم</b> في التعليقات</span>
-        </div>
-      `;
-      return;
-    }
-
     let html = '';
     for (let i = 0; i < renderCount; i++) {
       const user = pool[i] || null;
@@ -424,11 +414,7 @@ class SceneManager {
     }
     gridEl.innerHTML = html;
 
-    if (window.scene3dEngine && window.scene3dEngine.isSupported) {
-      for (let i = 0; i < Math.min(renderCount, 36); i++) {
-        window.scene3dEngine.setPedestalUser(i, pool[i] || null);
-      }
-    }
+    // Flat TikTok-style avatar grid; no 3D pedestals.
   }
 
   // 3. COUNTDOWN & PARTICIPANTS COMPLETE SCENE
@@ -504,7 +490,7 @@ class SceneManager {
   renderQuestionScene() {
     const q = this.state.get('currentQuestion') || {
       category: 'ثقافة عامة',
-      question: 'يتم تجهيز السؤال من بنك الأسئلة...',
+      question: 'لا يوجد سؤال جاهز. افتح لوحة التحكم ← بنك الأسئلة، أضف سؤالاً ثم اضغط «طرح الآن».',
       options: [],
       points: 100
     };
