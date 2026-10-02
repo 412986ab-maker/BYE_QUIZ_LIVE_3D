@@ -2453,3 +2453,63 @@ html,body,.stream-container {background:#000 !important;}
 .seats-empty-waiting {display:none !important;}
 .scene-title-badge {background:transparent !important;border:0 !important;box-shadow:none !important;color:#f4f4f5 !important;}
 .question-source-badge {color:#a1a1aa !important;background:#111113 !important;border-color:#27272a !important;}
+
+
+/* ==========================================================
+   BYE QUIZ LIVE — ABYSS & EMBER MASTER IDENTITY
+   Unified visual system: Abyss / Night / Graphite / Silver / Snow + Signal Ember
+   ========================================================== */
+:root{
+  --ae-abyss:#010308;
+  --ae-night:#171A1F;
+  --ae-graphite:#2F3036;
+  --ae-slate:#474A53;
+  --ae-fog:#656872;
+  --ae-ash:#8E919C;
+  --ae-silver:#C1C6CE;
+  --ae-snow:#ECE9ED;
+  --ae-signal:#C93D41;
+  --ae-crimson:#931A21;
+  --ae-ember:#851702;
+  --ae-deep-ember:#5A1406;
+  --ae-ember-dark:#2F0802;
+  --bg-dark:var(--ae-abyss)!important;
+  --bg-studio-gradient:var(--ae-abyss)!important;
+  --cyber-cyan:var(--ae-signal)!important;
+  --cyber-blue:var(--ae-signal)!important;
+  --cyber-teal:var(--ae-signal)!important;
+  --neon-magenta:var(--ae-signal)!important;
+  --electric-purple:var(--ae-signal)!important;
+  --luxury-gold:var(--ae-signal)!important;
+  --border-glass:rgba(193,198,206,.14)!important;
+  --glass-surface:rgba(23,26,31,.88)!important;
+  --text-dim:var(--ae-ash)!important;
+}
+html,body,.stream-container,.studio-arena-viewport,.webgl-stage-canvas,#webgl-stage{background:var(--ae-abyss)!important;color:var(--ae-snow)!important}
+body{background:var(--ae-abyss)!important}
+.global-top-hud{background:linear-gradient(180deg,var(--ae-abyss) 0%,rgba(1,3,8,.98) 82%,transparent 100%)!important;border-bottom:1px solid rgba(193,198,206,.10)!important}
+.brand-badge,.engagement-pill,.stat-pill,.category-badge,.footer-leaderboard,.scene-title-badge,.question-source-badge{background:rgba(23,26,31,.88)!important;border-color:rgba(193,198,206,.14)!important;color:var(--ae-snow)!important}
+.brand-name,.scene-title-badge,.streamer-notice,.footer-leaderboard b{color:var(--ae-signal)!important}
+.live-pill-tag{background:var(--ae-signal)!important;color:#fff!important;box-shadow:0 0 18px rgba(201,61,65,.25)!important}
+.engagement-pill svg,.icon-svg{stroke:var(--ae-silver)!important}
+.engagement-pill svg[fill],.engagement-pill svg *{ }
+.footer-leaderboard{box-shadow:0 -12px 35px rgba(0,0,0,.32)!important}
+/* Remove all metallic/silver floor layers, not the neutral palette itself. */
+.studio-3d-floor,.floor-grid-plane,.floor-neon-rim,.floor-podium-shadow,.studio-led-columns,.studio-vertical-columns,.studio-3d-columns,.studio-haze-layer{display:none!important;visibility:hidden!important;opacity:0!important}
+/* TikTok guest grid: 5 circular guests per row, continuing downward. */
+.join-grid-container{grid-template-columns:repeat(5,minmax(0,1fr))!important;grid-auto-rows:clamp(62px,17vw,78px)!important;gap:8px 6px!important;background:transparent!important;border:0!important;box-shadow:none!important;align-content:start!important}
+.p-slot,.p-slot.empty,.p-slot.occupied,.guest-slot{background:transparent!important;border:0!important;box-shadow:none!important}
+.guest-avatar-placeholder{background:var(--ae-night)!important;border:1px solid var(--ae-graphite)!important}
+.guest-avatar-placeholder:before,.guest-avatar-placeholder:after{background:var(--ae-graphite)!important}
+.p-slot.occupied .p-avatar{border:1px solid rgba(193,198,206,.30)!important;box-shadow:0 0 0 1px rgba(201,61,65,.18),0 4px 16px rgba(0,0,0,.45)!important}
+.slot-name{color:var(--ae-snow)!important}
+/* Unified question/status accents. */
+.timer-circle-bar{stroke:var(--ae-signal)!important}
+.answer-option,.answer-card,.question-card{border-color:rgba(193,198,206,.14)!important;background:rgba(23,26,31,.82)!important}
+
+/* Question source is explicit: questions are created/selected by the admin question engine. */
+.question-source-badge{color:var(--ae-ash)!important}
+
+@media(max-width:700px){
+  .join-grid-container{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:8px 4px!important}
+}
