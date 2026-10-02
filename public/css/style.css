@@ -2551,3 +2551,84 @@ body{background:var(--ae-abyss)!important}
 
 /* BYE QUIZ LIVE — remove the legacy gray/silver floor layer */
 .studio-3d-floor,.floor-grid-plane,.floor-neon-rim,.floor-podium-shadow{display:none!important;}
+
+
+/* BYE QUIZ LIVE V8 — AUTHORITATIVE TIKTOK GUEST GRID
+   Layout is driven by Admin: columns / rows / avatar size.
+   No metallic or silver background layers. */
+html,body,#main-stream-container,.stream-container,.stage-area,.studio-arena-viewport,.webgl-stage-canvas,#webgl-stage{
+  background:#000 !important;
+}
+.studio-3d-floor,.floor-grid-plane,.floor-neon-rim,.floor-podium-shadow,
+.studio-haze-layer,.studio-led-columns,.studio-vertical-columns,.studio-3d-columns{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  background:none !important;
+  box-shadow:none !important;
+}
+.join-grid-container{
+  --live-seat-columns:var(--bye-seat-columns,5);
+  --live-seat-rows:var(--bye-seat-rows,4);
+  --live-seat-avatar:var(--bye-seat-avatar-size,44px);
+  display:grid !important;
+  grid-template-columns:repeat(var(--live-seat-columns),minmax(0,1fr)) !important;
+  grid-template-rows:repeat(var(--live-seat-rows),auto) !important;
+  grid-auto-rows:auto !important;
+  width:100% !important;
+  max-width:520px !important;
+  height:auto !important;
+  max-height:calc(var(--live-seat-rows) * 82px + (var(--live-seat-rows) - 1) * 8px) !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  gap:8px 6px !important;
+  padding:8px 6px 12px !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  align-content:start !important;
+}
+[class~="3d-seats-stage"]{
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+}
+.p-slot,.p-slot.empty,.p-slot.occupied,.guest-slot{
+  width:100% !important;
+  height:76px !important;
+  min-height:76px !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+  transform:none !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+}
+.p-slot .avatar-3d-wrapper,
+.p-slot.occupied .avatar-3d-wrapper,
+.p-slot .p-avatar,
+.guest-avatar-placeholder,
+.p-slot.empty .guest-avatar-placeholder{
+  width:min(var(--live-seat-avatar),64px) !important;
+  height:min(var(--live-seat-avatar),64px) !important;
+}
+.guest-avatar-placeholder{
+  border-radius:50% !important;
+  background:#202024 !important;
+  border:1px solid #303036 !important;
+  box-shadow:none !important;
+}
+.slot-name{
+  max-width:calc(var(--live-seat-avatar) + 24px) !important;
+  font-size:9px !important;
+  color:#f4f4f5 !important;
+}
+.avatar-neon-aura,.slot-mini-score,.p-slot.empty .slot-num{display:none !important}
+.question-source-badge{
+  color:#9ca3af !important;
+  background:#090909 !important;
+  border-color:#262626 !important;
+}
