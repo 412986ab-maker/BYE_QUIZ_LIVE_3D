@@ -106,7 +106,7 @@
       try {
         const THREE = global.THREE;
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x04060e);
+        this.scene.background = new THREE.Color(0x010308);
 
         const width = this.canvas.clientWidth || window.innerWidth || 800;
         const height = this.canvas.clientHeight || window.innerHeight || 600;
@@ -175,7 +175,7 @@
       this.scene.add(this.lights.keyLight);
 
       // Central Spotlight on stage
-      this.lights.spotLight = new THREE.SpotLight(0x00f3ff, 1.8, 50, Math.PI / 3.5, 0.5);
+      this.lights.spotLight = new THREE.SpotLight(0xC93D41, 1.8, 50, Math.PI / 3.5, 0.5);
       this.lights.spotLight.position.set(0, 25, 0);
       this.lights.spotLight.castShadow = true;
       this.scene.add(this.lights.spotLight);
@@ -190,8 +190,8 @@
       // 2. Concentric Neon Stage Rings on the open stage (Shared Geometry)
       const ringOuterGeo = new THREE.TorusGeometry(12, 0.08, 4, 24);
       const ringOuterMat = new THREE.MeshStandardMaterial({
-        color: 0x00f3ff,
-        emissive: 0x00f3ff,
+        color: 0xC93D41,
+        emissive: 0xC93D41,
         emissiveIntensity: 0.8,
         roughness: 0.2
       });
@@ -201,8 +201,8 @@
 
       const ringInnerGeo = new THREE.TorusGeometry(6, 0.06, 4, 24);
       const ringInnerMat = new THREE.MeshStandardMaterial({
-        color: 0x7928ca,
-        emissive: 0x7928ca,
+        color: 0x931A21,
+        emissive: 0x931A21,
         emissiveIntensity: 0.6,
         roughness: 0.2
       });
@@ -214,7 +214,7 @@
       const plinthGeo = new THREE.CylinderGeometry(2.4, 2.8, 0.6, 16);
       const plinthMat = new THREE.MeshStandardMaterial({
         color: 0x0b1324,
-        emissive: 0x00f3ff,
+        emissive: 0xC93D41,
         emissiveIntensity: 0.25,
         roughness: 0.3,
         metalness: 0.9
@@ -285,8 +285,8 @@
       const pillarCount = 10;
       const pillarGeo = new THREE.CylinderGeometry(0.08, 0.08, 12, 6);
       const pillarMat = new THREE.MeshStandardMaterial({
-        color: 0x00f3ff,
-        emissive: 0x00f3ff,
+        color: 0xC93D41,
+        emissive: 0xC93D41,
         emissiveIntensity: 0.6,
         roughness: 0.2
       });
@@ -307,7 +307,7 @@
         this.instancedLedPillars.setMatrixAt(i, pMat);
         
         // Alternate cyan / magenta neon pillars
-        const col = (i % 2 === 0) ? new THREE.Color(0x00f3ff) : new THREE.Color(0x7928ca);
+        const col = (i % 2 === 0) ? new THREE.Color(0xC93D41) : new THREE.Color(0x931A21);
         this.instancedLedPillars.setColorAt(i, col);
       }
 
@@ -335,8 +335,8 @@
       });
 
       const ringMat = new THREE.MeshStandardMaterial({
-        color: 0x00f3ff,
-        emissive: 0x00f3ff,
+        color: 0xC93D41,
+        emissive: 0xC93D41,
         emissiveIntensity: 0.5
       });
 
@@ -390,7 +390,7 @@
       
       
       
-      const defaultColor = new THREE.Color(0x00f3ff);
+      const defaultColor = new THREE.Color(0xC93D41);
 
       let index = 0;
       for (let r = 0; r < rows; r++) {
@@ -462,7 +462,7 @@
       geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
       const mat = new THREE.PointsMaterial({
-        color: 0x00f3ff,
+        color: 0xC93D41,
         size: 3.5,
         transparent: true,
         opacity: 0.65
@@ -484,7 +484,7 @@
       this.scene.add(this.instancedConfetti);
 
       this.confettiData = [];
-      const colors = [0xffd700, 0x00f3ff, 0xff007a, 0x00ff88, 0xffffff];
+      const colors = [0xC1C6CE, 0xC93D41, 0xC93D41, 0x931A21, 0xffffff];
       for (let i = 0; i < count; i++) {
         const c = new THREE.Color(colors[i % colors.length]);
         this.instancedConfetti.setColorAt(i, c);
@@ -593,30 +593,30 @@
       if (state === 'CORRECT') {
         p.targetY = p.baseY + 1.2;
         if (this.instancedRings) {
-          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0x00ff88));
+          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0x931A21));
         }
       } else if (state === 'WRONG') {
         p.targetY = p.baseY - 0.1;
         p.wobbleTime = 1.0;
         if (this.instancedRings) {
-          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0xff3366));
+          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0xC93D41));
         }
       } else if (state === 'WINNER') {
         p.targetY = p.baseY + 2.5;
         if (this.instancedRings) {
-          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0xffd700));
+          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0xC1C6CE));
         }
         this.triggerWinnerConfetti(p.posX, p.posZ);
       } else if (state === 'ACTIVE') {
         p.targetY = p.baseY + 0.3;
         if (this.instancedRings) {
-          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0x00f3ff));
+          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0xC93D41));
         }
       } else {
         // IDLE
         p.targetY = p.baseY;
         if (this.instancedRings) {
-          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0x00f3ff));
+          this.instancedRings.setColorAt(seatIndex, new THREE.Color(0xC93D41));
         }
       }
     }
