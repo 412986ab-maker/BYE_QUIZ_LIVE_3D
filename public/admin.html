@@ -773,7 +773,65 @@ body{padding:8px!important}.admin-wrapper{display:grid!important;grid-template-c
 .admin-header,.tiktok-topbar{grid-column:1!important}.admin-nav-tabs{grid-column:1!important;grid-row:3!important;position:sticky!important;top:0!important;z-index:60!important;flex-direction:row!important;overflow-x:auto!important}.nav-tab-btn{width:auto!important;flex:0 0 auto!important;text-align:center!important}.admin-panel{grid-column:1!important;grid-row:4!important}.admin-grid-2{grid-template-columns:1fr!important}
 }
 @media(max-width:600px){.admin-wrapper{gap:8px!important}.admin-header{padding:12px!important}.tiktok-topbar{padding:10px!important}.control-card{padding:12px!important}.admin-nav-tabs{padding:5px!important}.nav-tab-btn{padding:10px 12px!important;font-size:11px!important}}
-</style></head>
+</style>
+
+<style id="abyss-ember-admin-theme">
+/* ==========================================================
+   BYE QUIZ LIVE — ADMIN CONTROL CENTER / ABYSS & EMBER
+   Professional sidebar navigation + independent sections.
+   ========================================================== */
+:root{
+ --ae-abyss:#010308;--ae-night:#171A1F;--ae-graphite:#2F3036;--ae-slate:#474A53;
+ --ae-fog:#656872;--ae-ash:#8E919C;--ae-silver:#C1C6CE;--ae-snow:#ECE9ED;
+ --ae-signal:#C93D41;--ae-crimson:#931A21;--ae-ember:#851702;--ae-deep-ember:#5A1406;
+ --admin-bg:var(--ae-abyss);--admin-surface:var(--ae-night);--admin-surface-2:#0D1015;
+ --admin-line:rgba(193,198,206,.13);--admin-line-strong:rgba(201,61,65,.34);
+ --admin-accent:var(--ae-signal);--admin-accent-soft:rgba(201,61,65,.10);
+ --admin-text:var(--ae-snow);--admin-muted:var(--ae-ash);
+}
+html,body{background:var(--admin-bg)!important;color:var(--admin-text)!important}
+body{padding:16px!important;font-family:'Cairo','Tajawal','Segoe UI',system-ui,sans-serif!important}
+.admin-wrapper{max-width:1480px!important;display:grid!important;grid-template-columns:230px minmax(0,1fr)!important;grid-template-areas:"side main"!important;align-items:start!important;gap:14px!important}
+.admin-header{grid-area:side!important;position:sticky!important;top:16px!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;background:linear-gradient(180deg,var(--ae-night),var(--ae-abyss))!important;border:1px solid var(--admin-line)!important;border-radius:18px!important;padding:16px!important;box-shadow:0 20px 50px rgba(0,0,0,.35)!important}
+.admin-title{font-size:18px!important;color:var(--ae-snow)!important;padding-bottom:14px!important;border-bottom:1px solid var(--admin-line)!important}
+.admin-title::after{content:'ABYSS / EMBER CONTROL';display:block;color:var(--ae-signal);font-size:9px;letter-spacing:.16em;margin-top:5px;direction:ltr}
+.conn-status-pill{margin-top:10px!important;width:100%!important;justify-content:center!important;background:var(--admin-surface-2)!important;border-color:var(--admin-line)!important;color:var(--admin-muted)!important}
+.conn-indicator-dot,.conn-indicator-dot.active{background:var(--ae-signal)!important;box-shadow:0 0 12px rgba(201,61,65,.40)!important}
+.tiktok-topbar{grid-area:main!important;background:var(--ae-night)!important;border:1px solid var(--admin-line)!important;box-shadow:none!important;border-radius:18px!important}
+.admin-nav-tabs{grid-area:side!important;position:sticky!important;top:142px!important;z-index:50!important;display:flex!important;flex-direction:column!important;gap:5px!important;padding:6px!important;background:transparent!important;border:0!important;border-radius:0!important;overflow:visible!important;box-shadow:none!important;margin-top:8px!important}
+.admin-nav-tabs .nav-tab-btn{width:100%!important;text-align:right!important;background:transparent!important;color:var(--ae-ash)!important;border:1px solid transparent!important;border-radius:11px!important;padding:12px 13px!important;font-size:12px!important;font-weight:800!important;transition:.18s ease!important}
+.admin-nav-tabs .nav-tab-btn:hover,.admin-nav-tabs .nav-tab-btn.active{background:var(--admin-accent-soft)!important;border-color:rgba(201,61,65,.25)!important;color:var(--ae-snow)!important;box-shadow:inset -3px 0 0 var(--ae-signal)!important}
+.admin-panel{grid-area:main!important;background:transparent!important;border:0!important;padding:0!important;gap:12px!important}
+.admin-panel.active{display:flex!important}
+.control-card,.metric-box{background:var(--ae-night)!important;border:1px solid var(--admin-line)!important;box-shadow:none!important}
+.control-card{border-radius:15px!important;padding:17px!important}
+.card-title{color:var(--ae-silver)!important;border-bottom-color:var(--admin-line)!important}
+.metric-val{color:var(--ae-snow)!important}.metric-lbl,.form-label,.tiktok-topbar-status{color:var(--ae-ash)!important}
+.admin-btn,.admin-btn.btn-primary,.admin-btn.btn-danger,.admin-btn.btn-warning{background:var(--admin-surface-2)!important;color:var(--ae-snow)!important;border:1px solid var(--admin-line)!important;box-shadow:none!important}
+.admin-btn:hover{background:var(--admin-accent-soft)!important;color:var(--ae-snow)!important;border-color:rgba(201,61,65,.35)!important}
+.admin-btn.btn-primary{background:var(--ae-signal)!important;border-color:var(--ae-signal)!important;color:#fff!important}
+.admin-btn.btn-danger{background:var(--ae-crimson)!important;border-color:var(--ae-crimson)!important;color:#fff!important}
+.admin-btn.btn-warning{background:var(--ae-ember)!important;border-color:var(--ae-ember)!important;color:#fff!important}
+.form-input,select,textarea{background:var(--ae-abyss)!important;color:var(--ae-snow)!important;border-color:var(--admin-line)!important}
+.form-input:focus,select:focus,textarea:focus{border-color:var(--ae-signal)!important;box-shadow:0 0 0 2px rgba(201,61,65,.10)!important}
+.players-table th,.questions-table th{background:var(--ae-abyss)!important;color:var(--ae-silver)!important;border-color:var(--admin-line)!important}
+.players-table td,.questions-table td{border-color:var(--admin-line)!important;color:var(--ae-snow)!important}
+.tiktok-topbar-field label{color:var(--ae-silver)!important}.tiktok-live-dot{background:var(--ae-signal)!important;box-shadow:0 0 12px rgba(201,61,65,.45)!important}
+.settings-status-badge{background:var(--ae-night)!important;border-color:var(--admin-line)!important;color:var(--ae-silver)!important}
+/* Make every tab a genuinely independent workspace; no giant combined canvas. */
+.admin-panel:not(.active){display:none!important}
+@media(max-width:900px),(pointer:coarse){
+ body{padding:8px!important}
+ .admin-wrapper{display:flex!important;flex-direction:column!important;gap:10px!important}
+ .admin-header{position:relative!important;top:auto!important;width:100%!important}
+ .admin-nav-tabs{position:relative!important;top:auto!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%!important;margin:0!important;background:var(--ae-night)!important;border:1px solid var(--admin-line)!important;border-radius:15px!important;padding:6px!important}
+ .admin-nav-tabs .nav-tab-btn{width:100%!important;text-align:center!important}
+ .tiktok-topbar,.admin-panel{width:100%!important}
+}
+@media(max-width:430px){.admin-nav-tabs{grid-template-columns:1fr!important}}
+</style>
+
+</head>
 <body>
 
   <div class="admin-wrapper">
