@@ -919,7 +919,7 @@ body{padding:6px!important}.admin-wrapper{gap:7px!important}.admin-header{paddin
       <button class="nav-tab-btn active" onclick="showTab('tab-control')">المركز المباشر</button>
       <button class="nav-tab-btn" onclick="showTab('tab-players')">الضيوف والمقاعد</button>
       <button class="nav-tab-btn" onclick="showTab('tab-questions')">الأسئلة والمؤقت</button>
-      <button class="nav-tab-btn" onclick="showTab('tab-players')">إعدادات المقاعد</button>
+      <button class="nav-tab-btn" onclick="showTab('tab-stages')">المراحل والانتقالات</button>
       <button class="nav-tab-btn" onclick="showTab('tab-special-entrances')">الدخول المميز</button>
       <button class="nav-tab-btn" onclick="showTab('tab-diagnostics')">التشخيص والحالة</button>
       <button class="nav-tab-btn" onclick="showTab('tab-simulator')">أدوات المطور</button>
@@ -1065,6 +1065,13 @@ body{padding:6px!important}.admin-wrapper{gap:7px!important}.admin-header{paddin
         <div class="card-title">التحكم في الأسئلة والمؤقت</div>
         <div class="section-description">طرح السؤال التالي، إنهاء الوقت وبدء السحب من هنا.</div>
         <div id="question-command-host"></div>
+      </div>
+      <div class="control-card">
+        <div class="card-title">إعدادات الأسئلة والمؤقت</div>
+        <div id="question-settings-host" class="specialized-settings-grid"></div>
+        <div class="admin-actions">
+          <button class="admin-btn btn-primary" type="button" onclick="document.getElementById('form-game-settings').requestSubmit()">حفظ إعدادات الأسئلة والمؤقت</button>
+        </div>
       </div>
       <div class="control-card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
