@@ -437,6 +437,10 @@ class GameEngine {
           this.state.set("settings", mergedSettings);
           window.dispatchEvent(new CustomEvent("byequiz:settings", { detail: mergedSettings }));
           this.applyAuthoritativeSettings(mergedSettings);
+          // Seat/layout settings are live: rebuild the visible TikTok-style guest grid immediately.
+          if (this.scenes && (this.scenes.currentScene === "REGISTRATION" || this.scenes.currentScene === "JOIN" || this.scenes.currentScene === "SEATS")) {
+            this.scenes.renderRegistrationScene();
+          }
         }
         break;
       }
