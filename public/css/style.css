@@ -2547,3 +2547,7 @@ body{background:var(--ae-abyss)!important}
   --cyan-glow:rgba(57,216,255,.40);
   --magenta-glow:rgba(109,92,255,.30);
 }
+
+
+/* BYE QUIZ LIVE — remove the legacy gray/silver floor layer */
+.studio-3d-floor,.floor-grid-plane,.floor-neon-rim,.floor-podium-shadow{display:none!important;}
