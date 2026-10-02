@@ -492,7 +492,7 @@ class SceneManager {
   renderQuestionScene() {
     const q = this.state.get('currentQuestion') || {
       category: 'ثقافة عامة',
-      question: 'في انتظار طرح السؤال من بنك الأسئلة أو من لوحة التحكم',
+      question: 'بانتظار طرح السؤال من لوحة التحكم أو الاختيار التلقائي من بنك الأسئلة',
       options: [],
       points: 100
     };
@@ -520,7 +520,7 @@ class SceneManager {
           ${IconSystem.get('question', { size: 14 })} <span>سؤال التحدي (+${q.points || 100} نقطة)</span>
         </div>
         <div class="question-source-badge">
-          ${IconSystem.get('database', { size: 13 })} <span>المصدر: بنك الأسئلة • يختاره النظام تلقائياً، ويمكن للمدير طرح سؤال محدد فوراً من: لوحة التحكم ← الأسئلة والبنك</span>
+          ${IconSystem.get('database', { size: 13 })} <span>مصدر السؤال: بنك الأسئلة • تلقائي عند تشغيل الوضع التلقائي، أو يطرحه المدير فوراً من لوحة التحكم ← الأسئلة والبنك ← طرح السؤال التالي</span>
         </div>
         <div class="question-hero-box 3d-hologram-screen">
           <div class="question-hologram-scanline"></div>
