@@ -44,7 +44,7 @@ class ParticipantCard {
     if (!user) {
       return `
         <div class="p-slot empty guest-slot" aria-label="مقعد ضيف فارغ">
-          <div class="guest-avatar-placeholder"><span></span></div>
+          <div class="guest-avatar-placeholder" aria-hidden="true"></div>
         </div>
       `;
     }
