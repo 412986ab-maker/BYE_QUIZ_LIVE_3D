@@ -490,15 +490,17 @@ class SceneManager {
 
   // 4. QUESTION & ANSWERING SCENE (3D Holographic Stage)
   renderQuestionScene() {
-    const q = this.state.get('currentQuestion') || {
-      category: 'ثقافة عامة',
-      question: 'بانتظار طرح السؤال من لوحة التحكم أو الاختيار التلقائي من بنك الأسئلة',
+    const q = this.state.get('currentQuestion');
+    const hasQuestion = Boolean(q && (q.question || q.text) && Array.isArray(q.options) && q.options.length > 0);
+    const displayQuestion = hasQuestion ? q : {
+      category: 'بنك الأسئلة',
+      question: 'جاري اختيار السؤال من بنك الأسئلة…',
       options: [],
       points: 100
     };
 
     if (this.dom.headerCategory) {
-      this.dom.headerCategory.innerHTML = `${IconSystem.get('question', { size: 16 })} <span>${q.category || 'ثقافة عامة'}</span>`;
+      this.dom.headerCategory.innerHTML = `${IconSystem.get('question', { size: 16 })} <span>${displayQuestion.category || 'بنك الأسئلة'}</span>`;
     }
 
     const letters = ['A', 'B', 'C', 'D'];
@@ -517,16 +519,16 @@ class SceneManager {
     this.dom.stage.innerHTML = `
       <div class="scene-frame anim-question-enter 3d-question-stage">
         <div class="scene-title-badge">
-          ${IconSystem.get('question', { size: 14 })} <span>سؤال التحدي (+${q.points || 100} نقطة)</span>
+          ${IconSystem.get('question', { size: 14 })} <span>${hasQuestion ? 'سؤال التحدي' : 'جاري تجهيز السؤال'} (+${displayQuestion.points || 100} نقطة)</span>
         </div>
         <div class="question-source-badge">
-          ${IconSystem.get('database', { size: 13 })} <span>مصدر السؤال: بنك الأسئلة • تلقائي عند تشغيل الوضع التلقائي، أو يطرحه المدير فوراً من لوحة التحكم ← الأسئلة والبنك ← طرح السؤال التالي</span>
+          ${IconSystem.get('database', { size: 13 })} <span>مصدر السؤال: بنك الأسئلة • يختار المحرك سؤالاً تلقائياً عند بدء الجولة، ويمكن للمدير طرح السؤال التالي من لوحة التحكم</span>
         </div>
         <div class="question-hero-box 3d-hologram-screen">
           <div class="question-hologram-scanline"></div>
-          <div class="question-text-title">${q.question || q.text || ''}</div>
+          <div class="question-text-title">${displayQuestion.question || displayQuestion.text || ''}</div>
           <div class="options-container-grid">
-            ${optionsHtml}
+            ${hasQuestion ? optionsHtml : '<div class="question-loading-state">سيظهر السؤال هنا فور اختياره من بنك الأسئلة.</div>'}
           </div>
         </div>
         <div class="join-callout-box 3d-callout-panel">
