@@ -586,6 +586,52 @@ body{background:var(--admin-bg)!important;color:var(--admin-text)!important;padd
       .metrics-bar-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
     }
     @media (max-width:520px) { .metrics-bar-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; } }
+
+    /* BYE QUIZ LIVE — unified monochrome control center */
+    :root {
+      --cyber-cyan:#f4f4f5; --cyber-teal:#e4e4e7; --cyber-blue:#d4d4d8;
+      --neon-magenta:#f4f4f5; --electric-purple:#d4d4d8; --luxury-gold:#f4f4f5;
+      --text-main:#fafafa; --text-dim:#a1a1aa; --border-glass:rgba(255,255,255,.12);
+      --glass-surface:#111113;
+    }
+    body { background:#050505 !important; color:#f4f4f5 !important; padding:clamp(10px,2vw,24px) !important; }
+    .admin-wrapper { max-width:1440px !important; gap:18px !important; }
+    .admin-header,.tiktok-topbar,.admin-panel {
+      background:#101012 !important; border:1px solid #27272a !important;
+      border-radius:16px !important; box-shadow:0 12px 36px rgba(0,0,0,.22) !important;
+    }
+    .admin-header { position:sticky; top:8px; z-index:50; backdrop-filter:blur(18px); }
+    .admin-title,.card-title,.metric-val,.tiktok-topbar-label strong { color:#fafafa !important; }
+    .admin-nav-tabs { background:#101012 !important; border:1px solid #27272a !important; border-radius:14px !important; padding:6px !important; gap:5px !important; }
+    .nav-tab-btn { color:#a1a1aa !important; border:1px solid transparent !important; border-radius:9px !important; }
+    .nav-tab-btn.active { background:#f4f4f5 !important; color:#09090b !important; box-shadow:none !important; }
+    .control-card,.metric-box,.tiktok-topbar-field,.tiktok-topbar-main {
+      background:#18181b !important; border:1px solid #2a2a2e !important; border-radius:12px !important;
+    }
+    .control-card { padding:clamp(12px,2vw,20px) !important; }
+    .admin-btn,.form-input,select,textarea,input {
+      background:#09090b !important; color:#f4f4f5 !important; border:1px solid #3f3f46 !important;
+      border-radius:9px !important;
+    }
+    .admin-btn:hover { background:#27272a !important; border-color:#a1a1aa !important; }
+    .admin-btn.btn-primary,.admin-btn.btn-danger { background:#f4f4f5 !important; color:#09090b !important; border:0 !important; }
+    .admin-btn.btn-danger { background:#3f3f46 !important; color:#fff !important; }
+    .conn-status-pill,.stat-pill,.metric-lbl { background:#18181b !important; color:#d4d4d8 !important; }
+    .conn-indicator-dot.active { background:#f4f4f5 !important; box-shadow:0 0 8px rgba(255,255,255,.35) !important; }
+    .players-table th { background:#18181b !important; color:#f4f4f5 !important; }
+    .players-table td,.players-table th { border-color:#27272a !important; }
+    .admin-grid-2,.metrics-bar-grid { gap:12px !important; }
+    @media (min-width: 1000px) {
+      .admin-nav-tabs { position:sticky; top:84px; z-index:40; }
+      .admin-panel { padding:22px !important; }
+    }
+    @media (max-width: 700px) {
+      .admin-header { position:relative; top:auto; padding:14px !important; }
+      .admin-nav-tabs { position:sticky; top:0; z-index:60; }
+      .nav-tab-btn { padding:9px 12px !important; font-size:12px !important; }
+      .admin-panel { padding:12px !important; }
+      .admin-grid-2 { grid-template-columns:minmax(0,1fr) !important; }
+    }
   </style>
 <style id="bye-admin-v2">
 :root{
