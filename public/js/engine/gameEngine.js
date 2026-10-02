@@ -18,6 +18,12 @@ class GameEngine {
     this.aggregator = new ReactionAggregator(this.events, this.state);
     this.queue = new ReactionQueue(this.events, this.state);
     this.effects = new EffectManager(this.events, this.state);
+
+    // Real VIP/special entrance renderer. The server event is authoritative;
+    // this client layer only renders the non-blocking overlay.
+    if (typeof SpecialEntranceEngine !== 'undefined') {
+      try { this.specialEntrance = new SpecialEntranceEngine(this.events); } catch (e) { console.warn('[GameEngine] SpecialEntranceEngine init failed:', e); }
+    }
     this.scenes = new SceneManager(
       this.events,
       this.state,
