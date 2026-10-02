@@ -2534,3 +2534,16 @@ body{background:var(--ae-abyss)!important}
 #main-stream-container .scene-title-badge{border-color:color-mix(in srgb,var(--scene-accent) 28%,transparent)!important}
 #main-stream-container .join-keyword-pill{background:linear-gradient(135deg,var(--scene-accent),var(--scene-accent-2))!important}
 #main-stream-container .timer-circle-bar{stroke:var(--scene-accent)!important}
+
+/* Unified live palette — no unrelated red/green/gold UI accents. */
+:root{
+  --cyber-cyan:#39d8ff;
+  --cyber-teal:#2bb7ff;
+  --cyber-blue:#148dff;
+  --neon-magenta:#6d5cff;
+  --electric-purple:#5b6cff;
+  --luxury-gold:#72b7ff;
+  --gold-glow:rgba(57,216,255,.35);
+  --cyan-glow:rgba(57,216,255,.40);
+  --magenta-glow:rgba(109,92,255,.30);
+}
