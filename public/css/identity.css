@@ -1,0 +1,59 @@
+/* BYE QUIZ LIVE — OFFICIAL ABYSS & EMBER IDENTITY */
+:root{
+--ae-abyss:#010308;--ae-night:#171A1F;--ae-graphite:#2F3036;--ae-slate:#474A53;--ae-fog:#656872;--ae-ash:#8E919C;--ae-silver:#C1C6CE;--ae-snow:#ECE9ED;--ae-signal:#C93D41;--ae-crimson:#931A21;--ae-ember:#851702;--ae-deep-ember:#5A1406;--ae-ember-dark:#2F0802;
+--bg-dark:var(--ae-abyss)!important;--bg-studio-gradient:radial-gradient(120% 90% at 75% 110%,var(--ae-deep-ember),var(--ae-ember-dark) 40%,var(--ae-abyss) 75%)!important;
+--cyber-cyan:var(--ae-signal)!important;--cyber-teal:var(--ae-crimson)!important;--cyber-blue:var(--ae-ember)!important;--neon-magenta:var(--ae-signal)!important;--electric-purple:var(--ae-crimson)!important;--luxury-gold:var(--ae-silver)!important;
+--gold-glow:rgba(201,61,65,.28)!important;--cyan-glow:rgba(201,61,65,.28)!important;--magenta-glow:rgba(201,61,65,.28)!important;--border-glass:rgba(193,198,206,.13)!important;--glass-surface:var(--ae-night)!important;--text-main:var(--ae-snow)!important;--text-dim:var(--ae-ash)!important;
+}
+html,body{background:var(--ae-abyss)!important;color:var(--ae-snow)!important}
+.stream-container{background:var(--bg-studio-gradient)!important;box-shadow:0 0 60px rgba(0,0,0,.9),0 0 30px rgba(201,61,65,.08)!important}
+.global-top-hud{background:linear-gradient(180deg,rgba(1,3,8,.94),rgba(1,3,8,.62) 80%,transparent)!important;border-bottom-color:rgba(193,198,206,.1)!important}
+.brand-badge,.hud-btn,.engagement-pill,.stat-pill,.scene-title-badge{background:rgba(23,26,31,.82)!important;border-color:var(--ae-graphite)!important;color:var(--ae-snow)!important}
+.brand-name,.waiting-title{background:linear-gradient(135deg,var(--ae-snow),var(--ae-signal))!important;-webkit-background-clip:text!important;background-clip:text!important}
+.live-pill-tag.pulse-active,.admin-btn.btn-primary,.admin-btn.btn-danger,.admin-btn.btn-warning{background:var(--ae-signal)!important;color:#fff!important}
+.3d-glass-panel,.waiting-hero-box,.countdown-hero,.results-hero-box,.draw-hero-box,.winner-hero-box,.leaderboard-stage-box,.first-join-cinematic-frame,.question-hero-box{background:rgba(23,26,31,.88)!important;border-color:var(--ae-graphite)!important;box-shadow:0 20px 50px rgba(0,0,0,.75),inset 0 1px 1px rgba(236,233,237,.1),0 0 25px rgba(201,61,65,.07)!important}
+.3d-callout-panel,.join-callout-box,.waiting-feature-card,.question-option-card{background:rgba(23,26,31,.75)!important;border-color:var(--ae-graphite)!important}
+.join-keyword-pill,.slot-mini-score,.option-badge-key{background:var(--ae-signal)!important;color:#fff!important}
+.timer-circle-bar,.timer-circle-bar.timer-urgent{stroke:var(--ae-signal)!important}
+.timer-circle-bar.timer-urgent{filter:drop-shadow(0 0 6px var(--ae-signal))!important}
+.p-slot.empty .slot-num{border-color:rgba(142,145,156,.35)!important;background:rgba(23,26,31,.35)!important;color:rgba(236,233,237,.42)!important}
+.p-slot.occupied .p-avatar{border-color:var(--ae-snow)!important;box-shadow:0 0 0 2px rgba(201,61,65,.18),0 0 16px rgba(201,61,65,.18)!important}
+.p-slot.occupied.state-elevated .p-avatar,.avatar-neon-aura{border-color:var(--ae-signal)!important;box-shadow:0 0 0 2px rgba(201,61,65,.25),0 0 20px rgba(201,61,65,.38)!important}
+.p-slot.occupied.state-winner .p-avatar{border-color:var(--ae-silver)!important;box-shadow:0 0 0 2px rgba(193,198,206,.24),0 0 22px rgba(193,198,206,.25)!important}
+.question-option-card:hover,.question-option-card.selected{border-color:var(--ae-signal)!important;box-shadow:0 0 18px rgba(201,61,65,.16)!important}
+.footer-leaderboard{background:linear-gradient(180deg,transparent,rgba(1,3,8,.96))!important;border-top-color:var(--ae-graphite)!important}
+.streamer-notice b{color:var(--ae-signal)!important}
+.studio-3d-floor,.floor-grid-plane,.floor-neon-rim{display:none!important}
+.spotlight.spot-left,.spotlight.spot-right{background:linear-gradient(180deg,var(--ae-signal),transparent 80%)!important}
+.spotlight.spot-center{background:linear-gradient(180deg,rgba(236,233,237,.18),rgba(201,61,65,.12) 50%,transparent 80%)!important}
+.studio-haze-layer{background:radial-gradient(ellipse at 50% 100%,rgba(201,61,65,.1),rgba(133,23,2,.06) 50%,transparent 80%)!important}
+
+/* ADMIN CONTROL CENTER — complete redesign */
+body:has(.admin-wrapper){padding:18px!important;background:var(--ae-abyss)!important}
+body:has(.admin-wrapper) .admin-wrapper{width:min(1480px,100%)!important;max-width:1480px!important;margin:auto!important;display:grid!important;grid-template-columns:248px minmax(0,1fr)!important;grid-template-areas:"head head" "side main"!important;gap:14px!important;align-items:start!important}
+body:has(.admin-wrapper) .admin-header{grid-area:head!important;background:linear-gradient(180deg,var(--ae-night),var(--ae-abyss))!important;border:1px solid var(--ae-graphite)!important;border-radius:18px!important;padding:18px 20px!important;box-shadow:0 18px 50px rgba(0,0,0,.34)!important}
+body:has(.admin-wrapper) .admin-title{color:var(--ae-snow)!important}.admin-title svg{stroke:var(--ae-signal)!important}
+body:has(.admin-wrapper) .conn-status-pill{background:var(--ae-night)!important;border-color:var(--ae-graphite)!important;color:var(--ae-ash)!important}
+body:has(.admin-wrapper) .conn-indicator-dot,.admin-wrapper .conn-indicator-dot.active{background:var(--ae-signal)!important;box-shadow:0 0 10px rgba(201,61,65,.42)!important}
+body:has(.admin-wrapper) .tiktok-topbar{grid-area:main!important;background:var(--ae-night)!important;border:1px solid var(--ae-graphite)!important;border-radius:18px!important;box-shadow:none!important}
+body:has(.admin-wrapper) .tiktok-live-dot{background:var(--ae-signal)!important;box-shadow:0 0 10px rgba(201,61,65,.42)!important}
+body:has(.admin-wrapper) .tiktok-topbar-field label{color:var(--ae-silver)!important}
+body:has(.admin-wrapper) .admin-nav-tabs{grid-area:side!important;display:flex!important;flex-direction:column!important;gap:5px!important;position:sticky!important;top:18px!important;padding:8px!important;background:var(--ae-night)!important;border:1px solid var(--ae-graphite)!important;border-radius:18px!important;overflow:visible!important}
+body:has(.admin-wrapper) .nav-tab-btn{width:100%!important;text-align:right!important;background:transparent!important;color:var(--ae-ash)!important;border:1px solid transparent!important;border-radius:11px!important;padding:12px 13px!important}
+body:has(.admin-wrapper) .nav-tab-btn:hover,body:has(.admin-wrapper) .nav-tab-btn.active{color:var(--ae-snow)!important;background:rgba(201,61,65,.1)!important;border-color:rgba(201,61,65,.25)!important;box-shadow:inset -3px 0 0 var(--ae-signal)!important}
+body:has(.admin-wrapper) .admin-panel{grid-area:main!important;background:transparent!important;border:0!important;padding:0!important;gap:14px!important}
+body:has(.admin-wrapper) .admin-panel.active{display:flex!important;flex-direction:column!important}
+body:has(.admin-wrapper) .control-card,body:has(.admin-wrapper) .metric-box,body:has(.admin-wrapper) .tiktok-topbar-field{background:var(--ae-night)!important;border:1px solid var(--ae-graphite)!important;border-radius:15px!important;box-shadow:none!important}
+body:has(.admin-wrapper) .control-card{padding:18px!important}
+body:has(.admin-wrapper) .card-title{color:var(--ae-silver)!important;border-bottom-color:var(--ae-graphite)!important}
+body:has(.admin-wrapper) .card-title::before{background:var(--ae-signal)!important;box-shadow:0 0 8px rgba(201,61,65,.35)!important}
+body:has(.admin-wrapper) .metric-val{color:var(--ae-snow)!important}body:has(.admin-wrapper) .metric-lbl,body:has(.admin-wrapper) .form-label{color:var(--ae-ash)!important}
+body:has(.admin-wrapper) .admin-btn{background:var(--ae-night)!important;color:var(--ae-snow)!important;border:1px solid var(--ae-graphite)!important;box-shadow:none!important}
+body:has(.admin-wrapper) .admin-btn:hover{background:rgba(201,61,65,.1)!important;border-color:rgba(201,61,65,.35)!important}
+body:has(.admin-wrapper) .admin-btn.btn-primary,body:has(.admin-wrapper) .admin-btn.btn-danger,body:has(.admin-wrapper) .admin-btn.btn-warning{background:var(--ae-signal)!important;color:#fff!important;border-color:var(--ae-signal)!important}
+body:has(.admin-wrapper) .form-input,body:has(.admin-wrapper) select,body:has(.admin-wrapper) textarea,body:has(.admin-wrapper) input{background:var(--ae-abyss)!important;color:var(--ae-snow)!important;border-color:var(--ae-graphite)!important}
+body:has(.admin-wrapper) .form-input:focus,body:has(.admin-wrapper) select:focus,body:has(.admin-wrapper) textarea:focus,body:has(.admin-wrapper) input:focus{border-color:var(--ae-signal)!important;box-shadow:0 0 0 2px rgba(201,61,65,.1)!important;outline:none!important}
+body:has(.admin-wrapper) .players-table th,body:has(.admin-wrapper) .questions-table th{background:var(--ae-abyss)!important;color:var(--ae-silver)!important;border-color:var(--ae-graphite)!important}
+body:has(.admin-wrapper) .players-table td,body:has(.admin-wrapper) .questions-table td{color:var(--ae-snow)!important;border-color:var(--ae-graphite)!important}
+@media(max-width:900px){body:has(.admin-wrapper){padding:8px!important}body:has(.admin-wrapper) .admin-wrapper{grid-template-columns:1fr!important;grid-template-areas:"head" "top" "side" "main"!important;gap:9px!important}body:has(.admin-wrapper) .admin-header{grid-area:head!important;position:relative!important}body:has(.admin-wrapper) .tiktok-topbar{grid-area:top!important}body:has(.admin-wrapper) .admin-nav-tabs{grid-area:side!important;position:sticky!important;top:0!important;z-index:60!important;flex-direction:row!important;overflow-x:auto!important}body:has(.admin-wrapper) .nav-tab-btn{width:auto!important;flex:0 0 auto!important;text-align:center!important}body:has(.admin-wrapper) .admin-panel{grid-area:main!important}}
+@media(max-width:600px){body:has(.admin-wrapper) .admin-header{padding:13px!important}body:has(.admin-wrapper) .control-card{padding:13px!important}}
