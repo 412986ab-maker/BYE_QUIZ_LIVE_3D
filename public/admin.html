@@ -1461,7 +1461,9 @@ body{padding:16px!important;font-family:'Cairo','Tajawal','Segoe UI',system-ui,s
         survivorRatio: parseFloat(document.getElementById('setting-survivor-ratio').value),
         finalistCount: parseInt(document.getElementById('setting-finalist-count').value, 10),
         allowNewParticipantsNextRound: document.getElementById('setting-new-round-participants').value === 'true',
-        excludePreviousWinner: document.getElementById('setting-exclude-prev').value === 'true'
+        excludePreviousWinner: document.getElementById('setting-exclude-prev').value === 'true',
+        autoNextRound: (document.getElementById('setting-auto-next-round')?.value || 'true') === 'true',
+        victoryDuration: Number(document.getElementById('setting-victory-duration')?.value || 8)
       };
 
       try {
