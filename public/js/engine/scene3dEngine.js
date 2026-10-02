@@ -276,6 +276,9 @@
       });
 
       this.backdropMesh = new THREE.Mesh(backdropGeo, backdropMat);
+      // The old silver/graphite curved wall is intentionally removed from the live UI.
+      // Keep the geometry available for future studio modes without rendering it.
+      this.backdropMesh.visible = false;
       this.scene.add(this.backdropMesh);
 
       // 10 Vertical LED Light Accent Columns (Hardware Instanced - 1 Draw Call!)
