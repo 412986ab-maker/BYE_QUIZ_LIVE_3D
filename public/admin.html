@@ -1320,8 +1320,10 @@ body{padding:6px!important}.admin-wrapper{gap:7px!important}.admin-header{paddin
             <input id="special-unique-id" class="form-input" required maxlength="64" placeholder="username" autocomplete="off" />
           </div>
           <div class="form-group">
-            <label class="form-label">الاسم الظاهر</label>
-            <input id="special-display-name" class="form-input" maxlength="64" placeholder="اسم اللاعب المميز" />
+            <label class="form-label">بيانات الحساب</label>
+            <div class="special-profile-auto" id="special-profile-auto">
+              <span class="special-profile-status">سيتم قراءة الاسم والصورة الحقيقيين تلقائياً عند دخول الحساب إلى البث.</span>
+            </div>
           </div>
           <div class="form-group">
             <label class="form-label">المستوى</label>
@@ -1356,8 +1358,11 @@ body{padding:6px!important}.admin-wrapper{gap:7px!important}.admin-header{paddin
             <input id="special-subtitle" class="form-input" maxlength="80" value="دخول مميز" />
           </div>
           <div class="form-group">
-            <label class="form-label">رابط الصورة (اختياري)</label>
-            <input id="special-image" class="form-input" maxlength="500" placeholder="https://..." inputmode="url" />
+            <label class="form-label">الصورة الشخصية</label>
+            <div class="special-profile-avatar-wrap">
+              <img id="special-profile-avatar" class="special-profile-avatar" alt="" />
+              <span id="special-profile-name" class="special-profile-name">بانتظار بيانات TikTok</span>
+            </div>
           </div>
           <div class="form-group" style="display:flex;align-items:center;gap:8px;">
             <input id="special-enabled" type="checkbox" checked style="width:18px;height:18px;" />
@@ -1718,6 +1723,7 @@ body{padding:6px!important}.admin-wrapper{gap:7px!important}.admin-header{paddin
       document.getElementById('special-title').value = 'SPECIAL ENTRANCE';
       document.getElementById('special-subtitle').value = 'دخول مميز';
       document.getElementById('special-enabled').checked = true;
+      updateSpecialProfilePreview({});
       document.getElementById('special-form-status').textContent = '';
       document.getElementById('special-save-btn').textContent = 'حفظ الحساب المميز';
     }
@@ -1727,17 +1733,30 @@ body{padding:6px!important}.admin-wrapper{gap:7px!important}.admin-header{paddin
       if (!item) return;
       document.getElementById('special-id').value = item.id || '';
       document.getElementById('special-unique-id').value = item.uniqueId || '';
-      document.getElementById('special-display-name').value = item.displayName || '';
+      const profileName = document.getElementById('special-profile-name');
+      const profileAvatar = document.getElementById('special-profile-avatar');
+      if (profileName) profileName.textContent = item.displayName || 'بانتظار دخول الحساب';
+      if (profileAvatar) { profileAvatar.src = item.imageUrl || ''; profileAvatar.style.display = item.imageUrl ? 'block' : 'none'; }
       document.getElementById('special-tier').value = item.tier || 'VIP';
       document.getElementById('special-effect').value = item.effect || 'portal';
       document.getElementById('special-duration').value = item.duration || 3200;
       document.getElementById('special-title').value = item.title || 'SPECIAL ENTRANCE';
       document.getElementById('special-subtitle').value = item.subtitle || 'دخول مميز';
-      document.getElementById('special-image').value = item.imageUrl || '';
+      
       document.getElementById('special-enabled').checked = item.enabled !== false;
       document.getElementById('special-save-btn').textContent = 'تحديث الحساب المميز';
       document.getElementById('special-form-status').textContent = 'وضع التعديل: @' + item.uniqueId;
       document.getElementById('special-unique-id').focus();
+    }
+
+    function updateSpecialProfilePreview(item = {}) {
+      const name = document.getElementById('special-profile-name');
+      const avatar = document.getElementById('special-profile-avatar');
+      if (name) name.textContent = item.displayName || 'بانتظار دخول الحساب';
+      if (avatar) {
+        avatar.src = item.imageUrl || '';
+        avatar.style.display = item.imageUrl ? 'block' : 'none';
+      }
     }
 
     async function saveSpecialEntrance(event) {
@@ -1746,13 +1765,13 @@ body{padding:6px!important}.admin-wrapper{gap:7px!important}.admin-header{paddin
       const payload = {
         id: id || undefined,
         uniqueId: document.getElementById('special-unique-id').value.trim(),
-        displayName: document.getElementById('special-display-name').value.trim(),
+        displayName: '',
         tier: document.getElementById('special-tier').value,
         effect: document.getElementById('special-effect').value,
         duration: parseInt(document.getElementById('special-duration').value, 10) || 3200,
         title: document.getElementById('special-title').value.trim(),
         subtitle: document.getElementById('special-subtitle').value.trim(),
-        imageUrl: document.getElementById('special-image').value.trim(),
+        imageUrl: '',
         enabled: document.getElementById('special-enabled').checked
       };
       const status = document.getElementById('special-form-status');
@@ -1766,7 +1785,7 @@ body{padding:6px!important}.admin-wrapper{gap:7px!important}.admin-header{paddin
         });
         const data = await res.json();
         if (!res.ok || !data.success) throw new Error(data.error || 'فشل الحفظ');
-        status.textContent = 'تم الحفظ والتطبيق فوراً';
+        status.textContent = 'تم حفظ اسم المستخدم. سيتم التقاط الاسم والصورة الحقيقيين تلقائياً عند دخوله للبث.';
         await loadSpecialEntrances();
         resetSpecialEntranceForm();
         status.textContent = 'تم الحفظ والتطبيق فوراً';
@@ -1796,13 +1815,13 @@ body{padding:6px!important}.admin-wrapper{gap:7px!important}.admin-header{paddin
       if (!item) {
         item = {
           uniqueId: document.getElementById('special-unique-id').value.trim() || 'vip_test',
-          displayName: document.getElementById('special-display-name').value.trim() || 'VIP TEST',
+          displayName: 'VIP TEST',
           tier: document.getElementById('special-tier').value || 'VIP',
           effect: document.getElementById('special-effect').value || 'portal',
           duration: parseInt(document.getElementById('special-duration').value, 10) || 3200,
           title: document.getElementById('special-title').value.trim() || 'SPECIAL ENTRANCE',
           subtitle: document.getElementById('special-subtitle').value.trim() || 'دخول مميز',
-          imageUrl: document.getElementById('special-image').value.trim(),
+          imageUrl: '',
           enabled: true
         };
       }
