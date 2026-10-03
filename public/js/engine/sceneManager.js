@@ -503,14 +503,13 @@ class SceneManager {
       this.dom.headerCategory.innerHTML = `${IconSystem.get('question', { size: 16 })} <span>${displayQuestion.category || 'بنك الأسئلة'}</span>`;
     }
 
-    const letters = ['A', 'B', 'C', 'D'];
-    const arabicLetters = ['أ', 'ب', 'ج', 'د'];
+    const answerNumbers = ['1', '2', '3', '4'];
     let optionsHtml = '';
 
     if (Array.isArray(q.options) && q.options.length > 0) {
       optionsHtml = q.options.map((opt, idx) => `
         <div class="question-option-card 3d-option-card" id="opt-card-${idx}">
-          <div class="option-badge-key 3d-key-badge">${arabicLetters[idx] || letters[idx]}</div>
+          <div class="option-badge-key 3d-key-badge">${answerNumbers[idx] || (idx + 1)}</div>
           <div class="option-text">${typeof opt === 'object' ? (opt.text || '') : opt}</div>
         </div>
       `).join('');
@@ -532,8 +531,8 @@ class SceneManager {
           </div>
         </div>
         <div class="join-callout-box 3d-callout-panel">
-          <span class="join-instruction">أرسل الحرف الصحيح في التعليقات:</span>
-          <span class="join-keyword-pill">أ / ب / ج / د</span>
+          <span class="join-instruction">أرسل رقم الإجابة الصحيح في التعليقات:</span>
+          <span class="join-keyword-pill">1 / 2 / 3 / 4</span>
         </div>
       </div>
     `;
@@ -566,7 +565,13 @@ class SceneManager {
   // 6. ANSWERS & RESULTS SCENE
   renderAnswersScene() {
     const q = this.state.get('currentQuestion') || {};
-    const correctAns = q.correctAnswer || 'أ';
+    const correctAns = (() => {
+      const options = Array.isArray(q.options) ? q.options : [];
+      const normalize = (v) => (v ?? '').toString().trim().toLowerCase();
+      const target = normalize(q.correctAnswer);
+      const idx = options.findIndex(opt => normalize(typeof opt === 'object' ? opt.text : opt) === target);
+      return idx >= 0 ? String(idx + 1) : (q.correctAnswer || '1');
+    })();
 
     if (this.dom.headerCategory) {
       this.dom.headerCategory.innerHTML = `${IconSystem.get('correct', { size: 16 })} <span>النتيجة والإجابة الصحيحة</span>`;
