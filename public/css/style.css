@@ -2632,3 +2632,7 @@ html,body,#main-stream-container,.stream-container,.stage-area,.studio-arena-vie
   background:#090909 !important;
   border-color:#262626 !important;
 }
+
+/* FINAL CLEAN STUDIO: remove the old silver/graphite floor layer completely. */
+.studio-3d-floor,.floor-grid-plane,.floor-neon-rim,.floor-podium-shadow{display:none!important}
+body.webgl-active .studio-arena-viewport{background:var(--bg-studio-gradient)!important}
