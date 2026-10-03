@@ -494,7 +494,7 @@ class SceneManager {
     const hasQuestion = Boolean(q && (q.question || q.text) && Array.isArray(q.options) && q.options.length > 0);
     const displayQuestion = hasQuestion ? q : {
       category: 'بنك الأسئلة',
-      question: 'جاري اختيار السؤال من بنك الأسئلة…',
+      question: 'في انتظار طرح السؤال من بنك الأسئلة…',
       options: [],
       points: 100
     };
@@ -519,16 +519,16 @@ class SceneManager {
     this.dom.stage.innerHTML = `
       <div class="scene-frame anim-question-enter 3d-question-stage">
         <div class="scene-title-badge">
-          ${IconSystem.get('question', { size: 14 })} <span>${hasQuestion ? 'سؤال التحدي' : 'جاري تجهيز السؤال'} (+${displayQuestion.points || 100} نقطة)</span>
+          ${IconSystem.get('question', { size: 14 })} <span>${hasQuestion ? 'سؤال التحدي' : 'في انتظار طرح السؤال'} (+${displayQuestion.points || 100} نقطة)</span>
         </div>
         <div class="question-source-badge">
-          ${IconSystem.get('database', { size: 13 })} <span>مصدر السؤال: بنك الأسئلة • يختار المحرك سؤالاً تلقائياً عند بدء الجولة، ويمكن للمدير طرح السؤال التالي من لوحة التحكم</span>
+          ${IconSystem.get('database', { size: 13 })} <span>مصدر السؤال: بنك الأسئلة المحفوظ • يختار المحرك السؤال تلقائياً عند بدء الجولة أو يطرحه المدير من لوحة التحكم</span>
         </div>
         <div class="question-hero-box 3d-hologram-screen">
           <div class="question-hologram-scanline"></div>
           <div class="question-text-title">${displayQuestion.question || displayQuestion.text || ''}</div>
           <div class="options-container-grid">
-            ${hasQuestion ? optionsHtml : '<div class="question-loading-state">سيظهر السؤال هنا فور اختياره من بنك الأسئلة.</div>'}
+            ${hasQuestion ? optionsHtml : '<div class="question-loading-state">سيظهر السؤال هنا فور طرحه من بنك الأسئلة.</div>'}
           </div>
         </div>
         <div class="join-callout-box 3d-callout-panel">
