@@ -1,0 +1,71 @@
+/* BYE QUIZ LIVE — ADMIN CONTROL CENTER v6
+   Unified graphite / cyan system. No rainbow UI. Mobile-first.
+*/
+:root{
+  --admin-bg:#05070b;
+  --admin-surface:#0a0f16;
+  --admin-surface-2:#0d141d;
+  --admin-surface-3:#111923;
+  --admin-line:rgba(255,255,255,.075);
+  --admin-line-strong:rgba(0,242,254,.24);
+  --admin-accent:#00e5ff;
+  --admin-accent-soft:rgba(0,229,255,.10);
+  --admin-text:#f3f6f8;
+  --admin-muted:#7f8b98;
+  --admin-success:#19d3ae;
+  --admin-danger:#ff5d68;
+  --admin-radius:16px;
+}
+html,body{background:var(--admin-bg)!important;color:var(--admin-text)!important}
+body{padding:12px!important;font-family:'Tajawal',system-ui,sans-serif!important}
+.admin-wrapper{max-width:1440px!important;gap:12px!important}
+.admin-header{background:var(--admin-surface)!important;border:1px solid var(--admin-line)!important;border-radius:var(--admin-radius)!important;box-shadow:0 12px 36px rgba(0,0,0,.28)!important}
+.admin-title{color:var(--admin-accent)!important}
+.admin-nav-tabs{
+  background:var(--admin-surface)!important;
+  border:1px solid var(--admin-line)!important;
+  border-radius:var(--admin-radius)!important;
+  padding:5px!important;
+  gap:4px!important;
+}
+.nav-tab-btn{color:var(--admin-muted)!important;border-radius:10px!important}
+.nav-tab-btn:hover{background:var(--admin-accent-soft)!important;color:var(--admin-text)!important}
+.nav-tab-btn.active{background:var(--admin-accent)!important;color:#031015!important;box-shadow:0 0 20px rgba(0,229,255,.16)!important}
+.admin-panel{background:var(--admin-surface)!important;border:1px solid var(--admin-line)!important;border-radius:var(--admin-radius)!important;padding:14px!important}
+.control-card{background:var(--admin-surface-2)!important;border:1px solid var(--admin-line)!important;border-radius:14px!important;box-shadow:none!important}
+.card-title{color:var(--admin-text)!important;border-bottom-color:var(--admin-line)!important}
+.admin-btn{background:var(--admin-surface-3)!important;border:1px solid var(--admin-line)!important;color:var(--admin-text)!important}
+.admin-btn:hover{background:var(--admin-accent-soft)!important;border-color:var(--admin-line-strong)!important}
+.admin-btn.btn-primary,.admin-btn.btn-warning,.admin-btn.btn-danger{background:var(--admin-accent)!important;color:#031015!important;border:0!important}
+.admin-btn.btn-danger{background:var(--admin-danger)!important;color:#fff!important}
+.admin-btn.btn-warning{background:var(--admin-accent)!important;color:#031015!important}
+.metric-box{background:var(--admin-surface)!important;border-color:var(--admin-line)!important}
+.metric-val{color:var(--admin-accent)!important}
+.form-input{background:#070b11!important;border-color:var(--admin-line)!important;color:var(--admin-text)!important}
+.form-input:focus{border-color:var(--admin-accent)!important;box-shadow:0 0 0 2px var(--admin-accent-soft)!important}
+.conn-status-pill{background:var(--admin-surface)!important;border-color:var(--admin-line)!important}
+.tiktok-topbar{background:var(--admin-surface)!important;border:1px solid var(--admin-line-strong)!important}
+.tiktok-topbar-field label{color:var(--admin-accent)!important}
+.tiktok-topbar-actions .btn-primary{background:var(--admin-accent)!important;color:#031015!important}
+.special-profile-auto{min-height:42px;display:flex;align-items:center;padding:9px 11px;border:1px solid var(--admin-line);border-radius:9px;background:#070b11}
+.special-profile-status{font-size:11px;color:var(--admin-muted)}
+.special-profile-avatar-wrap{min-height:42px;display:flex;align-items:center;gap:10px;padding:4px 8px;border:1px solid var(--admin-line);border-radius:9px;background:#070b11}
+.special-profile-avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;display:none;border:1px solid var(--admin-line-strong)}
+.special-profile-name{font-size:11px;color:var(--admin-muted)}
+@media(min-width:1000px){
+  .admin-wrapper{display:grid!important;grid-template-columns:210px minmax(0,1fr);grid-template-areas:"header header" "tiktok tiktok" "nav main";align-items:start}
+  .admin-header{grid-area:header}
+  .tiktok-topbar{grid-area:tiktok}
+  .admin-nav-tabs{grid-area:nav;position:sticky;top:12px;display:flex!important;flex-direction:column!important;align-items:stretch!important}
+  .nav-tab-btn{text-align:right!important}
+  .admin-panel{grid-area:main;min-width:0}
+}
+@media(max-width:999px){
+  .admin-nav-tabs{display:flex!important;overflow-x:auto!important}
+  .nav-tab-btn{flex:0 0 auto!important}
+}
+@media(max-width:600px){
+  body{padding:6px!important}
+  .admin-panel{padding:9px!important}
+  .control-card{padding:10px!important}
+}
